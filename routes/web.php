@@ -27,9 +27,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $res = Vendor::all();
     $food = Menu::all();
-    return Inertia::render('Dashboard',[
-        'vendor'=>$res,
-        'food'=>$food,
+    return Inertia::render('Dashboard', [
+        'vendor' => $res,
+        'food' => $food,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -47,6 +47,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/address', [CustomerController::class, 'address'])->name('address');
     Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
     Route::get('/notification', [CustomerController::class, 'notification'])->name('notification');
+
+
+    // Route::get('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
+    Route::post('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
+
+
+
+    // Route::get('/addtocart/{product}', [CustomerController::class, 'addtocart'])->name('addtocart');
+    // Route::get('/removecartitem/{id}', [CustomerController::class, 'removecartitem'])->name('removecartitem');
+
 });
 
 require __DIR__ . '/auth.php';
@@ -63,11 +73,11 @@ Route::get('/admin/dashboard', function () {
     return Inertia::render('Admin/Dashboard');
 })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
-// Route::middleware('auth:admin')->group(function () {
-//     Route::get('/admin/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
-//     Route::patch('/admin/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
-//     Route::delete('/admin/profile', [AdminProfileController::class, 'destroy'])->name('admin.profile.destroy');
-// });
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/admin/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::delete('/admin/profile', [AdminProfileController::class, 'destroy'])->name('admin.profile.destroy');
+});
 
 
 Route::middleware(['auth:admin'])->group(function () {
@@ -80,6 +90,11 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_edit'])->name('vendor.edit');
     Route::patch('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_update'])->name('vendor.update');
     Route::delete('/admin/deletevendor4/{id}', [AdminController::class, 'vendor_delete'])->name('vendor.delete');
+
+    // Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
+
+
+
 
 
 
@@ -109,11 +124,11 @@ Route::get('/courier/dashboard', function () {
     return Inertia::render('Courier/Dashboard');
 })->middleware(['auth:courier', 'verified'])->name('courier.dashboard');
 
-// Route::middleware('auth:courier')->group(function () {
-//     Route::get('/courier/profile', [CourierProfileController::class, 'edit'])->name('courier.profile.edit');
-//     Route::patch('/courier/profile', [CourierProfileController::class, 'update'])->name('courier.profile.update');
-//     Route::delete('/courier/profile', [CourierProfileController::class, 'destroy'])->name('courier.profile.destroy');
-// });
+Route::middleware('auth:courier')->group(function () {
+    Route::get('/courier/profile', [CourierProfileController::class, 'edit'])->name('courier.profile.edit');
+    Route::patch('/courier/profile', [CourierProfileController::class, 'update'])->name('courier.profile.update');
+    Route::delete('/courier/profile', [CourierProfileController::class, 'destroy'])->name('courier.profile.destroy');
+});
 
 
 
@@ -136,11 +151,11 @@ Route::get('/vendor/dashboard', function () {
 })->middleware(['auth:vendor', 'verified'])->name('vendor.dashboard');
 
 
-// Route::middleware('auth:vendor')->group(function () {
-//     Route::get('/vendor/profile', [VendorProfileController::class, 'edit'])->name('vendor.profile.edit');
-//     Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
-//     Route::delete('/vendor/profile', [VendorProfileController::class, 'destroy'])->name('vendor.profile.destroy');
-// });
+Route::middleware('auth:vendor')->group(function () {
+    Route::get('/vendor/profile', [VendorProfileController::class, 'edit'])->name('vendor.profile.edit');
+    Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
+    Route::delete('/vendor/profile', [VendorProfileController::class, 'destroy'])->name('vendor.profile.destroy');
+});
 
 Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

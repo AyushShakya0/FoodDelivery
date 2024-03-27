@@ -37,7 +37,7 @@ class CourierProfileController extends Controller
 
         $admin->save();
 
-        return Redirect::route('admin.profile.edit'); // Ensure the route is defined for admin
+        return Redirect::route('courier.profile.edit'); // Ensure the route is defined for admin
     }
 
 

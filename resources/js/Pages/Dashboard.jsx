@@ -30,7 +30,7 @@ export default function Dashboard({ auth, vendor, food }) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
 
-            <div className='pb-10'>
+            <div className='pb-8'>
                 <section className='relative text-center bg-green h-screen' style={{ backgroundImage: `url(./dashboard.jpg)`, backgroundSize: 'cover' }}>
                     <div className='absolute inset-0 bg-black bg-opacity-50'></div>
                     <div className='flex flex-col justify-center h-full'>
@@ -55,30 +55,30 @@ export default function Dashboard({ auth, vendor, food }) {
                     </div>
                 </section>
 
-                <section className='p-5 lg:p-20'>
-                    <p className='text-xl font-semibold text-gray-500 pb-3'>Popular Items</p>
+                <section className='p-5 lg:p-20 lg:pb-0'>
+                    <p className='text-xl font-semibold text-gray-500 pb-8'>Popular Items</p>
                     <Slider {...settings}>
                         {food.map((listing) => (
                             <MultiItemCarousel key={listing.id} listing={listing} />
 
                         ))}
                     </Slider>
-
                 </section>
 
                 <section className='p-5 lg:p-20'>
                     <div>
-                        <h1 className='text-xl font-semibold text-gray-500 pb-3'>Popular Restaurants</h1>
-                        <div className='flex flex-wrap justify-between gap-5'>
+                        <h1 className='text-xl font-semibold text-gray-500 pb-8'>Popular Restaurants</h1>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
                             {vendor.map((listing) => (
-                                <div key={listing.id} className="flex flex-col gap-5">
+                                <div key={listing.id}>
                                     <RestaurantCard listing={listing} />
                                 </div>
                             ))}
                         </div>
-
                     </div>
                 </section>
+
+
             </div>
 
         </AuthenticatedLayout>

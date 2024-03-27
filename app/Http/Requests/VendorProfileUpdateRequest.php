@@ -8,7 +8,7 @@ use App\Models\Vendor;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AdminProfileUpdateRequest extends FormRequest
+class VendorProfileUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

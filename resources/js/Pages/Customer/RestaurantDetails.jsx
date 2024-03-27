@@ -50,11 +50,11 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
         >
             <Head title="Restaurant Details" />
 
-            <div className='px-5 lg:px-20 '>
+            <div className='px5 lg:px-20 '>
                 <section>
-                    <h3 className='text-gray-500 py-0 mt-10'>Home/Nepal/Moyes Royos/3</h3>
+                    <h3 className='text-gray-500 py-0 mt-3'>Home/Nepal/Moyes Royos/3</h3>
                     <div>
-                    <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                        <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
                     </div>
 
                     <div className='pt-2 pb-5'>
@@ -131,24 +131,26 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
 
                         </div>
                     </div>
-                    <div className='space-y-5 lg:w-[80%] lg:pl-10'>
-                        {menus.map((listing) => (
-                            // <Link href={route('restaurant.details')} active={route().current('restaurant.details')}>
-                            <MenuCard key={listing.id} listing={listing} />
-                            // {/* </Link> */}
-
-                        ))}
+                    <div className='flex lg:w-[80%] lg:pl-10'>
+                        <div className="flex-1">
+                            <div className="space-y-5">
+                                {menus.map((listing) => (
+                                    <MenuCard key={listing.id} listing={listing} />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="w-[300px] ml-5">
+                            <section>
+                                {/* Your cart display component */}
+                                <div>Cart Display (should be right ma)</div>
+                                <div>Change this later</div>
+                            </section>
+                        </div>
                     </div>
 
                 </section>
 
-                <div className="w-[300px] ml-5">
-                    <section>
-                        {/* Your cart display component */}
-                        <div>Cart Display(should be right ma)</div>
-                        <div>change this later</div>
-                    </section>
-                </div>
+
 
             </div>
 

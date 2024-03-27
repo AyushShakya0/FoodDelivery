@@ -5,121 +5,207 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
-export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+
+
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import { alpha } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import ListItemButton from '@mui/material/ListItemButton';
+
+import { usePathname } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
+
+import { useResponsive } from 'src/hooks/use-responsive';
+
+import { account } from 'src/_mock/account';
+
+import Logo from 'src/components/logo';
+import Scrollbar from 'src/components/scrollbar';
+
+import { NAV } from './config-layout';
+import navConfig from './config-navigation';
+
+export default function Authenticated({ user, header, children,  openNav, onCloseNav }) {
+    const pathname = usePathname();
+
+    const upLg = useResponsive('up', 'lg');
+
+    useEffect(() => {
+        if (openNav) {
+            onCloseNav();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]);
+
+    const renderAccount = (
+        <Box
+            sx={{
+                my: 3,
+                mx: 2.5,
+                py: 2,
+                px: 2.5,
+                display: 'flex',
+                borderRadius: 1.5,
+                alignItems: 'center',
+                bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
+            }}
+        >
+            <Avatar src={account.photoURL} alt="photoURL" />
+
+            <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2">{account.displayName}</Typography>
+
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {account.role}
+                </Typography>
+            </Box>
+        </Box>
+    );
+
+    const renderMenu = (
+        <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+            {navConfig.map((item) => (
+                <NavItem key={item.title} item={item} />
+            ))}
+        </Stack>
+    );
+
+    const renderUpgrade = (
+        <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+            <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+                <Box
+                    component="img"
+                    src="/assets/illustrations/illustration_avatar.png"
+                    sx={{ width: 100, position: 'absolute', top: -50 }}
+                />
+
+                <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="h6">Get more?</Typography>
+
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+                        From only $69
+                    </Typography>
+                </Box>
+
+                <Button
+                    href="https://material-ui.com/store/items/minimal-dashboard/"
+                    target="_blank"
+                    variant="contained"
+                    color="inherit"
+                >
+                    Upgrade to Pro
+                </Button>
+            </Stack>
+        </Box>
+    );
+
+    const renderContent = (
+        <Scrollbar
+            sx={{
+                height: 1,
+                '& .simplebar-content': {
+                    height: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                },
+            }}
+        >
+            <Logo sx={{ mt: 3, ml: 4 }} />
+
+            {renderAccount}
+
+            {renderMenu}
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            {renderUpgrade}
+        </Scrollbar>
+    );
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
-                        <div className="flex">
-                            <div className="shrink-0 flex items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                </Link>
-                            </div>
-
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('courier.dashboard')} active={route().current('courier.dashboard')}>
-                                    Courier Dashboard
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
-                            <div className="ms-3 relative">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {user.name}
-
-                                                <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </Dropdown.Trigger>
-
-                                    <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link href={route('courier.logout')} method="post" as="button">
-                                            Log Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                            >
-                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('courier.dashboard')} active={route().current('courier.dashboard')}>
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('courier.logout')} as="button">
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
-                </header>
+        <Box
+            sx={{
+                flexShrink: { lg: 0 },
+                width: { lg: NAV.WIDTH },
+            }}
+        >
+            {upLg ? (
+                <Box
+                    sx={{
+                        height: 1,
+                        position: 'fixed',
+                        width: NAV.WIDTH,
+                        borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
+                    }}
+                >
+                    {renderContent}
+                </Box>
+            ) : (
+                <Drawer
+                    open={openNav}
+                    onClose={onCloseNav}
+                    PaperProps={{
+                        sx: {
+                            width: NAV.WIDTH,
+                        },
+                    }}
+                >
+                    {renderContent}
+                </Drawer>
             )}
-
-            <main>{children}</main>
-        </div>
+        </Box>
     );
 }
+
+Nav.propTypes = {
+    openNav: PropTypes.bool,
+    onCloseNav: PropTypes.func,
+};
+
+// ----------------------------------------------------------------------
+
+function NavItem({ item }) {
+    const pathname = usePathname();
+
+    const active = item.path === pathname;
+
+    return (
+        <ListItemButton
+            component={RouterLink}
+            href={item.path}
+            sx={{
+                minHeight: 44,
+                borderRadius: 0.75,
+                typography: 'body2',
+                color: 'text.secondary',
+                textTransform: 'capitalize',
+                fontWeight: 'fontWeightMedium',
+                ...(active && {
+                    color: 'primary.main',
+                    fontWeight: 'fontWeightSemiBold',
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                    '&:hover': {
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+                    },
+                }),
+            }}
+        >
+            <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+                {item.icon}
+            </Box>
+
+            <Box component="span">{item.title} </Box>
+        </ListItemButton>
+    );
+}
+
+NavItem.propTypes = {
+    item: PropTypes.object,
+};

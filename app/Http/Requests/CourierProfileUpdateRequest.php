@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AdminProfileUpdateRequest extends FormRequest
+class CourierProfileUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

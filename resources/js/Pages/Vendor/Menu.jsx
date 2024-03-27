@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 
-export default function All({ auth, menus }) {
+export default function All({ auth, menus,vendor }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         description: "",
@@ -14,6 +14,8 @@ export default function All({ auth, menus }) {
         availability: "available",
         customization: [""],
     });
+
+    console.log(vendor);
 
     const submit = (e) => {
         e.preventDefault();

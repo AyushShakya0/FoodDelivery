@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException; // Import ValidationException
 use App\Models\Menu;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -76,6 +77,7 @@ class MenuController extends Controller
 
     public function add(): Response
     {
+    
 
         return Inertia::render('Vendor/Menu', [
         ]);

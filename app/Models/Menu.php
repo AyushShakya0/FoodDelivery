@@ -11,6 +11,7 @@ class Menu extends Model
     use HasFactory;
 
     protected $fillable = [
+        'vendor_id',
         'name',
         'description',
         'price',

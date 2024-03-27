@@ -17,10 +17,10 @@ class VendorProfileController extends Controller
 
     public function edit(Request $request): Response
     { // Assuming admins have a separate guard named 'admin'
-        $admin = Auth::guard('vendor')->user();
+        $vendor = Auth::guard('vendor')->user();
 
-        return Inertia::render('Admin/Profile/Edit', [
-            'mustVerifyEmail' => $admin instanceof MustVerifyEmail,
+        return Inertia::render('Vendor/Profile/Edit', [
+            'mustVerifyEmail' => $vendor instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
     }
@@ -28,16 +28,16 @@ class VendorProfileController extends Controller
 
     public function update(VendorProfileUpdateRequest $request): RedirectResponse
     {
-        $admin = Auth::guard('vendor')->user();
-        $admin->fill($request->validated());
+        $vendor = Auth::guard('vendor')->user();
+        $vendor->fill($request->validated());
 
-        if ($admin->isDirty('email')) {
-            $admin->email_verified_at = null;
+        if ($vendor->isDirty('email')) {
+            $vendor->email_verified_at = null;
         }
 
-        $admin->save();
+        $vendor->save();
 
-        return Redirect::route('vendor.profile.edit'); // Ensure the route is defined for admin
+        return Redirect::route('vendor.profile.edit'); // Ensure the route is defined for vendor
     }
 
 
@@ -45,11 +45,11 @@ class VendorProfileController extends Controller
     {
         $request->validate(['password' => ['required', 'password:vendor'],]);
 
-        $admin = Auth::guard('vendor')->user();
+        $vendor = Auth::guard('vendor')->user();
 
         Auth::guard('vendor')->logout();
 
-        $admin->delete();
+        $vendor->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
