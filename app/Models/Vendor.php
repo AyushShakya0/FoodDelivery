@@ -27,8 +27,9 @@ class Vendor extends Authenticatable
         'address',
         'city',
         'image',
-        'cuisine',
+        'time',
         'status',
+        'verified',
 
     ];
 

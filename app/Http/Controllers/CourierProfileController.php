@@ -28,16 +28,22 @@ class CourierProfileController extends Controller
 
     public function update(CourierProfileController $request): RedirectResponse
     {
-        $admin = Auth::guard('courier')->user();
-        $admin->fill($request->validated());
+        $courier = Auth::guard('vendor')->user();
 
-        if ($admin->isDirty('email')) {
-            $admin->email_verified_at = null;
+        // Fill the vendor model with all fields from the request
+        $courier->fill($request->all());
+
+        // Check if email is being updated
+        if ($courier->isDirty('email')) {
+            // If email is being updated, mark email as unverified
+            $courier->email_verified_at = null;
         }
 
-        $admin->save();
+        // Save the changes to the database
+        $courier->save();
 
-        return Redirect::route('courier.profile.edit'); // Ensure the route is defined for admin
+        // Redirect back to the profile edit page
+        return redirect()->route('courier.profile.edit');
     }
 
 

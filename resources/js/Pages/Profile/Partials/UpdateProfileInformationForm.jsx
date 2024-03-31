@@ -9,8 +9,29 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
-        email: user.email,
+        name: user.name || '',
+        email: user.email || '',
+        image: user.image || '',
+        number: user.number|| '',
+        address: user.address || '',
+        state: user.state || '',
+        city: user.city || '',
+        pincode: user.pincode || '',
+
+        address1: user.address1 || '',
+        state1: user.state1 || '',
+        city1: user.city1 || '',
+        pincode1: user.pincode1 || '',
+
+        address2: user.address2 || '',
+        state2: user.state2 || '',
+        city2: user.city2 || '',
+        pincode2: user.pincode2 || '',
+
+        address3: user.address3 || '',
+        state3: user.state3 || '',
+        city3: user.city3 || '',
+        pincode3: user.pincode3 || '',
     });
 
     const submit = (e) => {
@@ -61,6 +82,101 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <InputError className="mt-2" message={errors.email} />
                 </div>
+
+
+                <div>
+                    <InputLabel htmlFor="Image" value="Image" />
+
+                    <TextInput
+                        id="image"
+                        name="image"
+                        type="file"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                    // required
+                    />
+
+                    <InputError className="mt-2" message={errors.image} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="Number" value="Number" />
+
+                    <TextInput
+                        id="number"
+                        className="mt-1 block w-full"
+                        value={data.number}
+                        onChange={(e) => setData('number', e.target.value)}
+                    // required
+                    // autoComplete="name"
+                    />
+
+                    <InputError className="mt-2" message={errors.number} />
+                </div>
+                <div>
+                    Address 1
+
+
+                <div>
+                    <InputLabel htmlFor="address" value="address" />
+
+                    <TextInput
+                        id="address"
+                        className="mt-1 block w-full"
+                        value={data.address}
+                        onChange={(e) => setData('address', e.target.value)}
+                        autoComplete="address" // Assuming you want to autocomplete for address
+                    />
+
+                    <InputError className="mt-2" message={errors.address} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="state" value="state" />
+
+                    <TextInput
+                        id="state"
+                        className="mt-1 block w-full"
+                        value={data.state}
+                        onChange={(e) => setData('state', e.target.value)}
+                        autoComplete="state" // Assuming you want to autocomplete for state
+                    />
+
+                    <InputError className="mt-2" message={errors.state} />
+                </div>
+
+
+
+                <div>
+                    <InputLabel htmlFor="city" value="city" />
+
+                    <TextInput
+                        id="city"
+                        className="mt-1 block w-full"
+                        value={data.city}
+                        onChange={(e) => setData('city', e.target.value)}
+                        // required
+                        autoComplete="city"
+                    />
+
+                    <InputError className="mt-2" message={errors.city} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="pincode" value="pincode" />
+
+                    <TextInput
+                        id="pincode"
+                        className="mt-1 block w-full"
+                        value={data.pincode}
+                        onChange={(e) => setData('pincode', e.target.value)}
+                        autoComplete="pincode" // Assuming you want to autocomplete for pincode
+                    />
+
+                    <InputError className="mt-2" message={errors.pincode} />
+                </div>
+
+                </div>
+
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>

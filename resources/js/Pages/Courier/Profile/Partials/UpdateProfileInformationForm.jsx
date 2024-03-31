@@ -11,6 +11,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
+        image: user.image,
+        address: user.address,
+        number: user.number,
+        city: user.city,
     });
 
     const submit = (e) => {
@@ -60,6 +64,66 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="Image" value="Image" />
+
+                    <TextInput
+                        id="image"
+                        name="image"
+                        type="file"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                    // required
+                    />
+
+                    <InputError className="mt-2" message={errors.image} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="address" value="address" />
+
+                    <TextInput
+                        id="address"
+                        className="mt-1 block w-full"
+                        value={data.address}
+                        onChange={(e) => setData('address', e.target.value)}
+                        autoComplete="address" // Assuming you want to autocomplete for address
+                    />
+
+                    <InputError className="mt-2" message={errors.address} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="Number" value="Number" />
+
+                    <TextInput
+                        id="number"
+                        className="mt-1 block w-full"
+                        value={data.number}
+                        onChange={(e) => setData('number', e.target.value)}
+                    // required
+                    // autoComplete="name"
+                    />
+
+                    <InputError className="mt-2" message={errors.number} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="city" value="city" />
+
+                    <TextInput
+                        id="city"
+                        className="mt-1 block w-full"
+                        value={data.city}
+                        onChange={(e) => setData('city', e.target.value)}
+                        // required
+                        autoComplete="city"
+                    />
+
+                    <InputError className="mt-2" message={errors.city} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

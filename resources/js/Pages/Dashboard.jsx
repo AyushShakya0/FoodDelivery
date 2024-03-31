@@ -25,6 +25,9 @@ export default function Dashboard({ auth, vendor, food }) {
 
     };
 
+    const verifiedVendors = vendor.filter(vendor => vendor.verified === 'yes');
+
+
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -69,7 +72,7 @@ export default function Dashboard({ auth, vendor, food }) {
                     <div>
                         <h1 className='text-xl font-semibold text-gray-500 pb-8'>Popular Restaurants</h1>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
-                            {vendor.map((listing) => (
+                            {verifiedVendors.map((listing) => (
                                 <div key={listing.id}>
                                     <RestaurantCard listing={listing} />
                                 </div>

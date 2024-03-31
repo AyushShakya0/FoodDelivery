@@ -35,6 +35,16 @@ class AdminController extends Controller
         ]);
     }
 
+    public function vendor_verify_display()
+    {
+        $vendors = Vendor::all();
+
+        return Inertia::render('Admin/Verify_Vendor_Admin', [
+            'vendors' => $vendors,
+
+        ]);
+    }
+
 
 
     public function vendor_add(Request $request)
@@ -95,23 +105,88 @@ class AdminController extends Controller
         ]);
     }
 
-    public function vendor_update(Vendor $vendor, Request $request)
+
+    // public function vendor_update(Vendor $vendor, Request $request)
+    // {
+    //     try {
+    //         $existingVendor = Vendor::where('email', $request->input('email'))->first();
+
+    //         // Check if the email exists for another vendor
+    //         if ($existingVendor && $existingVendor->id !== $vendor->id) {
+    //             return Inertia::back()->with('error', 'Email already exists for another vendor');
+    //         }
+
+    //         $vendor->name = $request->input('name');
+    //         $vendor->email = $request->input('email');
+    //         $vendor->phone_number = $request->input('phone_number');
+    //         $vendor->address = $request->input('address');
+    //         $vendor->city = $request->input('city');
+    //         $vendor->time = $request->input('time');
+
+    //         // Check if a new password is provided
+    //         $password = $request->input('password');
+    //         if (!empty($password)) {
+    //             $vendor->password = bcrypt($password);
+    //         }
+
+    //         // Handle image upload if provided
+    //         if ($request->hasFile('image')) {
+    //             $imagePath = $request->file('image')->store('vendor_images');
+    //             $vendor->image = $imagePath;
+    //         }
+
+    //         // Save the changes
+    //         $vendor->save();
+
+    //         // Redirect back with success message
+    //         return Inertia::route('vendor.edit', ['vendor' => $vendor->id])->with('success', 'Vendor updated successfully');
+    //     } catch (\Exception $e) {
+    //         // Render the edit page with error message
+    //         return Inertia::render('Admin/EditVendor_Admin', [
+    //             'vendor' => $vendor,
+    //             'error' => $e->getMessage()
+    //         ])->with('error', $e->getMessage());
+    //     }
+    // }
+
+
+    public function vendor_update(Request $request, Vendor $vendor)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            // 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($vendor->id)],
+            'phone_number' => ['required', 'string', 'max:20'],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+
+        // Update the vendor with the validated data
+        $vendor->update($validatedData);
+
+        // Redirect back to the vendor list page with a success message
+        return redirect()->route('vendor.edit')->with('success', 'Vendor updated successfully.');
+    }
+
+
+
+    public function vendor_verify(Vendor $vendor, Request $request)
     {
         try {
-            $vendor->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'number' => $request->number,
-                'address' => $request->address,
-                'city' => $request->city,
-                'cuisine' => $request->cuisine,
-                'image' => $request->image,
-            ]);
-            return response()->json(['message' => 'Vendor updated successfully'], 200);
+            $vendor->verified = $request->input('verified');
+
+            // Save the changes excluding the password field
+            $vendor->save(['timestamps' => false, 'touch' => false]);
+
+            return response()->json(['message' => 'Vendor verified successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+
+
+
 
     public function vendor_delete($id)
     {
@@ -128,6 +203,23 @@ class AdminController extends Controller
 
         // Redirect back with success message
         return redirect()->back()->with('success', 'Trainer deleted successfully!');
+    }
+
+    public function courier_delete($id)
+    {
+        // Find the trainer by ID
+        $courier = Courier::find($id);
+
+        if (!$courier) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Courier not found!');
+        }
+
+        // Delete the trainer
+        $courier->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Courier deleted successfully!');
     }
 
 

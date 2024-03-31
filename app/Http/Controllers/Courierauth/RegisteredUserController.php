@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::guard('courier')->login($user);
 
         return redirect(route('courier.dashboard', absolute: false));
     }

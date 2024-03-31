@@ -18,9 +18,9 @@ export default function Authenticated({ user, header, children }) {
                             <Link href="/">
                                         {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                                         <img
-                                            src="/gofood-logo.png"
+                                            src="/logo.png"
                                             alt="GoFood Logo"
-                                            className="h-12 w-auto text-gray-800" // Adjusted classes
+                                            className="h-4 w-auto text-gray-800" // Adjusted classes
                                         />
                                     </Link>
                             </div>

@@ -37,8 +37,8 @@ class CustomerController extends Controller
 
     public function cart()
     {
-        $cartBox=session()->get('cart');
-        dd($cartBox);
+        // $cartBox=session()->get('cart');
+        // dd($cartBox);
         // return Inertia::render('Customer/Cart_Display', compact('cartBox'));
         return Inertia::render('Customer/Cart_Display',[]);
     }
@@ -153,7 +153,7 @@ class CustomerController extends Controller
         }
 
         return redirect()->route('cart');
-        
+
     }
 
 

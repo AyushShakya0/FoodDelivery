@@ -29,7 +29,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->user()->fill($request->all());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -39,6 +39,8 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
+
+
 
     /**
      * Delete the user's account.

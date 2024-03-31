@@ -11,62 +11,59 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100 flex">
-            <nav className="bg-white border-b border-gray-100 w-64">
+            <nav className="bg-white border-b border-gray-100 w-64 fixed top-0 bottom-0 overflow-y-auto" style={{ overflow: 'hidden' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col justify-between h-screen">
                         <div>
-                            <div className="flex items-center mt-8 mb-12">
+                            <div className="flex items-center mt-8 mb-8">
                                 <Link href="/">
                                     {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                                     <img
-                                        src="/gofood-logo.png"
+                                        src="/logo.png"
                                         alt="GoFood Logo"
-                                        className="h-12 w-auto text-gray-800" // Adjusted classes
+                                        className="h-6 w-auto text-gray-800" // Adjusted classes
                                     />
                                 </Link>
                             </div>
-                            <div className="pb-4">
-                                <div className="flex items-center mt-12"> {/* Wrap icon and text in a flex container */}
-                                    <AccountCircleIcon style={{ fontSize: 32 }} />
-                                    <div className="ml-2">
-                                        <div className="font-medium text-base text-gray-800">{user.name}</div>
-                                        <div className="font-medium text-sm text-gray-500">{user.email}</div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-6 pb-8 text-3xl">
-                                    <div>
-                                        <NavLink href={route('courier.dashboard')} active={route().current('courier.dashboard')} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Courier Dashboard
-                                        </NavLink>
-                                    </div>
-                                    <div>
-
-                                        <NavLink href={route('orders.index')} active={route().current('orders.index')} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Order
-                                        </NavLink>
-                                    </div>
-                                    <div>
-
-                                        <NavLink href={route('menu.index')} active={route().current('menu.index')} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Menu
-                                        </NavLink>
-                                    </div>
-                                    <div>
-                                        <NavLink href={route('vendor.finance')} active={route().current('vendor.finance')} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Order & Transaction
-                                        </NavLink>
-                                    </div>
-                                    <div>
-
-                                        <NavLink href={route('vendor.setting')} active={route().current('vendor.setting')} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Settings
-                                        </NavLink>
-                                    </div>
-
-
+                            <div className="flex items-center mt-6"> {/* Wrap icon and text in a flex container */}
+                                <AccountCircleIcon style={{ fontSize: 32 }} />
+                                <div className="ml-2">
+                                    <div className="font-medium text-base text-gray-800">{user.name}</div>
+                                    <div className="font-medium text-sm text-gray-500">{user.email}</div>
                                 </div>
                             </div>
+
+                            <div className="mt-8 pb-8 text-5xl">
+                                <div>
+                                    <NavLink href={route('courier.dashboard')} active={route().current('courier.dashboard')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Courier Dashboard
+                                    </NavLink>
+                                </div>
+                                <div>
+                                    <NavLink href={route('admin_order')} active={route().current('admin_order')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Orders
+                                    </NavLink>
+                                </div>
+                                <NavLink href={route('admin_vendor')} active={route().current('admin_vendor')} className="block py-2 px-4 text-sm text-gray-700">
+                                    Vendor
+                                </NavLink>
+                                <div>
+                                    <NavLink href={route('admin_courier')} active={route().current('admin_courier')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Couriers
+                                    </NavLink>
+                                </div>
+                                <div>
+                                    <NavLink href={route('admin_finance')} active={route().current('admin_finance')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Order & Transaction
+                                    </NavLink>
+                                </div>
+                                <div>
+                                    <NavLink href={route('admin_setting')} active={route().current('admin_setting')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Settings
+                                    </NavLink>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div className="pb-4">
@@ -83,7 +80,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            <div className="flex-1">
+            <div className="flex-1 ml-64 overflow-y-auto"> {/* Added ml-64 class to create space for the fixed sidebar */}
                 {header && (
                     <header className="bg-white shadow">
                         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>

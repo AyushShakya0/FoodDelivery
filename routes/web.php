@@ -91,6 +91,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::patch('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_update'])->name('vendor.update');
     Route::delete('/admin/deletevendor4/{id}', [AdminController::class, 'vendor_delete'])->name('vendor.delete');
 
+    Route::get('/admin/vendors/verify', [AdminController::class, 'vendor_verify_display'])->name('admin_vendor_display');
+    Route::patch('/admin/vendor/{id}/verify', [AdminController::class, 'vendor_verify'])->name('vendor.verify');
+
+
     // Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
 
 
@@ -101,7 +105,9 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/courier', [AdminController::class, 'courier'])->name('admin_courier');
     Route::get('/admin/couriers/edit', [AdminController::class, 'courier_edit'])->name('courier.edit');
-    Route::patch('/admin/couriers/{courier}', [OrderController::class, 'courier_update'])->name('courier.update');
+    Route::patch('/admin/couriers/{courier}', [AdminController::class, 'courier_update'])->name('courier.update');
+    Route::delete('/admin/deletecourier/{id}', [AdminController::class, 'courier_delete'])->name('courier.delete');
+
 
 
     Route::get('/admin/finance', [AdminController::class, 'finance'])->name('admin_finance');

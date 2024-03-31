@@ -23,6 +23,11 @@ class Courier extends Authenticatable
         'name',
         'email',
         'password',
+        'number',
+        'address',
+        'city',
+        'image',
+        'verified',
     ];
 
     /**
