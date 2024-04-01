@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -15,23 +16,20 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                            <Link href="/">
-                                        {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
-                                        <img
-                                            src="/logo.png"
-                                            alt="GoFood Logo"
-                                            className="h-4 w-auto text-gray-800" // Adjusted classes
-                                        />
-                                    </Link>
+                                <Link href="/" className="flex items-center">
+                                    <img
+                                        src="/logo.png"
+                                        alt="GoFood Logo"
+                                        className="h-4 w-auto text-gray-800" // Adjusted classes
+                                    />
+                                </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route('cart')} active={route().current('cart')}>
-                                    My Cart
-                                </NavLink>
+
                                 <NavLink href={route('myprofile')} active={route().current('myprofile')}>
                                     My profile
                                 </NavLink>
@@ -39,6 +37,9 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
+                            <NavLink href={route('cart')} active={route().current('cart')}>
+                                <ShoppingCartIcon />
+                            </NavLink>
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>

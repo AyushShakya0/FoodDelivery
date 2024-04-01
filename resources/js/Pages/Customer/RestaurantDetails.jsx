@@ -27,7 +27,7 @@ const foodTypes = [
 ]
 
 
-const menu = [1, 1, 1]
+
 
 
 export default function RestaurantDetails({ auth, vendor, menus }) {
@@ -37,9 +37,12 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
     }
 
     const { id } = usePage().props; // Access route parameters
-    // console.log("Restaurant :", vendor.id)
-    // console.log("Menu :", menus)
 
+    const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id);
+
+    // console.log(vendor);
+    // console.log(menus);
+    // console.log(vendorMenus);
 
 
 
@@ -134,7 +137,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                     <div className='flex lg:w-[80%] lg:pl-10'>
                         <div className="flex-1">
                             <div className="space-y-5">
-                                {menus.map((listing) => (
+                                {vendorMenus.map((listing) => (
                                     <MenuCard key={listing.id} listing={listing} />
                                 ))}
                             </div>

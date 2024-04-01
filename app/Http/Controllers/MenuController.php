@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException; // Import ValidationException
 use App\Models\Menu;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,72 +15,35 @@ use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
-    // public function index()
-    // {
-    //     return Inertia::render('Vendor/Menu', []);
-    // }
-    // public function store(Request $request)
-
     public function index(): Response
     {
         $menu = Menu::all();
+        $vendor = Vendor::all();
+        $user_id = Auth::id();
+
+
 
         return Inertia::render('Vendor/Menu_Display', [
             'menu' => $menu,
+            'user' => $user_id,
+            'vendor' => $vendor,
+
         ]);
     }
-    // {
-    //     try {
-    //         // Validate the request
-    //         $validatedData = $request->validate([
-    //             'name' => 'required',
-    //             'description' => 'required',
-    //             'price' => 'required|numeric',
-    //             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image type (PNG, JPEG, JPG, GIF) and maximum size of 2MB
-    //             'category' => 'required',
-    //             'availability' => 'required',
-    //             'customization.*' => 'nullable|string', // Assuming customization is an array of strings
-    //         ]);
-    //     } catch (ValidationException $e) {
-    //         // Handle validation errors
-    //         return response()->json(['errors' => $e->errors()], 422); // Return JSON response with validation errors and status code 422
-    //     }
 
-    //     // Handle image upload if provided
-    //     if ($request->hasFile('image')) {
-    //         $image = $request->file('image');
-
-    //         // Check if the file is an image
-    //         if (!$image->isValid() || !in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg', 'gif'])) {
-    //             return response()->json(['errors' => ['image' => ['The image must be a valid PNG, JPEG, JPG, or GIF file.']]], 422);
-    //         }
-
-    //         // Store the image
-    //         $imagePath = $image->store('images'); // Change the storage path as per your configuration
-    //     } else {
-    //         $imagePath = null; // Set image path to null if image is not provided
-    //     }
-
-    //     // Create a new menu item
-    //     $menu = new Menu();
-    //     $menu->name = $validatedData['name'];
-    //     $menu->description = $validatedData['description'];
-    //     $menu->price = $validatedData['price'];
-    //     $menu->image = $imagePath;
-    //     $menu->category = $validatedData['category'];
-    //     $menu->availability = $validatedData['availability'];
-    //     $menu->customization = $validatedData['customization'] ?? [];
-    //     $menu->save();
-
-    //     // Return success response
-    //     return response()->json(['message' => 'Menu item added successfully'], 200);
-    // }
 
     public function add(): Response
     {
-    
+
+        $user_id = Auth::id();
+
+
+        $vendor = Vendor::all();
 
         return Inertia::render('Vendor/Menu', [
+            'vendor' => $vendor,
+            'user' => $user_id,
+
         ]);
     }
 
@@ -101,6 +65,11 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
+
+        $user_id = Auth::id();
+
+        // dd($user_id);
+
         try {
             $imageName = Str::random(32).".".$request->image->getClientOriginalExtension();
 
@@ -114,6 +83,7 @@ class MenuController extends Controller
                 'category' => $request->category,
                 'availability' => $request->availability,
                 'customization' => $request->customization,
+                'vendor_id' => $user_id,
             ]);
 
             // Save Image in Storage folder
@@ -129,51 +99,6 @@ class MenuController extends Controller
             return redirect()->back()->with('error', 'Something went really wrong!');
         }
     }
-
-
-    // public function store(Request $request): Response
-    // {
-    //     // Validate the request data including file upload
-    //     $validatedData = $request->validate([
-    //         'name' => 'required|string',
-    //         'description' => 'required|string',
-    //         'price' => 'required|numeric',
-    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048', // Adjust validation rules as needed
-    //         'category' => 'required|string',
-    //         'availability' => 'required|string',
-    //         'customization' => 'nullable|array',
-    //     ]);
-
-    //     // Check if file is uploaded
-    //     if ($request->hasFile('image')) {
-    //         $image = $request->file('image');
-
-    //         // Validate the uploaded image
-    //         if (!$image->isValid() || !in_array($image->getClientOriginalExtension(), ['png', 'jpg', 'jpeg', 'gif'])) {
-    //             return response()->json(['errors' => ['image' => ['The image must be a valid PNG, JPEG, JPG, or GIF file.']]], 422);
-    //         }
-
-    //         // Store the image
-    //         $imagePath = $image->store('images'); // Change the storage path as per your configuration
-    //     } else {
-    //         $imagePath = null; // Set image path to null if image is not provided
-    //     }
-
-    //     // Create a new menu item
-    //     $menu = new Menu();
-    //     $menu->name = $validatedData['name'];
-    //     $menu->description = $validatedData['description'];
-    //     $menu->price = $validatedData['price'];
-    //     // $menu->image = $imagePath; // Assign the image path
-    //     $menu->category = $validatedData['category'];
-    //     $menu->availability = $validatedData['availability'];
-    //     $menu->customization = $validatedData['customization'] ?? [];
-    //     $menu->save();
-
-    //     // Return success response
-    //     // return response()->json(['message' => 'Menu item added successfully'], 200);
-    //     return Inertia::render('/vendor/menu', $menu);
-    // }
 
     public function update(Request $request, $id)
     {
@@ -221,16 +146,6 @@ class MenuController extends Controller
             ],500);
         }
     }
-
-
-    // public function index(): Response
-    // {
-    //     $menu = Menu::all();
-
-    //     return Inertia::render('Vendor/Menu', [
-    //         'menu' => $menu,
-    //     ]);
-    // }
 
 
     public function toggleAvailability($id)
