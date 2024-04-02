@@ -6,15 +6,26 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { Card, Button, Box, Grid, TextField } from '@mui/material';
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import * as Yup from "yup";
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Chip, IconButton } from '@mui/material';
 
 
-
-const items = [1, 1, 1, 1]
-
-const Cart = () => {
+const Cart = ({ cart, menus }) => {
     const createOrderUsingSelectedAddress = () => {
 
     }
+
+    const filteredMenus = menus.filter(menuItem => {
+        return cart.some(cartItem => cartItem.menu_id === menuItem.id);
+    });
+
+    console.log("menu",menus)
+    console.log("cart",cart)
+    console.log("filtered menu",filteredMenus)
+
+
+
 
     const handleOpenAddressModel = () => setOpen(true);
 
@@ -41,13 +52,6 @@ const Cart = () => {
         city: "",
     }
 
-    //   const validationSchema=Yup.object.shape({
-    //     streetAddress:Yup.string().required("Street address is required"),
-    //     state:Yup.string().required("state address is required"),
-    //     pincode:Yup.required("pincode address is required"),
-    //     city:Yup.string().required("city address is required"),
-    //   })
-
     const handleSubmit = (value) => {
         console.log("value", value);
     }
@@ -57,9 +61,43 @@ const Cart = () => {
         <>
             <main className='lg:flex justify-between '>
                 <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
-                    {items.map((item) =>
-                        <CartItem />
-                    )}
+                    {/* {filteredMenus.map((item) =>
+                        <CartItem cart={filteredMenus} quantity={cart} />
+                    )} */}
+
+                    {filteredMenus.map((carts) => (
+                        <div className='lg:flex items-center lg:space-x-5'>
+                            <div>
+                                <img src={`http://127.0.0.1:8000/storage/${carts.image}`} alt="food img" />
+
+                            </div>
+                            <div className='flex items-center justify-between lg:w-[70%]'>
+                                <div className='space-y-1 lg:space-y-3 w-full'>
+                                    <p>{carts.name}</p>
+                                    <div className='flex justify-between items-center'>
+                                        <div className='flex items-center space-x-1'>
+                                            <IconButton>
+                                                <RemoveCircleIcon />
+                                            </IconButton>
+                                            <div className='w-5 h-5 text-xs flex items-center justify-center'>
+                                                5
+                                            </div>
+                                            <IconButton>
+                                                <AddCircleIcon />
+                                            </IconButton>
+
+                                        </div>
+                                        <div>
+                                            <p>Rs. {carts.price}</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    ))}
                     <Divider />
                     <div className='billDetail px-5 text-sm'>
                         <p className='font-extralight py-5'>Bill Details</p>

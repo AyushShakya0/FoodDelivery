@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -149,23 +149,30 @@ class AdminController extends Controller
     //     }
     // }
 
-
     public function vendor_update(Request $request, Vendor $vendor)
     {
+        // Dump request data for debugging
+        // dd($request->all())
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             // 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($vendor->id)],
-            'phone_number' => ['required', 'string', 'max:20'],
+            // 'phone_number' => ['required', 'string', 'max:20'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
         ]);
+
+        // Dump validated data for debugging
+        // dd("updated successfully");
+
 
         // Update the vendor with the validated data
         $vendor->update($validatedData);
 
         // Redirect back to the vendor list page with a success message
-        return redirect()->route('vendor.edit')->with('success', 'Vendor updated successfully.');
+        // return redirect()->route('vendor.edit')->with('success', 'Vendor updated successfully.');
+        return redirect()->route('admin_vendor')->with('success', 'Vendor updated successfully.');
     }
 
 

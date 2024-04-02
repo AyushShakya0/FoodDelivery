@@ -4,9 +4,16 @@ import Cart from '@/Components/Cart/Cart';
 
 
 
-export default function Cart_Display({ auth, vendor, food }) {
-    console.log(vendor);
-    console.log(food);
+export default function Cart_Display({ auth, cart, menus }) {
+    // console.log("cart",cart);
+    // console.log("food",menus);
+    // console.log("auth",auth.user.id);
+
+    const userMenus = cart.filter(cartItem => cartItem.user_id === auth.user.id );
+
+    // const filteredMenus = cart.filter(cartItem => cartItem.menu_id === menus.id);
+    console.log("userMenus",userMenus);
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
@@ -21,7 +28,7 @@ export default function Cart_Display({ auth, vendor, food }) {
 
                             <div className="flex flex-col gap-5">
 
-                                <Cart />
+                                <Cart cart={userMenus} menus={menus}/>
 
 
                             </div>

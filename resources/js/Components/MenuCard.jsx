@@ -1,37 +1,38 @@
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { post, route } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/react';
+// import { route } from '@inertiajs/inertia-react';
 
-const MenuCard = ({ listing }) => {
-    const [count, setCount] = useState(2);
+const MenuCard = ({ listing, vendor }) => {
+    const [count, setCount] = useState(1);
 
     const handleIncrement = () => {
         setCount(count + 1);
     };
 
     const handleDecrement = () => {
-        if (count > 0) {
+        if (count > 1) {
             setCount(count - 1);
         }
     };
 
-    const addToCart = async (productId) => {
-        try {
-            const response = await post(route('addtocart', { product_id: productId }));
+    const { data, setData, post, processing, errors, reset } = useForm({
+        // initialValues: { count: count }, // Use initialValues instead of passing count directly
+        count:count,
+        menu_id: listing.id,
+        vendor_id: vendor,
+    });
 
-            if (response && response.status) {
-                if (response.status === 'success') {
-                    console.log('Item added to cart successfully');
-                } else {
-                    console.error('Failed to add item to cart:', response.message);
-                }
-            } else {
-                console.error('Invalid response from server:', response);
-            }
-        } catch (error) {
-            console.error('An error occurred while adding item to cart:', error.message);
-        }
+    // console.log("listing ID", listing);
+    // console.log("Vendor ID", vendor);
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("addtocart", { id: listing.id }));
+        // Inertia.visit(route("restaurant.details", { id: listing.id }));
+
+        reset(); // Reset form after successful submission
     };
 
     return (
@@ -46,16 +47,18 @@ const MenuCard = ({ listing }) => {
                             <p className="text-gray-400">{listing.description}</p>
                         </div>
                     </div>
-                    <div className="absolute top-0 right-0 flex items-center">
-                        <div className='p-2'>
-                            <RemoveCircleIcon onClick={handleDecrement} />
-                            <span className='p-2'>{count} </span>
-                            <AddCircleIcon onClick={handleIncrement} />
+                    <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
+                        <div className="absolute top-0 right-0 flex items-center">
+                            <div className='p-2'>
+                                <RemoveCircleIcon onClick={handleDecrement} />
+                                <span className='p-2'>{count} </span>
+                                <AddCircleIcon onClick={handleIncrement} />
+                            </div>
+                            <div>
+                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to cart</button>
+                            </div>
                         </div>
-                        <button onClick={() => addToCart(listing.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-                            Add to cart
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

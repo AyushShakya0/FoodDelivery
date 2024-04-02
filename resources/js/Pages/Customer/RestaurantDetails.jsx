@@ -38,11 +38,11 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
 
     const { id } = usePage().props; // Access route parameters
 
-    const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id);
+    const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id && menuItem.availability === 'available');
 
-    // console.log(vendor);
-    // console.log(menus);
-    // console.log(vendorMenus);
+    // console.log("vendorr",vendor);
+    // console.log("menuss",menus);
+    // console.log("vendormenuss",vendorMenus);
 
 
 
@@ -64,6 +64,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                         <h1 className='text-4xl font-semibold'>{vendor.name}</h1>
                         <p className='text-gray-500 mt-1'>
                             {vendor.name}
+                            {/* {vendor.description} */}
                             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio ab saepe voluptas blanditiis deleniti quia ut repellendus explicabo accusantium non laboriosam quos eaque iusto a, soluta necessitatibus aperiam mollitia quam!
                         </p>
                         <div className='space-y-3 mt-2'>
@@ -78,8 +79,9 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                             <p className='text-gray-500 flex items-center gap-3'>
                                 <CalendarTodayIcon />
                                 <span>
-                                    {vendor.name}
-                                    Monday-Friday 8:00 AM - 9:00 PM (Today)
+                                    {/* {vendor.name} */}
+                                    {vendor.time}
+
                                 </span>
                             </p>
 
@@ -138,7 +140,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                         <div className="flex-1">
                             <div className="space-y-5">
                                 {vendorMenus.map((listing) => (
-                                    <MenuCard key={listing.id} listing={listing} />
+                                    <MenuCard key={listing.id} listing={listing} vendor={vendor.id}/>
                                 ))}
                             </div>
                         </div>

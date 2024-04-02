@@ -9,6 +9,8 @@ use App\Models\Vendor;
 use App\Models\Menu;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
+
 
 class CustomerController extends Controller
 {
@@ -37,10 +39,13 @@ class CustomerController extends Controller
 
     public function cart()
     {
-        // $cartBox=session()->get('cart');
-        // dd($cartBox);
-        // return Inertia::render('Customer/Cart_Display', compact('cartBox'));
-        return Inertia::render('Customer/Cart_Display',[]);
+        $cart=Order::all();
+        $menus = Menu::all();
+
+        return Inertia::render('Customer/Cart_Display',[
+            'cart' => $cart,
+            'menus' => $menus,
+        ]);
     }
 
     public function myprofile()
@@ -130,31 +135,58 @@ class CustomerController extends Controller
 
     // }
 
-    public function addtocart($product_id)
+    // public function addtocart($product_id)
+    // {
+    //     // dd($product_id); // Remove or comment out this line once confirmed
+
+    //     $product = Menu::findOrFail($product_id);
+
+    //     $cart = session()->get('cart');
+
+    //     if (!$cart) {
+    //         $cart = [
+    //             $product->id => [
+    //                 'id' => $product->id,
+    //                 'name' => $product->name,
+    //                 'image' => $product->image,
+    //                 'quantity' =>  $product->quantity,
+    //                 'price' => $product->price,
+    //             ]
+    //         ];
+    //         session()->put('cart', $cart);
+    //         return redirect()->route('cart');
+    //     }
+
+    //     return redirect()->route('cart');
+
+    // }
+
+    public function addtocart(Request $request, $menu_id)
     {
-        // dd($product_id); // Remove or comment out this line once confirmed
+        // Ensure user is authenticated
+        $user_id = Auth::id();
 
-        $product = Menu::findOrFail($product_id);
+        // Validate the incoming request data
+        // $request->validate([
+        //     'quantity' => 'required|integer|min:1', // Ensure quantity is provided and it's an integer greater than 0
+        // ]);
+        // dd($request->all());
 
-        $cart = session()->get('cart');
+        // Add the item to the cart
+        $cartItem = new Order();
+        $cartItem->menu_id = $menu_id;
+        $cartItem->user_id = $user_id;
+        $cartItem->quantity = $request->count;
+        // You may need to adjust this part according to your database schema
 
-        if (!$cart) {
-            $cart = [
-                $product->id => [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'image' => $product->image,
-                    'quantity' =>  $product->quantity,
-                    'price' => $product->price,
-                ]
-            ];
-            session()->put('cart', $cart);
-            return redirect()->route('cart');
-        }
+        // Save the cart item to the database
+        $cartItem->save();
 
-        return redirect()->route('cart');
-
+        // Return a response, such as a success message or redirect
+        return response()->json(['message' => 'Product added to cart successfully']);
     }
+
+
 
 
     public function removecartitem($id)

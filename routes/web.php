@@ -40,7 +40,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/restaurantdetails/{id}', [CustomerController::class, 'restaurantdetails'])->name('restaurant.details');
-    Route::get('/mycart', [CustomerController::class, 'cart'])->name('cart');
     Route::get('/myprofile', [CustomerController::class, 'myprofile'])->name('myprofile');
     Route::get('/myorders', [CustomerController::class, 'myorders'])->name('myorders');
     Route::get('/favorites', [CustomerController::class, 'favorites'])->name('favorites');
@@ -48,9 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
     Route::get('/notification', [CustomerController::class, 'notification'])->name('notification');
 
+    Route::get('/mycart', [CustomerController::class, 'cart'])->name('cart');
 
     // Route::get('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
-    Route::post('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
+    Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
 
 
 
