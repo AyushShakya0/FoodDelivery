@@ -19,8 +19,6 @@ export default function Cart_Display({ auth, cart, menus }) {
             <Head title="Dashboard" />
 
             <div className=' '>
-                    {/* <div className='lg:w-[80%]   text-red-500 ' style={{ position: 'absolute', right: '0', width: '80%', backgroundColor: 'yellow' }}> */}
-                    {/* <p className='text-gray-700'>hello</p> */}
                     <section className='p-5 lg:p-20'>
                     <div>
                         <h1 className='text-xl font-semibold text-gray-500 pb-3'>My Cart</h1>
@@ -36,8 +34,6 @@ export default function Cart_Display({ auth, cart, menus }) {
                         </div>
                     </div>
                 </section>
-
-
                 </div>
         </AuthenticatedLayout>
     );

@@ -20,9 +20,10 @@ const Cart = ({ cart, menus }) => {
         return cart.some(cartItem => cartItem.menu_id === menuItem.id);
     });
 
-    console.log("menu",menus)
-    console.log("cart",cart)
-    console.log("filtered menu",filteredMenus)
+
+    console.log("menu", menus)
+    console.log("cart", cart)
+    console.log("filtered menu", filteredMenus)
 
 
 
@@ -65,7 +66,7 @@ const Cart = ({ cart, menus }) => {
                         <CartItem cart={filteredMenus} quantity={cart} />
                     )} */}
 
-                    {filteredMenus.map((carts) => (
+                    {cart.map((carts) => (
                         <div className='lg:flex items-center lg:space-x-5'>
                             <div>
                                 <img src={`http://127.0.0.1:8000/storage/${carts.image}`} alt="food img" />
@@ -80,7 +81,7 @@ const Cart = ({ cart, menus }) => {
                                                 <RemoveCircleIcon />
                                             </IconButton>
                                             <div className='w-5 h-5 text-xs flex items-center justify-center'>
-                                                5
+                                                {carts.quantity}
                                             </div>
                                             <IconButton>
                                                 <AddCircleIcon />

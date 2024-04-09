@@ -136,7 +136,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
 
                         </div>
                     </div>
-                    <div className='flex lg:w-[80%] lg:pl-10'>
+                    <div className='flex lg:w-[80%] lg:pl-10 pt-5'>
                         <div className="flex-1">
                             <div className="space-y-5">
                                 {vendorMenus.map((listing) => (
@@ -144,15 +144,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                                 ))}
                             </div>
                         </div>
-                        <div className="w-[300px] ml-5">
-                            <section>
-                                {/* Your cart display component */}
-                                <div>Cart Display (should be right ma)</div>
-                                <div>Change this later</div>
-                            </section>
-                        </div>
                     </div>
-
                 </section>
 
 

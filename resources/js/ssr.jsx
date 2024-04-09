@@ -19,7 +19,8 @@ createServer((page) =>
                     location: new URL(page.props.ziggy.location),
                 });
 
-            return <App {...props} />;
+            return <App {...props} />
+            ;
         },
     })
 );

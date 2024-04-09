@@ -23,6 +23,9 @@ class Order extends Model
     protected $fillable = [
         'vendor_id',
         'menu_id',
+        'name',
+        'price',
+        'image',
         'quantity',
         'status',
     ];
