@@ -28,18 +28,7 @@ export default function Index({ auth, vendors }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <Table_Vendor vendors={verifiedVendors} columns={columns} primary="vendors Number" action="vendor.edit"></Table_Vendor>
-                            {/* <Table_Vendor vendors={vendors} columns={columns} primary="vendors Number" action="vendor.update"></Table_Vendor> */}
                         </div>
-
-                        {/* <div className="p-6">
-                            {vendors.map((vendor) => (
-                                <div key={vendor.id} className="mb-4">
-                                    <InertiaLink href={route('vendor.menu', { vendor: vendor.id })} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        View Menu of {vendor.name}
-                                    </InertiaLink>
-                                </div>
-                            ))}
-                        </div> */}
                     </div>
                 </div>
             </div>

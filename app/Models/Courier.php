@@ -28,6 +28,8 @@ class Courier extends Authenticatable
         'city',
         'image',
         'verified',
+        'rating',
+
     ];
 
     /**

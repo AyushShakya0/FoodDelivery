@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Menu;
+use App\Models\Courier;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Migrations\Migration;
@@ -14,18 +14,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->nullable();
-            $table->foreignIdFor(Menu::class)->nullable();
             $table->foreignIdFor(Vendor::class)->nullable();
-            $table->decimal('quantity', 8, 2)->nullable(); // Use decimal for price
-            $table->string('name')->nullable();
-            $table->string('price')->nullable();
-            $table->string('image')->nullable();
-            $table->string('status')->nullable();
-            // $table->foreignId('user_id')->constrained();
-            // $table->json('items');
+            $table->foreignIdFor(Courier::class)->nullable();
+            $table->integer('rating')->nullable();
+            $table->string('review')->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('ratings');
     }
 };

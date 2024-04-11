@@ -21,6 +21,7 @@ class Order extends Model
     ];
 
     protected $fillable = [
+        'user_id',
         'vendor_id',
         'menu_id',
         'name',

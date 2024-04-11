@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VendorProfileUpdateRequest;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Courier;
 use App\Models\Order;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException; // Import ValidationException
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -190,6 +192,27 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    // public function vendor_verifyy(VendorProfileUpdateRequest $request): RedirectResponse
+    // {
+    //     $vendor = Auth::guard('vendor')->user();
+
+    //     // Fill the vendor model with all fields from the request
+    //     $vendor->fill($request->all());
+
+    //     // Check if email is being updated
+    //     if ($vendor->isDirty('email')) {
+    //         // If email is being updated, mark email as unverified
+    //         $vendor->email_verified_at = null;
+    //     }
+
+    //     // Save the changes to the database
+    //     $vendor->save();
+
+    //     // Redirect back to the profile edit page
+    //     return redirect()->route('vendor.profile.edit');
+    // }
+
 
 
 

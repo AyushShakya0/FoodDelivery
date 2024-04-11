@@ -4,16 +4,23 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useForm } from '@inertiajs/react';
 // import { route } from '@inertiajs/inertia-react';
 
-const MenuCard = ({ listing, vendor }) => {
+const MenuCard = ({ listing }) => {
     const [count, setCount] = useState(1);
+
+    // console.log("listing",listing)
+
     const { data, setData, post, processing, errors, reset } = useForm({
         quantity: count,
-        menu_id: listing.id,
         name: listing.name,
         price: listing.price * count,
         image: listing.image,
-        vendor_id: vendor,
+        // menu_id: listing.id,
+        vendor: listing.vendor_id,
     });
+    console.log("listing",listing);
+
+    console.log(data);
+
 
     useEffect(() => {
         setData({
@@ -21,17 +28,18 @@ const MenuCard = ({ listing, vendor }) => {
             price: listing.price * count,
             name: listing.name,
             image: listing.image,
+            vendor: listing.vendor_id,
         });
     }, [count, setData, listing.price]);
 
 
     const handleIncrement = () => {
-        setCount(count + 1);
+        setCount(Math.floor(count) + 1);
     };
 
     const handleDecrement = () => {
         if (count > 1) {
-            setCount(count - 1);
+            setCount(Math.floor(count) - 1);
         }
     };
 
@@ -51,6 +59,7 @@ const MenuCard = ({ listing, vendor }) => {
                             <p className="font font-semibold text-xl">{listing.name}</p>
                             <p>{listing.price * count}</p>
                             <p className="text-gray-400">{listing.description}</p>
+                            {/* <p className="text-gray-400">{listing.vendor_id}</p> */}
                         </div>
                     </div>
                     <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">

@@ -46,6 +46,28 @@ class VendorProfileController extends Controller
         return redirect()->route('vendor.profile.edit');
     }
 
+    public function status_update(VendorProfileUpdateRequest $request): RedirectResponse
+    {
+        $vendor = Auth::guard('vendor')->user();
+
+        // dd($request->all());
+
+        // Fill the vendor model with all fields from the request
+        $vendor->fill($request->all());
+
+        // Check if email is being updated
+        if ($vendor->isDirty('email')) {
+            // If email is being updated, mark email as unverified
+            $vendor->email_verified_at = null;
+        }
+
+        // Save the changes to the database
+        $vendor->save();
+
+        // Redirect back to the profile edit page
+        return redirect()->route('vendor.profile.edit');
+    }
+
 
 
 

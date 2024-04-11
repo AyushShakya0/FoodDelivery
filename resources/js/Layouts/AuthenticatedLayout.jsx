@@ -37,11 +37,14 @@ export default function Authenticated({ user, header, children, food }) {
                                 <NavLink href={route('myprofile')} active={route().current('myprofile')}>
                                     My profile
                                 </NavLink>
+                                <NavLink href={route('checkout')} active={route().current('checkout')}>
+                                    Checkout
+                                </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
-                            <NavLink href={route('cart')} active={route().current('cart')}>
+                            <NavLink href={route('checkout')} active={route().current('checkout')}>
                                 <ShoppingCartIcon />
                             </NavLink>
                             <div>

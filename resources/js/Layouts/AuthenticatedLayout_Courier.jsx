@@ -41,25 +41,12 @@ export default function Authenticated({ user, header, children }) {
                                 </div>
                                 <div>
                                     <NavLink href={route('admin_order')} active={route().current('admin_order')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Orders
-                                    </NavLink>
-                                </div>
-                                <NavLink href={route('admin_vendor')} active={route().current('admin_vendor')} className="block py-2 px-4 text-sm text-gray-700">
-                                    Vendor
-                                </NavLink>
-                                <div>
-                                    <NavLink href={route('admin_courier')} active={route().current('admin_courier')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Couriers
+                                        Your delivery
                                     </NavLink>
                                 </div>
                                 <div>
-                                    <NavLink href={route('admin_finance')} active={route().current('admin_finance')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Order & Transaction
-                                    </NavLink>
-                                </div>
-                                <div>
-                                    <NavLink href={route('admin_setting')} active={route().current('admin_setting')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Settings
+                                    <NavLink href={route('admin_order')} active={route().current('admin_order')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Pending requests
                                     </NavLink>
                                 </div>
                             </div>

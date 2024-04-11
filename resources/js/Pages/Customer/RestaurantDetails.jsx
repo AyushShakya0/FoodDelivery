@@ -140,7 +140,7 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
                         <div className="flex-1">
                             <div className="space-y-5">
                                 {vendorMenus.map((listing) => (
-                                    <MenuCard key={listing.id} listing={listing} vendor={vendor.id}/>
+                                    <MenuCard key={listing.id} listing={listing}/>
                                 ))}
                             </div>
                         </div>

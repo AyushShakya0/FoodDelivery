@@ -51,6 +51,13 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
+    Route::patch('/updatecart/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
+
+
+
+    Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
+
+    Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
 
 
@@ -161,11 +168,14 @@ Route::middleware('auth:vendor')->group(function () {
     Route::get('/vendor/profile', [VendorProfileController::class, 'edit'])->name('vendor.profile.edit');
     Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
     Route::delete('/vendor/profile', [VendorProfileController::class, 'destroy'])->name('vendor.profile.destroy');
+
+    // Route::patch('/vendor/profile', [VendorProfileController::class, 'status_update'])->name('vendor.status.update');
+
 });
 
 Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::get('/orders/{id}', [OrderController::class, 'edit'])->name('orders.edit');
     Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
     Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');

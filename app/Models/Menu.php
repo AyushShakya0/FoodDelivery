@@ -16,7 +16,6 @@ class Menu extends Model
         'description',
         'price',
         'image',
-        // 'quantity',
         'category',
         'availability',
         'customization',

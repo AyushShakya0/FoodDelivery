@@ -14,10 +14,8 @@ export default function All({ auth, user ,vendor }) {
         availability: "available",
         customization: [""],
         vendor_id: vendor.id // Set the vendor ID as default value
-
     });
 
-    console.log(vendor);
     console.log(user);
 
     const submit = (e) => {

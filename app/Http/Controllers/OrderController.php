@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkout;
+use App\Models\Courier;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\User;
@@ -16,16 +18,30 @@ class OrderController extends Controller
     public function index(): Response
     {
         $orders = Order::all();
+        $checkout = Checkout::all();
+        $user = User::all();
+        $courier = Courier::all();
 
         return Inertia::render('Vendor/Order', [
             'orders' => $orders,
+            'checkout' => $checkout,
+            'user' => $user,
+            'courier' => $courier,
         ]);
     }
 
-    public function edit(Order $order): Response
+    public function edit($checkoutId): Response
     {
+        $checkout = Checkout::findOrFail($checkoutId);
+        $orders = Order::all();
+        $user = User::all();
+        $courier = Courier::all();
+
         return Inertia::render('Vendor/Edit_Order', [
-            'order' => $order,
+            'orders' => $orders,
+            'checkout' => $checkout,
+            'user' => $user,
+            'courier' => $courier,
         ]);
     }
 

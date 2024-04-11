@@ -36,8 +36,6 @@ class MenuController extends Controller
     {
 
         $user_id = Auth::id();
-
-
         $vendor = Vendor::all();
 
         return Inertia::render('Vendor/Menu', [

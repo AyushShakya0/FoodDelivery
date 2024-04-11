@@ -9,10 +9,17 @@ import SelectInput from "@/Components/SelectInput.jsx";
 export default function UpdateOrderForm({ order, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-
-        items: order.items.join(', '),
-        status: order.status
+        status: order.status,
     });
+
+    // User: order.status,
+    // Courier: order.status,
+    // Order: order.status,
+    // Price: order.status,
+    // User_Number: order.status,
+    // Courier_Number: order.status,
+    // Address: order.status,
+    // Customization: order.status,
 
     const submit = (e) => {
         e.preventDefault();

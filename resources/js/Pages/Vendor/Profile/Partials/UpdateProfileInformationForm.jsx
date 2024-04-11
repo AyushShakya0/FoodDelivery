@@ -4,10 +4,19 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import * as React from 'react';
+import dayjs from 'dayjs';
+
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const user = usePage().props.auth.user;
     console.log(user);
+
+
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
@@ -17,6 +26,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         number: user.number,
         city: user.city,
         cuisine: user.cuisine,
+        time1: user.time1, // Add time1 to form state
+        time2: user.time2,
+        time: `${user.time1} - ${user.time2}`,
     });
 
     const submit = (e) => {
@@ -76,7 +88,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         name="image"
                         type="file"
                         onChange={(e) => setData("image", e.target.files[0])}
-                    // required
                     />
 
                     <InputError className="mt-2" message={errors.image} />
@@ -105,11 +116,29 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         className="mt-1 block w-full"
                         value={data.number}
                         onChange={(e) => setData('number', e.target.value)}
-                    // required
-                    // autoComplete="name"
                     />
 
                     <InputError className="mt-2" message={errors.number} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="time" value="time" />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['TimePicker']}>
+                            <TimePicker
+                                label="Opening time"
+                                value={data.time1}
+                                onChange={(e) => setData('time1', e.target.value)}
+                            />
+                            <TimePicker
+                                label="Closing time"
+                                value={data.time2}
+                                onChange={(e) => setData('time2', e.target.value)}
+                            />
+                        </DemoContainer>
+                    </LocalizationProvider>
+
+                    <InputError className="mt-2" message={errors.time} />
                 </div>
 
                 <div>

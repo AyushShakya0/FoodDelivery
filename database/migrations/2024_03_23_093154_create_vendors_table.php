@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('image')->nullable();
             $table->string('address')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->bigInteger('phone_number')->nullable()->change();
             $table->string('city')->nullable();
             $table->string('time')->nullable();
             $table->string('status')->nullable();
+            $table->integer('rating')->nullable();
             $table->string('verified')->nullable();
             $table->rememberToken();
             $table->timestamps();

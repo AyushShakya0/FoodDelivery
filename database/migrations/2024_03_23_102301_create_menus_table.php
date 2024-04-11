@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('description');
             $table->decimal('price', 8, 2); // Use decimal for price
             $table->string('image'); // Store image path instead of image
-            $table->string('quantity')->nullable();
             $table->string('category');
             $table->string('availability');
             $table->json('customization');

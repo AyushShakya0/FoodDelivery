@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkout;
 use Illuminate\Http\Request;
 
 use App\Models\Order;
 use App\Models\Vendor;
 use App\Models\Menu;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Auth;
@@ -39,13 +41,28 @@ class CustomerController extends Controller
 
     public function cart()
     {
-        $cart=Order::all();
+        $cart = Order::all();
         $menus = Menu::all();
+        $vendors = Vendor::all();
 
-        // return Inertia::render('Customer/Cart_offcanvas',[
-        return Inertia::render('Customer/Cart_Display',[
+        return Inertia::render('Customer/Checkout', [
             'cart' => $cart,
             'menus' => $menus,
+            'vendors' => $vendors,
+        ]);
+    }
+
+    public function checkout()
+    {
+        $user = Auth::user();
+        $cart = Order::all();
+        $menus = Menu::all();
+        $vendors = Vendor::all();
+        return Inertia::render('Customer/Checkout', [
+            'cart' => $cart,
+            'menus' => $menus,
+            'vendors' => $vendors,
+            'user' => $user,
         ]);
     }
 
@@ -90,10 +107,13 @@ class CustomerController extends Controller
         // Ensure user is authenticated
         $user_id = Auth::id();
 
+        // dd($request->all());
+
         // Add the item to the cart
         $cartItem = new Order();
         $cartItem->menu_id = $menu_id;
         $cartItem->user_id = $user_id;
+        $cartItem->vendor_id = $request->vendor;
         $cartItem->quantity = $request->quantity;
         $cartItem->name = $request->name;
         $cartItem->price = $request->price;
@@ -105,6 +125,48 @@ class CustomerController extends Controller
 
         // Return a response, such as a success message or redirect
         return response()->json(['message' => 'Product added to cart successfully']);
+    }
+
+
+    public function checkout_store(Request $request)
+    {
+        // Ensure user is authenticated
+        $user_id = Auth::id();
+
+        // dd($request->all());
+
+        // Add the item to the cart
+        $cartItem = new Checkout();
+        $cartItem->user_id = $user_id;
+        // $cartItem->vendor_id = $request->vendor_id;
+        $cartItem->order_id = $request->order_id;
+        $cartItem->address = $request->address;
+        $cartItem->total_price = $request->price;
+        $cartItem->customization = $request->customization;
+
+        $cartItem->save();
+
+
+
+        // Return a response, such as a success message or redirect
+        return response()->json(['message' => 'Product checked out successfully']);
+    }
+
+    public function updatecart(Request $request, $id): RedirectResponse
+    {
+
+        dd($request->all());
+        // Fetch the cart based on the id
+        $cart = Order::findOrFail($id);
+
+        // Fill the cart model with the form data
+        $cart->fill($request->all());
+
+        // Save the changes to the database
+        $cart->save();
+
+        // Redirect back to the checkout page
+        return redirect()->route('checkout');
     }
 
 

@@ -30,6 +30,7 @@ class Vendor extends Authenticatable
         'time',
         'status',
         'verified',
+        'rating',
 
     ];
 

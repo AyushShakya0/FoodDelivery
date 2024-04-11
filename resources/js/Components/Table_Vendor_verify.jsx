@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
@@ -9,7 +9,19 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 export default function Table_Vendor_verify({ vendors, primary, action }) {
     console.log("Vendors from table vendor:", vendors);
 
+    const [verifiedVendorId, setVerifiedVendorId] = useState(null);
 
+
+    const verifyVendor = (id) => {
+        Inertia.post(route('vendor.verify', { id }), {
+            verified: 'yes',
+        }).then(() => {
+            setVerifiedVendorId(id);
+        }).catch((error) => {
+            console.error('Error verifying vendor:', error);
+            // Handle error, show error message to user, etc.
+        });
+    };
 
     const deleteVendor = (id) => {
         if (confirm('Are you sure you want to delete this vendor?')) {
@@ -57,8 +69,12 @@ export default function Table_Vendor_verify({ vendors, primary, action }) {
                             <td className="px-6 py-4">{vendor.address}</td>
                             <td className="px-6 py-4">
 
-                                <a href={route(action, vendor.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"><DoneIcon/></a>
-                                {/* could be this part not sending the id */}
+                            <button
+                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                    onClick={() => verifyVendor(vendor.id)}
+                                >
+                                    <DoneIcon/>
+                                </button>
 
 
                                 <button

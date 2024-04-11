@@ -6,7 +6,11 @@ export default function Guest_vendor({ children }) {
         <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <Link href="/">
-                    <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
+                <img
+                        src="/logo.png"
+                        alt="GoFood Logo"
+                        className="h-7 w-auto text-gray-800" // Adjusted classes
+                    />
                 </Link>
             </div>
 
