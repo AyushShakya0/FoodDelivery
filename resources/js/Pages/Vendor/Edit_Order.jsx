@@ -6,7 +6,7 @@ import UpdateOrderForm from './Partials/UpdateOrderForm';
 
 export default function Edit({ auth, orders, checkout, user, courier }) {
     // console.log("checkout", checkout)
-    // console.log("order", orders)
+    console.log("order", orders)
     // console.log("user", user)
     console.log("courier", courier)
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('quantity', 8, 2)->nullable(); // Use decimal for price
             $table->string('name')->nullable();
             $table->string('price')->nullable();
+            $table->string('original_price')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->nullable();
             // $table->foreignId('user_id')->constrained();

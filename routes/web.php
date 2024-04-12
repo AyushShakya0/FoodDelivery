@@ -177,6 +177,7 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'edit'])->name('orders.edit');
     Route::patch('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
     Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');
     Route::get('/setting', [VendorController::class, 'setting'])->name('vendor.setting');

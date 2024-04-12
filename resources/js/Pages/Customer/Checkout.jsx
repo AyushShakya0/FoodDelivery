@@ -13,7 +13,7 @@ export default function Checkout({ auth, cart, vendors, user }) {
     const userMenus = cart.filter(cartItem => {
         return cartItem.user_id === auth.user.id && cartItem.status !== "checkedout";
     });
-        const userMenuIds = userMenus.map(cartItem => cartItem.id);
+    const userMenuIds = userMenus.map(cartItem => cartItem.id);
 
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
@@ -37,10 +37,20 @@ export default function Checkout({ auth, cart, vendors, user }) {
         status: 'Ordered',
     });
 
+    // const { datas, setDatas, patch} = useForm({
+
+    //     status: 'checkedout',
+    // });
+
     const submit = (e) => {
         e.preventDefault();
         setData({ ...data, price: total }); // Update total before submission
         post(route("checkout_store"), { ...data }); // Pass data to the backend
+
+        // patch(route('updatecart', userMenuIds),{
+        //     status: datas.status, // Include the updated status in the patch request
+        //     preserveScroll: true
+        // });
         reset(); // Reset form after successful submission
     };
 

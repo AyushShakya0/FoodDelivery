@@ -108,6 +108,10 @@ class CustomerController extends Controller
         $user_id = Auth::id();
 
         // dd($request->all());
+        $price=$request->price;
+        $quantity=$request->quantity;
+
+        $original_price=$price/$quantity;
 
         // Add the item to the cart
         $cartItem = new Order();
@@ -117,6 +121,7 @@ class CustomerController extends Controller
         $cartItem->quantity = $request->quantity;
         $cartItem->name = $request->name;
         $cartItem->price = $request->price;
+        $cartItem->original_price = $original_price;
         $cartItem->image = $request->image;
 
         $cartItem->save();
@@ -153,13 +158,18 @@ class CustomerController extends Controller
 
     public function updatecart(Request $request, $id): RedirectResponse
     {
-
-        dd($request->all());
         // Fetch the cart based on the id
         $cart = Order::findOrFail($id);
 
+        dd($cart);
+
         // Fill the cart model with the form data
-        $cart->fill($request->all());
+        // $cart->fill($request->all());
+
+        $cart->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
 
         // Save the changes to the database
         $cart->save();

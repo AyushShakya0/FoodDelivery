@@ -13,6 +13,7 @@ class Order extends Model
 
     protected $casts = [
         'items' => 'array',
+        'quantity' => 'integer',
     ];
 
     protected $appends = [
@@ -26,6 +27,7 @@ class Order extends Model
         'menu_id',
         'name',
         'price',
+        'original_price',
         'image',
         'quantity',
         'status',
