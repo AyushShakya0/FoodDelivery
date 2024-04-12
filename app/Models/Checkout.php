@@ -16,7 +16,7 @@ class Checkout extends Model
     ];
 
     protected $appends = [
-        // 'user',
+        // 'customer',
         'last_updated',
     ];
 
@@ -28,7 +28,6 @@ class Checkout extends Model
         'address',
         'total_price',
         'status',
-
 
     ];
 

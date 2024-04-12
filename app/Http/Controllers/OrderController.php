@@ -45,9 +45,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update(Order $order, Request $request): void
+    public function update(Checkout $checkout, Request $request): void
     {
-        $order->update([
+        $checkout->update([
             'status' => $request->status
         ]);
     }
