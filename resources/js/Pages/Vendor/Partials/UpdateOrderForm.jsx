@@ -12,23 +12,20 @@ import { Chip, IconButton } from '@mui/material';
 export default function UpdateOrderForm({ order, checkout, user, courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        status: order.status,
+        status: checkout.status,
     });
-
-    // User: order.status,
-    // Courier: order.status,
-    // Order: order.status,
-    // Price: order.status,
-    // User_Number: order.status,
-    // Courier_Number: order.status,
-    // Address: order.status,
-    // Customization: order.status,
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('orders.update', checkout.id));
+        patch(route('orders.update', checkout.id),{
+            status: data.status, // Include the updated status in the patch request
+            preserveScroll: true
+        });
     };
+
+    console.log(data); // Log the data object to inspect its contents
+
 
     const statusOptions = [
         'Ordered',

@@ -143,10 +143,9 @@ class CustomerController extends Controller
         $cartItem->address = $request->address;
         $cartItem->total_price = $request->price;
         $cartItem->customization = $request->customization;
+        $cartItem->status = "Ordered";
 
         $cartItem->save();
-
-
 
         // Return a response, such as a success message or redirect
         return response()->json(['message' => 'Product checked out successfully']);

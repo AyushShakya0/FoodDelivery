@@ -45,8 +45,11 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update(Checkout $checkout, Request $request): void
+    public function update( $checkout, Request $request): void
     {
+
+        // dd($request->status);
+        $checkout = Checkout::findOrFail($checkout);
         $checkout->update([
             'status' => $request->status
         ]);

@@ -5,11 +5,15 @@ import { Divider, Modal } from '@mui/material';
 import { useRef, useState } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 import CheckoutCard from '@/Components/CheckoutCard';
+import TextInput from '@/Components/TextInput';
 
 
-export default function Checkout({ auth, cart, menus, vendors, user }) {
-    const userMenus = cart.filter(cartItem => cartItem.user_id === auth.user.id);
-    const userMenuIds = userMenus.map(cartItem => cartItem.id);
+
+export default function Checkout({ auth, cart, vendors, user }) {
+    const userMenus = cart.filter(cartItem => {
+        return cartItem.user_id === auth.user.id && cartItem.status !== "checkedout";
+    });
+        const userMenuIds = userMenus.map(cartItem => cartItem.id);
 
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
@@ -26,12 +30,11 @@ export default function Checkout({ auth, cart, menus, vendors, user }) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: user.id,
-        // order_id: user.id,
         order_id: userMenuIds,
-        // vendor_id: vendors.id,
         price: total,
-        customization: 'hello',
+        customization: " ",
         address: user.address,
+        status: 'Ordered',
     });
 
     const submit = (e) => {
@@ -67,6 +70,22 @@ export default function Checkout({ auth, cart, menus, vendors, user }) {
                                                     ))}
 
                                                 </ul>
+                                            </div>
+
+                                        </div>
+                                        <div className="mx-auto mt-8 max-w-2xl md:mt-4">
+                                            <div className="bg-white shadow">
+                                                <div className="px-4 py-6 sm:px-8 sm:py-10">
+                                                    <h2 className="text-2xl font-semibold text-gray-900">Customization</h2>
+                                                    <TextInput className=" text-gray-700 w-full"
+                                                        id="customization"
+                                                        name="customization"
+                                                        value={data.customization}
+                                                        autoComplete="description"
+                                                        onChange={(e) => setData("customization", e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
