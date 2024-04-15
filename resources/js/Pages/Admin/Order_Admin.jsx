@@ -1,4 +1,4 @@
-import Table from '@/Components/Table';
+import TableOrder_Admin from '@/Components/TableOrder_Admin';
 import AuthenticatedLayout_Admin from '@/Layouts/AuthenticatedLayout_Admin';
 import { Head } from '@inertiajs/react';
 
@@ -9,7 +9,7 @@ const columns=[
     'status',
 ];
 
-export default function All({ auth, orders}) {
+export default function All({ auth, orders, checkout, user , courier}) {
     return (
         <AuthenticatedLayout_Admin
             user={auth.user}
@@ -21,7 +21,7 @@ export default function All({ auth, orders}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <Table items={orders} columns={columns} primary="Order Number" action="orders.edit"></Table>
+                            <TableOrder_Admin orders={orders} columns={columns} checkout={checkout} primary="Order Number" action="admin.orders.edit"></TableOrder_Admin>
                         </div>
                     </div>
                 </div>

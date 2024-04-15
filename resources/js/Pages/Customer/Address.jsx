@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 
 
-export default function Address({ auth, vendor, food }) {
+export default function Address({ auth, vendor, food ,order }) {
     console.log(vendor);
     console.log(food);
     const [openSideBar, setOpenSideBar] = useState(false);

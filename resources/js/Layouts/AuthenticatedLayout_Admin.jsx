@@ -18,12 +18,11 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex flex-col justify-between h-screen">
                         <div>
                             <div className="flex items-center mt-8 mb-8">
-                                <Link href="/">
-                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
+                                <Link href={route('admin.dashboard')} className="flex items-center">
                                     <img
                                         src="/logo.png"
                                         alt="GoFood Logo"
-                                        className="h-6 w-auto text-gray-800" // Adjusted classes
+                                        className="h-4 w-auto text-gray-800" // Adjusted classes
                                     />
                                 </Link>
                             </div>
@@ -50,9 +49,9 @@ export default function Authenticated({ user, header, children }) {
                                     Vendor
                                 </NavLink>
                                 <div>
-                                <NavLink href={route('admin_vendor_display')} active={route().current('admin_vendor_display')} className="block py-2 px-4 text-sm text-gray-700">
-                                    Vendor verify
-                                </NavLink>
+                                    <NavLink href={route('admin_vendor_display')} active={route().current('admin_vendor_display')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Vendor verify
+                                    </NavLink>
                                     <NavLink href={route('admin_courier')} active={route().current('admin_courier')} className="block py-2 px-4 text-sm text-gray-700">
                                         Couriers
                                     </NavLink>

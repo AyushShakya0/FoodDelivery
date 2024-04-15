@@ -6,13 +6,16 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Cart_offcanvas from '@/Pages/Customer/Cart_offcanvas';
+import Favorites_offcanvas from '@/Pages/Customer/Favorites_offcanvas';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
-export default function Authenticated({ user, header, children, food }) {
+export default function Authenticated({ user, header, children, food, order, fav }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
 
-    // console.log("Food from layout: ", food);
+    const [showingNavigationDropdownn, setShowingNavigationDropdownn] = useState(false);
+    const [cartOpenn, setCartOpenn] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -21,8 +24,8 @@ export default function Authenticated({ user, header, children, food }) {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href="/" className="flex items-center">
-                                    <img
+                                <Link href={route('dashboard')} className="flex items-center">
+                                <img
                                         src="/logo.png"
                                         alt="GoFood Logo"
                                         className="h-4 w-auto text-gray-800" // Adjusted classes
@@ -35,23 +38,24 @@ export default function Authenticated({ user, header, children, food }) {
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink href={route('myprofile')} active={route().current('myprofile')}>
+                                {/* <NavLink href={route('myprofile')} active={route().current('myprofile')}>
                                     My profile
-                                </NavLink>
+                                </NavLink> */}
                             </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
-                            <NavLink href={route('checkout')} active={route().current('checkout')}>
-                                <FavoriteIcon/>
-                            </NavLink>
-
-                            <NavLink href={route('checkout')} active={route().current('checkout')}>
-                                <ShoppingCartIcon />
-                            </NavLink>
-                            <div>
-                                <button onClick={() => setCartOpen(true)}>Open Cart</button>
-                                <Cart_offcanvas open={cartOpen} onClose={() => setCartOpen(false)} />
+                            <div className='pr-2'>
+                                <button onClick={() => setCartOpenn(true)}><FavoriteIcon className='text-red-600' /></button>
+                                <Favorites_offcanvas  open={cartOpenn} fav={fav} onClose={() => setCartOpenn(false)} />
+                            </div>
+                            <div className='pr-2'>
+                                <button onClick={() => setCartOpen(true)}><ShoppingCartIcon /></button>
+                                <Cart_offcanvas open={cartOpen} order={order} user={user.id}  onClose={() => setCartOpen(false)} />
+                            </div>
+                            <div className='pr-2'>
+                                <button onClick={() => setCartOpenn(true)}><NotificationsIcon/></button>
+                                <Favorites_offcanvas  open={cartOpenn} fav={fav} onClose={() => setCartOpenn(false)} />
                             </div>
                             <div className="ms-3 relative">
                                 <Dropdown>
@@ -81,6 +85,8 @@ export default function Authenticated({ user, header, children, food }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('checkout')}>Checkout</Dropdown.Link>
+                                        <Dropdown.Link href={route('order.history')}>Order History</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>

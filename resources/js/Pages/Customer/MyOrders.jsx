@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 
 
-export default function MyOrders({ auth, vendor, food }) {
+export default function MyOrders({ auth, vendor, food ,order }) {
     console.log(vendor);
     console.log(food);
     const [openSideBar, setOpenSideBar] = useState(false);
@@ -30,8 +30,6 @@ export default function MyOrders({ auth, vendor, food }) {
 
                 </div>
                 <div className='h-auto ' style={{ position: 'absolute', right: '0', width: '80%', }}>
-                    {/* <div className='lg:w-[80%]   text-red-500 ' style={{ position: 'absolute', right: '0', width: '80%', backgroundColor: 'yellow' }}> */}
-                    {/* <p className='text-gray-700'>hello</p> */}
                     <div className='pb-10'>
                         <div className='flex items-center flex-col' style={{ justifyContent: "center" }}  >
                             <h1 className='text-xl text-center py-7 font-semibold '>My orders</h1>

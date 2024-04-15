@@ -1,22 +1,22 @@
 import Table from '@/Components/Table';
-import AuthenticatedLayout_Vendor from '@/Layouts/AuthenticatedLayout_Vendor';
+import AuthenticatedLayout_Admin from '@/Layouts/AuthenticatedLayout_Admin';
 import { Head } from '@inertiajs/react';
 import UpdateOrderForm from './Partials/UpdateOrderForm';
 
 
 export default function Edit({ auth, orders, checkout, user, courier }) {
     // console.log("checkout", checkout)
-    // console.log("order", orders)
+    console.log("order", orders)
     // console.log("user", user)
-    // console.log("courier", courier)
+    console.log("courier", courier)
 
     // Filter orders based on checkout order_id
     const final_order = orders.filter(order => checkout.order_id.includes(order.id) && order.status === "checkedout");
     const userss = user.filter(user => user.id === checkout.user_id);
     const courierss = courier.filter(courier => courier.id === checkout.courier_id);
 
-    console.log("ordersWithSameId", final_order)
-    console.log("userss", userss)
+    // console.log("ordersWithSameId", final_order)
+    // console.log("userss", userss)
     console.log("courierss", courierss)
 
     // Assuming filteredUserArray will have only one user object
@@ -41,16 +41,10 @@ export default function Edit({ auth, orders, checkout, user, courier }) {
         // Use userName or any other properties as needed
     }
 
-
     console.log("couriersssss", courierObject)
 
-
-
-
-
-
     return (
-        <AuthenticatedLayout_Vendor
+        <AuthenticatedLayout_Admin
             user={auth.user}
             // header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Orders #</h2>}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Orders #{checkout.id}</h2>}
@@ -67,6 +61,6 @@ export default function Edit({ auth, orders, checkout, user, courier }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout_Vendor>
+        </AuthenticatedLayout_Admin>
     );
 }

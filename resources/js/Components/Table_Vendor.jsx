@@ -5,9 +5,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 
 export default function Table_Vendor({ vendors, primary, action }) {
-    console.log("Vendors from table vendor:", vendors);
-
-
 
     const deleteVendor = (id) => {
         if (confirm('Are you sure you want to delete this vendor?')) {

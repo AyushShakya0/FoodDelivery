@@ -10,7 +10,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorProfileController;
 use App\Models\Menu;
+use App\Models\Order;
 use App\Models\Vendor;
+use App\Models\Favorite;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,9 +29,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $res = Vendor::all();
     $food = Menu::all();
+    $order= Order::all();
+    $fav= Favorite::all();
+
     return Inertia::render('Dashboard', [
         'vendor' => $res,
         'food' => $food,
+        'order' => $order,
+        'fav' => $fav,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -48,21 +55,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification', [CustomerController::class, 'notification'])->name('notification');
 
     Route::get('/mycart', [CustomerController::class, 'cart'])->name('cart');
+    Route::get('/orderhistory', [CustomerController::class, 'order_history'])->name('order.history');
 
     // Route::get('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::patch('/updatecart/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
 
+    Route::post('/addfavorite/{id}', [CustomerController::class, 'addfavorite'])->name('addfavorite');
+
+
+    // Route::delete('/deleteproduct/{id}', [CustomerController::class, 'order_delete'])->name('order.delete');
+    Route::delete('/orders/{id}', [CustomerController::class, 'order_delete'])->name('order.delete');
+    Route::delete('/favorite/{id}', [CustomerController::class, 'favorite_delete'])->name('favorites.delete');
 
 
     Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
-
     Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
 
+    Route::get('/order/{id}', [OrderController::class, 'trackorder'])->name('track.order');
 
-    // Route::get('/addtocart/{product}', [CustomerController::class, 'addtocart'])->name('addtocart');
-    // Route::get('/removecartitem/{id}', [CustomerController::class, 'removecartitem'])->name('removecartitem');
+
 
 });
 
@@ -103,6 +116,9 @@ Route::middleware(['auth:admin'])->group(function () {
 
 
     // Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
+
+    Route::get('/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
+
 
 
 
@@ -169,6 +185,9 @@ Route::middleware('auth:vendor')->group(function () {
     Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
     Route::delete('/vendor/profile', [VendorProfileController::class, 'destroy'])->name('vendor.profile.destroy');
 
+    // Route::patch('/vendor/status', [VendorProfileController::class, 'status_update'])->name('vendor.status');
+
+
     // Route::patch('/vendor/profile', [VendorProfileController::class, 'status_update'])->name('vendor.status.update');
 
 });
@@ -177,6 +196,10 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'edit'])->name('orders.edit');
     Route::patch('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+
+
+    Route::patch('/vendor/dashboard/{id}', [VendorController::class, 'status_update'])->name('vendor.status');
+
 
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
     Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');

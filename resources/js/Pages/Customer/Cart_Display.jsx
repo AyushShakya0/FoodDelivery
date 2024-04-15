@@ -4,7 +4,7 @@ import Cart from '@/Components/Cart/Cart';
 
 
 
-export default function Cart_Display({ auth, cart, menus }) {
+export default function Cart_Display({ auth, cart, menus ,order }) {
     // console.log("cart",cart);
     // console.log("food",menus);
     // console.log("auth",auth.user.id);

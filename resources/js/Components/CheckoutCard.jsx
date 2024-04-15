@@ -7,45 +7,51 @@ import CloseIcon from '@mui/icons-material/Close';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
-
-
 const CheckoutCard = ({ listing, vendor }) => {
-
-
     const [count, setCount] = useState(listing.quantity);
 
-    const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm({
-        quantity: count,
-        price: listing.original_price * count,
-    });
 
     useEffect(() => {
         setData({
             quantity: count,
             price: listing.original_price * count,
         });
-    }, [count, setData,]);
+    }, [count, listing.original_price]);
 
     const handleIncrement = () => {
-        setCount(Math.floor(count) + 1);
+        setCount(prevCount => prevCount + 1);
     };
 
     const handleDecrement = () => {
         if (count > 1) {
-            setCount(Math.floor(count) - 1);
+            setCount(prevCount => prevCount - 1);
         }
     };
-    
-    const submit = (e) => {
+
+    const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm({
+        quantity: listing.quantity,
+        price: listing.original_price * listing.quantity,
+    });
+
+    const submit = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
-        patch(route('updatecart', listing.id), {
-            quantity: count, // Include the updated status in the patch request
-            price: data.price, // Include the updated status in the patch request
+        const payload = {
+            quantity: count,
+            price: listing.original_price * count,
             preserveScroll: true
-        });
-    };
+        };
 
+        console.log('Payload:', payload); // Log the payload
+
+        try {
+            await patch(route('updatecart', listing.id), payload);
+            console.log('Patch request successful');
+        } catch (error) {
+            console.error('Patch request failed', error);
+        }
+    };
 
 
     return (
@@ -75,11 +81,6 @@ const CheckoutCard = ({ listing, vendor }) => {
                         </div>
 
                         <div className="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                            {/* <div>
-
-                                <button type="submit" className=" py-2 px-4 "><DoneIcon /></button>
-                            </div> */}
-
                             <PrimaryButton disabled={processing}> <DoneIcon /> Save</PrimaryButton>
 
                             <Transition
@@ -95,7 +96,6 @@ const CheckoutCard = ({ listing, vendor }) => {
                             <div>
                                 <button type="submit" className=" py-2 px-4 "><CloseIcon /></button>
                             </div>
-
                         </div>
                     </div>
                 </li>

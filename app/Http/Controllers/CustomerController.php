@@ -8,10 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Vendor;
 use App\Models\Menu;
+use App\Models\Favorite;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
+
 
 
 class CustomerController extends Controller
@@ -32,10 +37,17 @@ class CustomerController extends Controller
     {
         $ven = Vendor::findOrFail($id);
         $menus = Menu::all();
+        $cart = Order::all();
+        $fav = Favorite::all();
+
+
 
         return Inertia::render('Customer/RestaurantDetails', [
             'vendor' => $ven,
             'menus' => $menus,
+            'order' => $cart,
+            'fav' => $fav,
+
         ]);
     }
 
@@ -44,11 +56,15 @@ class CustomerController extends Controller
         $cart = Order::all();
         $menus = Menu::all();
         $vendors = Vendor::all();
+        $fav = Favorite::all();
+
 
         return Inertia::render('Customer/Checkout', [
             'cart' => $cart,
             'menus' => $menus,
             'vendors' => $vendors,
+            'fav' => $fav,
+
         ]);
     }
 
@@ -58,48 +74,113 @@ class CustomerController extends Controller
         $cart = Order::all();
         $menus = Menu::all();
         $vendors = Vendor::all();
+        $fav = Favorite::all();
+
         return Inertia::render('Customer/Checkout', [
             'cart' => $cart,
             'menus' => $menus,
             'vendors' => $vendors,
             'user' => $user,
+            'fav' => $fav,
+
         ]);
     }
 
     public function myprofile()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/Profile_Display', []);
+
+        return Inertia::render('Customer/Profile_Display', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
+    }
+
+
+    public function order_history()
+    {
+        $order = Order::all();
+        $fav = Favorite::all();
+
+
+        return Inertia::render('Customer/Order_history', [
+            'order' => $order,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function favorites()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/Favorites', []);
+
+
+        return Inertia::render('Customer/Favorites', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function myorders()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/MyOrders', []);
+
+
+        return Inertia::render('Customer/MyOrders', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function address()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/Address', []);
+
+
+        return Inertia::render('Customer/Address', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function notification()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/Notification', []);
+
+
+        return Inertia::render('Customer/Notification', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function payments()
     {
+        $cart = Order::all();
+        $fav = Favorite::all();
 
-        return Inertia::render('Customer/Payments', []);
+
+
+        return Inertia::render('Customer/Payments', [
+            'order' => $cart,
+            'fav' => $fav,
+
+        ]);
     }
 
     public function addtocart(Request $request, $menu_id)
@@ -158,6 +239,9 @@ class CustomerController extends Controller
 
     public function updatecart(Request $request, $id): RedirectResponse
     {
+
+        dd($request);
+
         // Fetch the cart based on the id
         $cart = Order::findOrFail($id);
 
@@ -184,4 +268,57 @@ class CustomerController extends Controller
 
         return Inertia::render('Customer/Payments', []);
     }
+
+
+    public function addfavorite(Request $request, $id)
+    {
+
+        $user_id = Auth::id();
+        $vendor=Vendor::findOrFail($id);
+
+        try {
+            // Create Product
+            Favorite::create([
+                'user_id' => $user_id,
+                'vendor_id' => $vendor->id,
+                'name' => $vendor->name,
+                'image' => $vendor->image,
+                'address' => $vendor->address,
+                'city' => $vendor->city,
+                'time' => $vendor->time,
+                'status' => $vendor->status,
+                'rating' => $vendor->rating,
+            ]);
+
+            // Save Image in Storage folder
+            // Redirect back to the index page or any other appropriate page
+            return Inertia::location(route('dashboard'));
+        } catch (\Exception $e) {
+            // Handle exception
+            // Log the exception if necessary
+
+            // Redirect back with an error message
+            return redirect()->back()->with('error', 'Something went really wrong!');
+        }
+    }
+
+
+
+    public function favorite_delete($id)
+    {
+        // Find the trainer by ID
+        $fav = Favorite::find($id);
+
+        if (!$fav) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Trainer not found!');
+        }
+
+        // Delete the trainer
+        $fav->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Trainer deleted successfully!');
+    }
+
 }

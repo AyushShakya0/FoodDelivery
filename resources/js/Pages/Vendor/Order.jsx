@@ -16,15 +16,6 @@ const columns=[
 ];
 
 export default function All({ auth, orders, checkout, user, courier}) {
-    console.log("order",orders)
-    console.log("checkout",checkout)
-    console.log("user",user)
-    console.log("courier",courier)
-
-    // const filteredUser = user.filter(userItem => userItem.id === checkout);
-
-
-
 
     return (
         <AuthenticatedLayout_Vendor
@@ -38,7 +29,7 @@ export default function All({ auth, orders, checkout, user, courier}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <Table checkout={checkout} orders={orders} columns={columns} primary="Order Number" action="orders.edit"></Table>
+                            <Table auth={auth} checkout={checkout} orders={orders} user={user} courier={courier}  columns={columns} primary="Order Number" action="orders.edit"></Table>
                         </div>
                     </div>
                 </div>

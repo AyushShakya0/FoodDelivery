@@ -10,9 +10,7 @@ import Cart_offcanvas from './Customer/Cart_offcanvas';
 
 
 
-export default function Dashboard({ auth, vendor, food }) {
-    console.log("Restaurants: ", vendor);
-    console.log("Food: ", food);
+export default function Dashboard({ auth, vendor, food, order, fav }) {
 
     const settings = {
         dots: true,
@@ -30,14 +28,12 @@ export default function Dashboard({ auth, vendor, food }) {
 
     const food_available = food.filter(food => food.availability === 'available');
 
-    console.log("food_available: ", food_available);
-
-
+    const orders = order.filter(order => order.status === null);
 
 
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
             <Head title="Dashboard" />
 
 
@@ -79,7 +75,7 @@ export default function Dashboard({ auth, vendor, food }) {
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 '>
                             {verifiedVendors.map((listing) => (
                                 <div key={listing.id}>
-                                    <RestaurantCard listing={listing} />
+                                    <RestaurantCard listing={listing} fav={fav} vendor={vendor} user={auth.user} />
                                 </div>
                             ))}
                         </div>

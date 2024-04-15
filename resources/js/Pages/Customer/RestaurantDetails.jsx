@@ -30,7 +30,7 @@ const foodTypes = [
 
 
 
-export default function RestaurantDetails({ auth, vendor, menus }) {
+export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
     const [foodType, setFoodType] = useState("all")
     const handleFilter = (e) => {
         console.log(e.target.value, e.target.name)
@@ -40,15 +40,14 @@ export default function RestaurantDetails({ auth, vendor, menus }) {
 
     const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id && menuItem.availability === 'available');
 
-    // console.log("vendorr",vendor);
-    // console.log("menuss",menus);
-    // console.log("vendormenuss",vendorMenus);
+    const orders = order.filter(order => order.status === null);
+
 
 
 
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth.user} order={orders} fav={fav}
         // header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <Head title="Restaurant Details" />

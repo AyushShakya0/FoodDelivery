@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 
 
-export default function Favorites({ auth, vendor, food }) {
+export default function Favorites({ auth, vendor, food ,order }) {
     const [openSideBar, setOpenSideBar] = useState(false);
 
     return (

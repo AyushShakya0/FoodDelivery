@@ -9,7 +9,7 @@ import TextInput from '@/Components/TextInput';
 
 
 
-export default function Checkout({ auth, cart, vendors, user }) {
+export default function Checkout({ auth, cart, vendors, user, fav }) {
     const userMenus = cart.filter(cartItem => {
         return cartItem.user_id === auth.user.id && cartItem.status !== "checkedout";
     });
@@ -18,13 +18,16 @@ export default function Checkout({ auth, cart, vendors, user }) {
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
 
+    const orders = cart.filter(cart => cart.status === null);
+
+
     const shipping = 12;
 
     const total = totalPrice + shipping;
 
     console.log("Order", userMenus)
     console.log("totalPrice", totalPrice)
-    console.log("vendors", vendors)
+    console.log("vendors hello", vendors)
     console.log("user", user)
     console.log("userMenuIds", userMenuIds)
 
@@ -54,10 +57,8 @@ export default function Checkout({ auth, cart, vendors, user }) {
         reset(); // Reset form after successful submission
     };
 
-
-
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
             <Head title="Checkout" />
 
             <div className=' bg-gray-100'>

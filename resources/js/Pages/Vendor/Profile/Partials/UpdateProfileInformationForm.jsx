@@ -12,7 +12,7 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = ''}) {
     const user = usePage().props.auth.user;
     console.log(user);
 

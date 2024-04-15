@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VendorProfileUpdateRequest;
+use App\Models\Checkout;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Courier;
@@ -21,9 +22,15 @@ class AdminController extends Controller
     public function order(): Response
     {
         $orders = Order::all();
+        $checkout = Checkout::all();
+        $user = User::all();
+        $courier = Courier::all();
 
-        return Inertia::render('Admin/Order_Admin', [
+        return Inertia::render('Vendor/Order', [
             'orders' => $orders,
+            'checkout' => $checkout,
+            'user' => $user,
+            'courier' => $courier,
         ]);
     }
 
@@ -279,5 +286,21 @@ class AdminController extends Controller
     public function finance()
     {
         return Inertia::render('Admin/Finance_Admin', []);
+    }
+
+
+    public function admin_orders_edit($checkoutId): Response
+    {
+        $checkout = Checkout::findOrFail($checkoutId);
+        $orders = Order::all();
+        $user = User::all();
+        $courier = Courier::all();
+
+        return Inertia::render('Admin/Edit_Order', [
+            'orders' => $orders,
+            'checkout' => $checkout,
+            'user' => $user,
+            'courier' => $courier,
+        ]);
     }
 }

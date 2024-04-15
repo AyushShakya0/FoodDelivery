@@ -55,6 +55,24 @@ class OrderController extends Controller
         ]);
     }
 
+    public function order_delete($id)
+    {
+        // Find the trainer by ID
+        $order = Order::find($id);
+
+        if (!$order) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Trainer not found!');
+        }
+
+        // Delete the trainer
+        $order->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Trainer deleted successfully!');
+    }
+
+
     public function order(Order $order): Response
     {
         return Inertia::render('Vendor/Edit_Order', [
@@ -87,5 +105,12 @@ class OrderController extends Controller
         // return Inertia::render(request()->fullUrl(), [
         //     'order' => $order,
         // ]);
+    }
+
+    public function trackorder(Checkout $checkout): Response
+    {
+        return Inertia::render('Customer/TrackOrder', [
+            'order' => $checkout,
+        ]);
     }
 }
