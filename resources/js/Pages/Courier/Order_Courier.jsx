@@ -25,6 +25,7 @@ export default function All({ auth, orders, checkout, user, courier, vendor }) {
                         <div className="p-6 text-gray-900">
                             {auth.user.verified === 'yes' ? (
                                 <TableOrder_Courier
+                                    auth={auth}
                                     orders={orders}
                                     columns={columns}
                                     checkout={checkout}

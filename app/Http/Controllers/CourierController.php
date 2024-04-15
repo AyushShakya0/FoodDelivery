@@ -72,11 +72,10 @@ class CourierController extends Controller
 
     public function update( $checkout, Request $request): void
     {
-
-        // dd($request->status);
+        // dd($request->courier_id);
         $checkout = Checkout::findOrFail($checkout);
         $checkout->update([
-            'status' => $request->status
+            'courier_id' => $request->courier_id
         ]);
     }
 

@@ -69,15 +69,15 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
 
             ))}
 
-            <div className="bg-gray-100 p-4 rounded-md">
-                {/* Customization Section */}
-                <div className="mb-4">
-                    <p className="font-semibold">Customization:</p>
-                    <p>{checkout.customization}</p>
+            {/* Customization Section */}
+            {checkout.customization && (  // Checking if checkout.customization is not null or undefined
+                <div className="bg-gray-100 p-4 rounded-md">
+                    <div className="mb-4">
+                        <p className="font-semibold">Customization:</p>
+                        <p>{checkout.customization}</p>
+                    </div>
                 </div>
-
-
-            </div>
+            )}
 
             <div className="bg-gray-100 p-4 mt-4 rounded-md flex flex-wrap">
                 {/* User Section */}

@@ -13,6 +13,14 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
     const isFavoritedByUser = fav.some(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id);
 
+    const favorite = fav.filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id);
+
+    const favoriteIds = fav
+    .filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id)
+    .map(favorite => favorite.id);
+
+
+
     const onClickHandler = (e) => {
         console.log(listing.id);
         Inertia.visit(route("restaurant.details", { id: listing.id }));
@@ -25,9 +33,18 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
         reset(); // Reset form after successful submission
     };
 
+    console.log("user",user)
+    console.log('vendor',vendor)
+    console.log('fav',favoriteIds)
+
+
+
+
 
     const removeFavorite = (id) => {
-        Inertia.delete(route('favorites.delete', { id: id }), {
+
+        // console.log('works till here',id)
+        Inertia.delete(route('favorites.delete', { id: favoriteIds }), {
             onSuccess: () => {
                 // Reload the page after successful deletion
                 Inertia.reload();
@@ -41,7 +58,8 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
     return (
         <div>
-            <div key={listing.id}  >
+            <div key={listing.id}>
+            {/* <div key={listing.id}  onClick={onClickHandler} > */}
                 <Card style={{ width: '18rem', height: '18rem', display: 'flex', flexDirection: 'column' }}>
                     <div className={`${true ? 'cursor-pointer' : 'cursor-not-allowed'} relative`} style={{ width: '100%', height: '10rem' }}>
                         <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={`http://127.0.0.1:8000/storage/${listing.image}`} alt="restaurant img" />

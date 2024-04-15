@@ -95,7 +95,7 @@ Route::middleware('auth:admin')->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/orders', [AdminController::class, 'order'])->name('admin_order');
-    Route::get('/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
+    Route::get('/admin/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
 
     Route::get('/admin/vendors', [AdminController::class, 'vendor'])->name('admin_vendor');
     Route::get('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_edit'])->name('vendor.edit');
@@ -144,12 +144,12 @@ Route::middleware('auth:courier')->group(function () {
 
     Route::get('/courier/orders', [CourierController::class, 'order'])->name('courier_order');
     Route::get('/courier/orders/selected', [CourierController::class, 'my_order'])->name('courier_order_selected');
-    Route::get('/orders/{id}', [CourierController::class, 'courier_orders_edit'])->name('courier.orders.edit');
 
-    Route::patch('/orders/{id}', [CourierController::class, 'update'])->name('courier.orders.update');
+    Route::get('/courier/orders/{id}', [CourierController::class, 'courier_orders_edit'])->name('courier.orders.edit');
+    Route::patch('/courier/orders/{id}', [CourierController::class, 'update'])->name('courier.orders.update');
 
     Route::get('/courier/orders/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
-    Route::get('/orders/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
+    Route::get('/courier/orders/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
 
 
 
@@ -189,6 +189,9 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'edit'])->name('orders.edit');
     Route::patch('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+
+    Route::get('/vendor/orders/history', [VendorController::class, 'order_history'])->name('order_history_vendor');
+    Route::get('/vendor/orders/history/{id}', [VendorController::class, 'order_history_details'])->name('order_history_details_vendor');
 
 
     Route::patch('/vendor/dashboard/{id}', [VendorController::class, 'status_update'])->name('vendor.status');

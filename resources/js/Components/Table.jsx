@@ -1,6 +1,6 @@
 export default function Table({ auth, checkout, orders, user, courier, columns, primary, action }) {
 
-    const filteredCheckouts = checkout.filter(checkouts => checkouts.vendor_id.includes(auth.user.id));
+    const filteredCheckouts = checkout.filter(checkouts => checkouts.vendor_id.includes(auth.user.id)  && checkouts.status !== 'Destination reached');
 
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">

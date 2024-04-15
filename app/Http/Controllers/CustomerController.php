@@ -310,6 +310,8 @@ class CustomerController extends Controller
         // Find the trainer by ID
         $fav = Favorite::find($id);
 
+        // dd($fav);
+
         if (!$fav) {
             // Trainer not found, you may want to handle this case differently (e.g., show error message)
             return redirect()->back()->with('error', 'Trainer not found!');

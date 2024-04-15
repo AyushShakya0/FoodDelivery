@@ -16,8 +16,8 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex flex-col justify-between h-screen">
                         <div>
                             <div className="flex items-center mt-8 mb-8">
-                            <Link href={route('vendor.dashboard')} className="flex items-center">
-                                <img
+                                <Link href={route('vendor.dashboard')} className="flex items-center">
+                                    <img
                                         src="/logo.png"
                                         alt="GoFood Logo"
                                         className="h-4 w-auto text-gray-800" // Adjusted classes
@@ -25,12 +25,12 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
                             <div className="flex items-center mt-6"> {/* Wrap icon and text in a flex container */}
-                                    <AccountCircleIcon style={{ fontSize: 32 }} />
-                                    <div className="ml-2">
-                                        <div className="font-medium text-base text-gray-800">{user.name}</div>
-                                        <div className="font-medium text-sm text-gray-500">{user.email}</div>
-                                    </div>
+                                <AccountCircleIcon style={{ fontSize: 32 }} />
+                                <div className="ml-2">
+                                    <div className="font-medium text-base text-gray-800">{user.name}</div>
+                                    <div className="font-medium text-sm text-gray-500">{user.email}</div>
                                 </div>
+                            </div>
 
                             <div className="mt-8 pb-8 text-5xl">
                                 <div>
@@ -51,10 +51,18 @@ export default function Authenticated({ user, header, children }) {
                                     </NavLink>
                                 </div>
                                 <div>
+
+                                    <NavLink href={route('order_history_vendor')} active={route().current('order_history_vendor')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Order History
+                                    </NavLink>
+                                </div>
+                                <div>
                                     <NavLink href={route('vendor.finance')} active={route().current('vendor.finance')} className="block py-2 px-4 text-sm text-gray-700">
                                         Order & Transaction
                                     </NavLink>
                                 </div>
+
+
                                 {/* <div>
 
                                     <NavLink href={route('vendor.setting')} active={route().current('vendor.setting')} className="block py-2 px-4 text-sm text-gray-700">

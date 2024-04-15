@@ -18,17 +18,10 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
 
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
-
     const orders = cart.filter(cart => cart.status === null);
-
-
     const shipping = 12;
-
     const total = totalPrice + shipping;
 
-    console.log("Order", userMenus)
-    console.log("vendors hello", vendor_idss)
-    console.log("userMenuIds", userMenuIds)
 
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: user.id,
@@ -127,7 +120,10 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                             <p className="mt-2 text-sm text-gray-600">{user.address}, {user.city}, {user.pincode}</p>
 
                                             <div className="mt-6 flex justify-between">
-                                                <button type="button" className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Change Address</button>
+                                                {/* <button type="button" className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Change Address</button> */}
+                                                <Link href={route('profile.edit')} className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 item-center">
+                                                    Change Address
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -139,8 +135,10 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                             <h2 className="text-2xl font-semibold text-gray-900">Payment Method</h2>
                                             <p className="mt-2 text-sm text-gray-600">Credit Card ending in ****1234</p>
 
-                                            <div className="mt-6 flex justify-between">
-                                                <button type="button" className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Change Payment Method</button>
+                                            <div className="mt-6 flex justify-center">
+                                                <Link href={route('profile.edit')} className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                    Change Payment Method
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
