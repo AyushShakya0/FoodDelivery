@@ -3,13 +3,15 @@ import AuthenticatedLayout_Courier from '@/Layouts/AuthenticatedLayout_Courier';
 import { Head } from '@inertiajs/react';
 
 
-const columns=[
+const columns = [
     'items',
     // 'customer',
     'status',
 ];
 
-export default function All({ auth, orders, checkout, user , courier, vendor}) {
+export default function All({ auth, orders, checkout, user, courier, vendor }) {
+    console.log('checking', auth.user.verified)
+
     return (
         <AuthenticatedLayout_Courier
             user={auth.user}
@@ -21,7 +23,20 @@ export default function All({ auth, orders, checkout, user , courier, vendor}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <TableOrder_Courier orders={orders} columns={columns} checkout={checkout} user={user} courier={courier} vendor={vendor} primary="Order Number" action="courier.orders.edit"></TableOrder_Courier>
+                            {auth.user.verified === 'yes' ? (
+                                <TableOrder_Courier
+                                    orders={orders}
+                                    columns={columns}
+                                    checkout={checkout}
+                                    user={user}
+                                    courier={courier}
+                                    vendor={vendor}
+                                    primary="Order Number"
+                                    action="courier.orders.edit"
+                                />
+                            ) : (
+                                <p className="text-red-600">You are not verified.</p>
+                            )}
                         </div>
                     </div>
                 </div>
