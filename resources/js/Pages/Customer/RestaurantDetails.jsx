@@ -38,6 +38,9 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
 
     const { id } = usePage().props; // Access route parameters
 
+    console.log('lll',menus);
+    console.log('mmm',vendor);
+
     const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id && menuItem.availability === 'available');
 
     const orders = order.filter(order => order.status === null);

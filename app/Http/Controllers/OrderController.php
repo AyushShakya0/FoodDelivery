@@ -107,10 +107,5 @@ class OrderController extends Controller
         // ]);
     }
 
-    public function trackorder(Checkout $checkout): Response
-    {
-        return Inertia::render('Customer/TrackOrder', [
-            'order' => $checkout,
-        ]);
-    }
+
 }

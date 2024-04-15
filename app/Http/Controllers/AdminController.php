@@ -187,47 +187,46 @@ class AdminController extends Controller
     //     }
     // }
 
-    public function vendor_update(Request $request, Vendor $vendor)
+    public function vendor_update(Request $request,$vendorid)
     {
-        // Dump request data for debugging
-        // dd($request->all())
+        $vendor = Vendor::findOrFail($vendorid);
+
 
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($vendor->id)],
-            // 'phone_number' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($vendor->id)],
+            // 'phone_number' => ['required', 'string', 'max:10'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
         ]);
 
-        // Dump validated data for debugging
-        // dd("updated successfully");
-
-
         // Update the vendor with the validated data
         $vendor->update($validatedData);
 
-        // Redirect back to the vendor list page with a success message
-        // return redirect()->route('vendor.edit')->with('success', 'Vendor updated successfully.');
         return redirect()->route('admin_vendor')->with('success', 'Vendor updated successfully.');
     }
 
 
+    public function courier_update(Request $request,$courierid)
+    {
+        $courier = Courier::findOrFail($courierid);
 
-    // public function vendor_verify(Vendor $vendor, Request $request)
-    // {
-    //     try {
-    //         $vendor->verified = $request->input('verified');
 
-    //         // Save the changes excluding the password field
-    //         $vendor->save(['timestamps' => false, 'touch' => false]);
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($courier->id)],
+            // 'phone_number' => ['required', 'string', 'max:10'],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+        ]);
 
-    //         return response()->json(['message' => 'Vendor verified successfully'], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['error' => $e->getMessage()], 500);
-    //     }
-    // }
+        // Update the vendor with the validated data
+        $courier->update($validatedData);
+
+        return redirect()->route('admin_courier')->with('success', 'Vendor updated successfully.');
+    }
 
 
     public function vendor_verify( $vendorid, Request $request): void
@@ -296,10 +295,14 @@ class AdminController extends Controller
         ]);
     }
 
-    public function courier_edit(Courier $courier): Response
+    public function courier_edit($courierid): Response
     {
+        // dd($courierid);
+
+        $courier = Courier::findOrFail($courierid);
+
         return Inertia::render('Admin/EditCourier_Admin', [
-            'courier' => $courier,
+            'couriers' => $courier,
         ]);
     }
 

@@ -73,7 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
     Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
-    Route::get('/order/{id}', [OrderController::class, 'trackorder'])->name('track.order');
+    Route::get('/trackorder', [CustomerController::class, 'trackorder'])->name('track.order');
 
 });
 
@@ -115,8 +115,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
 
     Route::get('/admin/courier', [AdminController::class, 'courier'])->name('admin_courier');
-    Route::get('/admin/couriers/edit', [AdminController::class, 'courier_edit'])->name('courier.edit');
-    Route::patch('/admin/couriers/{courier}', [AdminController::class, 'courier_update'])->name('courier.update');
+    Route::get('/admin/couriers/edit/{id}', [AdminController::class, 'courier_edit'])->name('courier.edit');
+    Route::patch('/admin/couriers/edit/{id}', [AdminController::class, 'courier_update'])->name('courier.update');
     Route::delete('/admin/deletecourier/{id}', [AdminController::class, 'courier_delete'])->name('courier.delete');
 
 

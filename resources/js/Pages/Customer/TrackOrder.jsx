@@ -1,33 +1,29 @@
-import GuestLayout from '@/Layouts/GuestLayout';
-import {Head, router} from '@inertiajs/react';
-import {useEffect} from "react";
-import OrderStatus from "@/Pages/Vendor/Partials/OrderStatus.jsx";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
 
-export default function TrackOrder({ order }) {
+export default function TrackOrder({ auth, order, fav, checkout }) {
 
-    useEffect(() => {
-        setInterval(() => {
-            router.reload({ only: ['order'] });
-        }, 1000);
-    }, []);
+    console.log('authhhh',auth)
+    console.log('fav',fav)
+    console.log('order',order)
+    console.log('checkout',checkout)
 
     return (
-        <div className="max-w-3xl mx-auto py-12">
-            <div className="py-8">
-                <svg className="w-32 h-32 rotate-12 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path d="M0 0h512v512H0z" fill="#fff" fillOpacity="1"></path>
-                    <g transform="translate(0,0)">
-                        <path
-                            d="M74.5 36A38.5 38.5 0 0 0 36 74.5v363A38.5 38.5 0 0 0 74.5 476h363a38.5 38.5 0 0 0 38.5-38.5v-363A38.5 38.5 0 0 0 437.5 36h-363zm316.97 36.03A50 50 0 0 1 440 122a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97zM256 206a50 50 0 0 1 0 100 50 50 0 0 1 0-100zM123.47 340.03A50 50 0 0 1 172 390a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97z"
-                            fill="#2563eb" fillOpacity="1"></path>
-                    </g>
-                </svg>
+        <AuthenticatedLayout user={auth} order={order} fav={fav}>
+            <Head title="Track Order" />
+
+            <div className='pb-8'>
+                <section className='p-5 lg:p-20 flex justify-center items-center h-full'> {/* Centering content */}
+                    <div>
+                        <h1 className='text-xl font-semibold text-gray-500 pb-8'>Track my Order</h1>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+                            <ul className="-my-8">
+
+                            </ul>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <Head title={'Your order'} />
-            <OrderStatus currentStatus={order.status}></OrderStatus>
-            <div className="text-center mt-4">
-                <p className="text-lg">{order.status.toLowerCase()} your order <span className="underline font-semibold">{order.last_updated}</span></p>
-            </div>
-        </div>
+        </AuthenticatedLayout>
     );
 }

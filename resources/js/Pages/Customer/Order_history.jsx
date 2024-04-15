@@ -4,6 +4,8 @@ import { Head, Link } from '@inertiajs/react';
 export default function Order_history({ auth, order, fav }) {
     const orders = order.filter(order => order.status === 'checkedout');
 
+
+
     return (
         <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
             <Head title="Dashboard" />
@@ -44,5 +46,6 @@ export default function Order_history({ auth, order, fav }) {
                 </section>
             </div>
         </AuthenticatedLayout>
+
     );
 }

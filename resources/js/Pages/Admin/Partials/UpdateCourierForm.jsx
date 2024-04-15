@@ -2,83 +2,140 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import SelectInput from "@/Components/SelectInput.jsx";
+import { useState } from 'react';
+import { useForm, usePage } from '@inertiajs/react'; // Import usePage hook
 
-export default function UpdateOrderForm({ couriers, className = '' }) {
+export default function UpdateCourierForm({ courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
 
-        couriers: couriers.join(', '),
-        status: couriers.status
+        email: courier.email || '',
+        name: courier.name || '',
+        phone_number: courier.phone_number || '',
+        address: courier.address || '',
+        image: courier.image || '',
+        city: courier.city || '',
     });
 
+console.log(courier)
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('courier.update', couriers.id));
+        patch(route('courier.update', courier.id), {
+            email: courier.email || '',
+            name: courier.name || '',
+            phone_number: courier.phone_number || '',
+            address: courier.address || '',
+            city: courier.city || '',
+            image: courier.image || '',
+            preserveScroll: true,
+            data: data
+        });
     };
-
-    const statusOptions = [
-        'Ordered',
-        'Prepping',
-        'Ready',
-        'Delivering',
-        'Reached'
-    ];
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">couriers Information</h2>
-
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
-                </p>
+                <h2 className="text-lg font-medium text-gray-900">Courier Information</h2>
+                <p className="mt-1 text-sm text-gray-600">Update Courier's profile information.</p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-
-
                 <div>
-                    <InputLabel htmlFor="couriers" value="couriers" />
-
+                    <InputLabel htmlFor="name" value="Name" />
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
-                        value={data.couriers}
-                        disabled
+                        value={data.name}
+                        // onChange={(e) => setData({ ...data, name: e.target.value })}
+                        onChange={(e) => setData('name', e.target.value)}
+
+                    />
+                    {errors && errors.name && <InputError message={errors.name[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="email" value="Email" />
+                    <TextInput
+                        id="email"
+                        className="mt-1 block w-full"
+                        value={data.email}
+                        // onChange={(e) => setData({ ...data, email: e.target.value })}
+                        onChange={(e) => setData('email', e.target.value)}
+
+                    />
+                    {errors && errors.email && <InputError message={errors.email[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="phone_number" value="Phone number" />
+                    <TextInput
+                        id="phone_number"
+                        className="mt-1 block w-full"
+                        value={data.phone_number}
+                        onChange={(e) => setData('phone_number', e.target.value)}
+
+                    />
+                    {errors && errors.phone_number && <InputError message={errors.phone_number[0]} />}
+                </div>
+
+                <div className="flex flex-col">
+                    <label htmlFor="image" className="text-sm font-medium text-gray-700">Image</label>
+                    <TextInput
+                        id="image"
+                        name="image"
+                        type="file"
+                        autoComplete="image"
+                        onChange={(e) => setData("image", e.target.files[0])}
                     />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="status" value="Status" />
-
-                    <SelectInput
-                        id="status"
+                    <InputLabel htmlFor="address" value="Address" />
+                    <TextInput
+                        id="address"
                         className="mt-1 block w-full"
-                        options={statusOptions}
-                        value={data.status}
-                        onChange={(e) => setData('status', e.target.value)}
-                    />
+                        value={data.address}
+                        // onChange={(e) => setData({ ...data, address: e.target.value })}
+                        onChange={(e) => setData('address', e.target.value)}
 
-                    <InputError className="mt-2" message={errors.status} />
+                    />
+                    {errors && errors.address && <InputError message={errors.address[0]} />}
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
+                <div>
+                    <InputLabel htmlFor="city" value="City" />
+                    <TextInput
+                        id="city"
+                        className="mt-1 block w-full"
+                        value={data.city}
+                        // onChange={(e) => setData({ ...data, city: e.target.value })}
+                        onChange={(e) => setData('city', e.target.value)}
 
+                    />
+                    {errors && errors.city && <InputError message={errors.city[0]} />}
+                </div>
+
+                <PrimaryButton type="submit" disabled={processing}>Update</PrimaryButton>
+
+                {recentlySuccessful && (
                     <Transition
                         show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
+                        enter="transition duration-1000"
+                        enterFrom="transform opacity-0"
+                        enterTo="transform opacity-100"
+                        leave="transition duration-1000"
+                        leaveFrom="transform opacity-100"
+                        leaveTo="transform opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <div className="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong className="font-bold">Success!</strong>
+                            <span className="block sm:inline"> Courier information updated successfully.</span>
+                        </div>
                     </Transition>
-                </div>
+                )}
             </form>
         </section>
     );

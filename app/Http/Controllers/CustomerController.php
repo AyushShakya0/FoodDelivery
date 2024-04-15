@@ -324,4 +324,19 @@ class CustomerController extends Controller
         return redirect()->back()->with('success', 'Trainer deleted successfully!');
     }
 
+
+    public function trackorder(): Response
+    {
+        $cart = Order::all();
+        $fav = Favorite::all();
+        $checkout = Checkout::all();
+        $user = Auth::user();
+
+        return Inertia::render('Customer/TrackOrder', [
+            'order' => $cart,
+            'fav' => $fav,
+            'checkout' => $checkout,
+            'auth' => $user,
+        ]);
+    }
 }

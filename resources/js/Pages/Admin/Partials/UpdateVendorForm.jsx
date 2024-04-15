@@ -25,6 +25,13 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
         e.preventDefault();
 
         patch(route('vendor.update', vendor.id), {
+            email: vendor.email || '',
+            name: vendor.name || '',
+            number: vendor.number || '',
+            address: vendor.address || '',
+            city: vendor.city || '',
+            time: vendor.time || '',
+            image: vendor.image || '',
             preserveScroll: true,
             data: data
         });
