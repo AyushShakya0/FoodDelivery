@@ -14,6 +14,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
         return cartItem.user_id === auth.user.id && cartItem.status !== "checkedout";
     });
     const userMenuIds = userMenus.map(cartItem => cartItem.id);
+    const vendor_idss = userMenus.map(cartItem => cartItem.vendor_id);
 
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
@@ -26,24 +27,18 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
     const total = totalPrice + shipping;
 
     console.log("Order", userMenus)
-    console.log("totalPrice", totalPrice)
-    console.log("vendors hello", vendors)
-    console.log("user", user)
+    console.log("vendors hello", vendor_idss)
     console.log("userMenuIds", userMenuIds)
 
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: user.id,
         order_id: userMenuIds,
+        vendor_id: vendor_idss,
         price: total,
         customization: " ",
         address: user.address,
         status: 'Ordered',
     });
-
-    // const { datas, setDatas, patch} = useForm({
-
-    //     status: 'checkedout',
-    // });
 
     const submit = (e) => {
         e.preventDefault();

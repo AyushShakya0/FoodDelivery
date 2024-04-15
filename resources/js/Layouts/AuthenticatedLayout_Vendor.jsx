@@ -55,12 +55,12 @@ export default function Authenticated({ user, header, children }) {
                                         Order & Transaction
                                     </NavLink>
                                 </div>
-                                <div>
+                                {/* <div>
 
                                     <NavLink href={route('vendor.setting')} active={route().current('vendor.setting')} className="block py-2 px-4 text-sm text-gray-700">
                                         Settings
                                     </NavLink>
-                                </div>
+                                </div> */}
 
 
                             </div>

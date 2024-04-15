@@ -13,6 +13,7 @@ class Checkout extends Model
 
     protected $casts = [
         'order_id' => 'array',
+        'vendor_id' => 'array',
     ];
 
     protected $appends = [
@@ -23,6 +24,7 @@ class Checkout extends Model
     protected $fillable = [
         'user_id',
         'order_id',
+        'vendor_id',
         'courier_id',
         'customization',
         'address',

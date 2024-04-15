@@ -25,12 +25,14 @@ class AdminController extends Controller
         $checkout = Checkout::all();
         $user = User::all();
         $courier = Courier::all();
+        $vendor = Vendor::all();
 
-        return Inertia::render('Vendor/Order', [
+        return Inertia::render('Admin/Order_Admin', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
             'courier' => $courier,
+            'vendor' => $vendor,
         ]);
     }
 

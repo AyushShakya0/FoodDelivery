@@ -11,10 +11,6 @@ const columns = [
 ];
 
 export default function Courier_Vendor({ auth, menu, user, vendor }) {
-    console.log("Menu:", menu);
-    console.log("User id:", user);
-    console.log("Vendor:", vendor);
-
     // Filter menus based on user ID
     const filteredMenus = menu.filter(menuItem => menuItem.vendor_id === user);
 

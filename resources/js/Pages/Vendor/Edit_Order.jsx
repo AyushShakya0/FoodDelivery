@@ -5,19 +5,10 @@ import UpdateOrderForm from './Partials/UpdateOrderForm';
 
 
 export default function Edit({ auth, orders, checkout, user, courier }) {
-    // console.log("checkout", checkout)
-    // console.log("order", orders)
-    // console.log("user", user)
-    // console.log("courier", courier)
-
     // Filter orders based on checkout order_id
     const final_order = orders.filter(order => checkout.order_id.includes(order.id) && order.status === "checkedout");
     const userss = user.filter(user => user.id === checkout.user_id);
     const courierss = courier.filter(courier => courier.id === checkout.courier_id);
-
-    console.log("ordersWithSameId", final_order)
-    console.log("userss", userss)
-    console.log("courierss", courierss)
 
     // Assuming filteredUserArray will have only one user object
     const userObject = userss.length > 0 ? userss[0] : null;
@@ -41,14 +32,6 @@ export default function Edit({ auth, orders, checkout, user, courier }) {
         // Use userName or any other properties as needed
     }
 
-
-    console.log("couriersssss", courierObject)
-
-
-
-
-
-
     return (
         <AuthenticatedLayout_Vendor
             user={auth.user}
@@ -62,7 +45,7 @@ export default function Edit({ auth, orders, checkout, user, courier }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <UpdateOrderForm order={final_order} checkout={checkout} user={userObject} courier={courierObject} className="max-w-xl"></UpdateOrderForm>
+                            <UpdateOrderForm auth={auth} order={final_order} checkout={checkout} user={userObject} courier={courierObject} className="max-w-xl"></UpdateOrderForm>
                         </div>
                     </div>
                 </div>

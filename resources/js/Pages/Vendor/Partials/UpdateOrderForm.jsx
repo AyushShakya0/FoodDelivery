@@ -9,7 +9,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
-export default function UpdateOrderForm({ order, checkout, user, courier, className = '' }) {
+export default function UpdateOrderForm({ auth, order, checkout, user, courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         status: checkout.status,
@@ -18,18 +18,21 @@ export default function UpdateOrderForm({ order, checkout, user, courier, classN
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('orders.update', checkout.id),{
+        patch(route('orders.update', checkout.id), {
             status: data.status, // Include the updated status in the patch request
             preserveScroll: true
         });
     };
 
-    console.log(data); // Log the data object to inspect its contents
+
+    console.log("order ", order)
+    console.log("vendor info", auth.user)
 
 
     const statusOptions = [
         'Ordered',
         'Prepping',
+        'Ready for me',
         'Ready',
         'Delivering',
         'Reached'
@@ -58,6 +61,10 @@ export default function UpdateOrderForm({ order, checkout, user, courier, classN
                                 <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
                                     <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"> Qty- {orders.quantity}</p>
                                     <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">${orders.price}</p>
+                                    {/* <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">Vendor-{orders.vendor_id}</p> */}
+                                    <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
+                                        {auth.user.id === orders.vendor_id ? auth.user.name : `Restaurant${orders.vendor_id}`}
+                                    </p>
                                 </div>
                             </div>
 
@@ -78,45 +85,40 @@ export default function UpdateOrderForm({ order, checkout, user, courier, classN
             </div>
 
             <div className="bg-gray-100 p-4 mt-4 rounded-md flex flex-wrap">
-    {/* User Section */}
-    <div className="w-full md:w-1/2 mb-4 md:pr-2">
-        <div>
-            <p className="font-semibold">User</p>
-            <p className="font-semibold">Name:</p>
-            <p>{user.name}</p>
-            <p className="font-semibold">Phone number:</p>
+                {/* User Section */}
+                <div className="w-full md:w-1/2 mb-4 md:pr-2">
+                    <div>
+                        <p className="font-semibold">User</p>
+                        <p className="font-semibold">Name:</p>
+                        <p>{user.name}</p>
+                        <p className="font-semibold">Phone number:</p>
 
-            <p>{user.number}</p>
-            <p className="font-semibold">Address:</p>
+                        <p>{user.number}</p>
+                        <p className="font-semibold">Address:</p>
 
-            <p>{user.address}, {user.city}, {user.pincode}</p>
-        </div>
-    </div>
+                        <p>{user.address}, {user.city}, {user.pincode}</p>
+                    </div>
+                </div>
 
-    {/* Courier Section */}
-    <div className="w-full md:w-1/2 mb-4 md:pl-2">
-        {courier ? (
-            <div>
-                <p className="font-semibold">Courier</p>
-                <p className="font-semibold">Name:</p>
-                <p>{courier.name}</p>
-                <p className="font-semibold">Phone Number:</p>
-                <p>{courier.number}</p>
+                {/* Courier Section */}
+                <div className="w-full md:w-1/2 mb-4 md:pl-2">
+                    {courier ? (
+                        <div>
+                            <p className="font-semibold">Courier</p>
+                            <p className="font-semibold">Name:</p>
+                            <p>{courier.name}</p>
+                            <p className="font-semibold">Phone Number:</p>
+                            <p>{courier.number}</p>
+                        </div>
+                    ) : (
+                        <div>
+                            <p className="font-semibold">Courier: Pending</p>
+                            <p className="font-semibold">Name: </p>
+                            <p className="font-semibold">Phone Number: </p>
+                        </div>
+                    )}
+                </div>
             </div>
-        ) : (
-            <div>
-                <p className="font-semibold">Courier: Pending</p>
-                <p className="font-semibold">Name: </p>
-                <p className="font-semibold">Phone Number: </p>
-            </div>
-        )}
-    </div>
-</div>
-
-
-
-
-
 
             <form onSubmit={submit} className="mt-6 space-y-6">
 

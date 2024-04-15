@@ -17,10 +17,6 @@ const MenuCard = ({ listing }) => {
         // menu_id: listing.id,
         vendor: listing.vendor_id,
     });
-    console.log("listing",listing);
-
-    console.log(data);
-
 
     useEffect(() => {
         setData({

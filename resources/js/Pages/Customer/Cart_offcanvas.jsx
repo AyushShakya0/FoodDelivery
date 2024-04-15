@@ -15,6 +15,9 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
     // Calculate the total price of the items in the userMenus array
     const totalPrice = userMenus.reduce((total, orders) => total + parseInt(orders.price), 0);
 
+
+    console.log("user menusss from cart canvas",userMenus)
+
     const deleteProduct = (id) => {
         if (confirm('Are you sure you want to delete this product?')) {
             // Send a DELETE request to the appropriate endpoint

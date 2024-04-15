@@ -21,9 +21,8 @@ return new class extends Migration
             // $table->foreignIdFor(Order::class)->nullable();
             // $table->foreignIdFor(Vendor::class)->nullable();
             // $table->foreignIdFor(Courier::class)->nullable();
-
             $table->json('order_id')->nullable();
-            // $table->integer('vendor_id')->nullable();
+            $table->json('vendor_id')->nullable();
             $table->integer('courier_id')->nullable();
             $table->string('address')->nullable();
             $table->string('customization')->nullable();

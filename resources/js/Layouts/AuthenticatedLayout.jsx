@@ -55,7 +55,7 @@ export default function Authenticated({ user, header, children, food, order, fav
                             </div>
                             <div className='pr-2'>
                                 <button onClick={() => setCartOpenn(true)}><NotificationsIcon/></button>
-                                <Favorites_offcanvas  open={cartOpenn} fav={fav} onClose={() => setCartOpenn(false)} />
+                                <Favorites_offcanvas  open={cartOpenn} fav={fav} user={user.id} onClose={() => setCartOpenn(false)} />
                             </div>
                             <div className="ms-3 relative">
                                 <Dropdown>

@@ -1,9 +1,6 @@
 export default function Table({ auth, checkout, orders, user, courier, columns, primary, action }) {
 
-    console.log("order", orders)
-    console.log("checkout", checkout)
-    console.log("user", user)
-    console.log("courier", courier)
+    const filteredCheckouts = checkout.filter(checkouts => checkouts.vendor_id.includes(auth.user.id));
 
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
@@ -21,9 +18,10 @@ export default function Table({ auth, checkout, orders, user, courier, columns, 
                     </tr>
                 </thead>
                 <tbody>
-                    {checkout.map((checkouts) => {
+                    {filteredCheckouts.map((checkouts) => {
                         const matchingUser = user.find(u => u.id === checkouts.user_id);
                         const userName = matchingUser ? matchingUser.name : '';
+                        const userNumber = matchingUser ? matchingUser.number : '';
 
                         const matchingCourier = courier.find(u => u.id === checkouts.courier_id);
                         const userCourier = matchingCourier ? matchingCourier.name : '';
@@ -31,7 +29,7 @@ export default function Table({ auth, checkout, orders, user, courier, columns, 
                         const orderName = checkouts.order_id.map(orderId => {
                             const matchingOrder = orders.find(order => order.id === orderId);
                             return matchingOrder ? matchingOrder.name : '';
-                        }); 
+                        });
 
                         return (
                             <tr key={checkouts.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
@@ -41,7 +39,7 @@ export default function Table({ auth, checkout, orders, user, courier, columns, 
                                 <td className="px-6 py-4">{userName}</td>
                                 <td className="px-6 py-4">{userCourier}</td>
                                 <td className="px-6 py-4">{orderName}</td>
-                                <td className="px-6 py-4">{checkouts.number}</td>
+                                <td className="px-6 py-4">{userNumber}</td>
                                 <td className="px-6 py-4">{checkouts.address}</td>
                                 <td className="px-6 py-4">{checkouts.status}</td>
                                 <td className="px-6 py-4">

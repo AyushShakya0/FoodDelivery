@@ -226,6 +226,7 @@ class CustomerController extends Controller
         $cartItem->user_id = $user_id;
         // $cartItem->vendor_id = $request->vendor_id;
         $cartItem->order_id = $request->order_id;
+        $cartItem->vendor_id = $request->vendor_id;
         $cartItem->address = $request->address;
         $cartItem->total_price = $request->price;
         $cartItem->customization = $request->customization;
