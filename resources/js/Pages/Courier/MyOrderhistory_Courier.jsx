@@ -13,10 +13,6 @@ export default function All({ auth, orders, checkout, user , courier, vendor}) {
 
 
     const CourierSelection = checkout.filter(checkout => checkout.courier_id === auth.user.id);
-
-
-    console.log("lll",CourierSelection)
-
     return (
         <AuthenticatedLayout_Courier
             user={auth.user}

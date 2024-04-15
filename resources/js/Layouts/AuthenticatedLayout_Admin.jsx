@@ -76,7 +76,9 @@ export default function Authenticated({ user, header, children }) {
                                 </div>
 
                                 <div>
-
+                                    <NavLink href={route('admin_order_history')} active={route().current('admin_order_history')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Order History
+                                    </NavLink>
                                 </div>
                                 <div>
                                     <NavLink href={route('admin_finance')} active={route().current('admin_finance')} className="block py-2 px-4 text-sm text-gray-700">

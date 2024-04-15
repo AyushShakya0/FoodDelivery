@@ -113,38 +113,46 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
                         </div>
                     )}
                 </div>
+                <div>
+                    <p className='font-bold text-2xl text-green-600'>
+                        {checkout.status}
+                    </p>
+                </div>
             </div>
 
-            <form onSubmit={submit} className="mt-6 space-y-6">
+            {checkout.status !== 'Destination reached' ? (
+                <form onSubmit={submit} className="mt-6 space-y-6">
+                    <div>
+                        <InputLabel htmlFor="status" value="Status" />
 
-                <div>
-                    <InputLabel htmlFor="status" value="Status" />
+                        <SelectInput
+                            id="status"
+                            className="mt-1 block w-full"
+                            options={statusOptions}
+                            value={data.status}
+                            onChange={(e) => setData('status', e.target.value)}
+                        />
 
-                    <SelectInput
-                        id="status"
-                        className="mt-1 block w-full"
-                        options={statusOptions}
-                        value={data.status}
-                        onChange={(e) => setData('status', e.target.value)}
-                    />
+                        <InputError className="mt-2" message={errors.status} />
+                    </div>
 
-                    <InputError className="mt-2" message={errors.status} />
-                </div>
+                    <div className="flex items-center gap-4">
+                        <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
+                        <Transition
+                            show={recentlySuccessful}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <p className="text-sm text-gray-600">Saved.</p>
+                        </Transition>
+                    </div>
+                </form>
+            ) : null}
 
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
-                </div>
-            </form>
+
         </section>
     );
 }

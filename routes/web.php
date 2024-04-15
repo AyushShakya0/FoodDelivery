@@ -95,7 +95,10 @@ Route::middleware('auth:admin')->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/orders', [AdminController::class, 'order'])->name('admin_order');
+    Route::get('/admin/orders/history', [AdminController::class, 'order_history'])->name('admin_order_history');
     Route::get('/admin/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
+
+
 
     Route::get('/admin/vendors', [AdminController::class, 'vendor'])->name('admin_vendor');
     Route::get('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_edit'])->name('vendor.edit');

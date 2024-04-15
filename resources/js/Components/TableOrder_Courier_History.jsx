@@ -2,9 +2,6 @@ export default function TableOrder_Courier_History({ user, courier, vendor, chec
 
     const delivered = checkout.filter(checkout => checkout.status === 'Destination reached');
 
-    console.log('delivered',delivered)
-
-
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

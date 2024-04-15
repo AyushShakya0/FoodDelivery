@@ -36,6 +36,23 @@ class AdminController extends Controller
         ]);
     }
 
+    public function order_history(): Response
+    {
+        $orders = Order::all();
+        $checkout = Checkout::all();
+        $user = User::all();
+        $courier = Courier::all();
+        $vendor = Vendor::all();
+
+        return Inertia::render('Admin/OrderHistory_Admin', [
+            'orders' => $orders,
+            'checkout' => $checkout,
+            'user' => $user,
+            'courier' => $courier,
+            'vendor' => $vendor,
+        ]);
+    }
+
     public function vendor()
     {
         $vendors = Vendor::all();
