@@ -1,21 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
+import DoneIcon from '@mui/icons-material/Done';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
 
-export default function Table_Vendor({ vendors, primary, action }) {
+export default function Table_Courier_verify({ couriers, primary, action }) {
+    console.log("couriers from table couriers:", couriers);
 
-    const deleteVendor = (id) => {
+    const [verifiedCourierId, setVerifiedCourierId] = useState(null);
+
+
+    const verifyCourier = (id) => {
+        Inertia.post(route('courier.verify', { id }), {
+            verified: 'yes',
+        }).then(() => {
+            setVerifiedCourierId(id);
+        }).catch((error) => {
+            console.error('Error verifying courier:', error);
+            // Handle error, show error message to user, etc.
+        });
+    };
+
+    const deleteCourier = (id) => {
         if (confirm('Are you sure you want to delete this vendor?')) {
             // Send a DELETE request to the appropriate endpoint
-            Inertia.delete(route('vendor.delete', { id: id }), {
+            Inertia.delete(route('courier.delete', { id: id }), {
                 onSuccess: () => {
                     // Reload the page after successful deletion
                     Inertia.reload();
                 },
                 onError: (error) => {
-                    console.error('Error deleting vendor:', error);
+                    console.error('Error deleting courier:', error);
                     // Handle error, show error message to user, etc.
                 }
             });
@@ -32,35 +49,39 @@ export default function Table_Vendor({ vendors, primary, action }) {
                         {/* <th scope="col" className="px-6 py-3">ID</th> */}
                         <th scope="col" className="px-6 py-3">Name</th>
                         <th scope="col" className="px-6 py-3">Email</th>
-                        <th scope="col" className="px-6 py-3">Address</th>
+                        <th scope="col" className="px-6 py-3">Phone Number</th>
                         <th scope="col" className="px-6 py-3">City</th>
-                        <th scope="col" className="px-6 py-3">Status</th>
+                        <th scope="col" className="px-6 py-3">Address</th>
                         <th scope="col" className="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {vendors.map((vendor) => (
-                        <tr key={vendor.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                    {couriers.map((courier) => (
+                        <tr key={courier.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                             <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                #{vendor.id}
+                                #{courier.id}
                             </td>
                             {/* <td className="px-6 py-4">{vendor.id}</td> */}
-                            <td className="px-6 py-4">{vendor.name}</td>
-                            <td className="px-6 py-4">{vendor.email}</td>
-                            <td className="px-6 py-4">{vendor.address}</td>
-                            <td className="px-6 py-4">{vendor.city}</td>
-                            <td className="px-6 py-4">{vendor.status}</td>
+                            <td className="px-6 py-4">{courier.name}</td>
+                            <td className="px-6 py-4">{courier.email}</td>
+                            <td className="px-6 py-4">{courier.phone_number}</td>
+                            <td className="px-6 py-4">{courier.city}</td>
+                            <td className="px-6 py-4">{courier.address}</td>
                             <td className="px-6 py-4">
 
-                                <a href={route(action, vendor.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">edit</a>
-                                {/* could be this part not sending the id */}
+                            <button
+                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                    onClick={() => verifyCourier(courier.id)}
+                                >
+                                    <DoneIcon/>
+                                </button>
 
 
                                 <button
                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                                    onClick={() => deleteVendor(vendor.id)}
+                                    onClick={() => deleteCourier(courier.id)}
                                 >
-                                    Delete
+                                    <DangerousIcon/>
                                 </button>
                             </td>
                         </tr>

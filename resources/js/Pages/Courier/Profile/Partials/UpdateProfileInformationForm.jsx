@@ -13,9 +13,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
         image: user.image,
         address: user.address,
-        number: user.number,
+        phone_number: user.phone_number,
         city: user.city,
     });
+
+    console.log(data)
 
     const submit = (e) => {
         e.preventDefault();
@@ -102,13 +104,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <TextInput
                         id="number"
                         className="mt-1 block w-full"
-                        value={data.number}
-                        onChange={(e) => setData('number', e.target.value)}
+                        value={data.phone_number}
+                        onChange={(e) => setData('phone_number', e.target.value)}
                     // required
                     // autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.number} />
+                    <InputError className="mt-2" message={errors.phone_number} />
                 </div>
 
                 <div>

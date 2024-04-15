@@ -11,6 +11,8 @@ const columns=[
 
 
 export default function Index({ auth, couriers}) {
+    const verifiedCouriers = couriers.filter(courier => courier.verified === 'yes');
+
     return (
         <AuthenticatedLayout_Admin
             user={auth.user}
@@ -22,7 +24,7 @@ export default function Index({ auth, couriers}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <Table_Courier couriers={couriers} columns={columns} primary="couriers Number" action="courier.edit"></Table_Courier>
+                            <Table_Courier couriers={verifiedCouriers} columns={columns} primary="couriers Number" action="courier.edit"></Table_Courier>
                         </div>
                     </div>
                 </div>

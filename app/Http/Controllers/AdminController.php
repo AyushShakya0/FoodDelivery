@@ -56,6 +56,16 @@ class AdminController extends Controller
         ]);
     }
 
+    public function courier_verify_display()
+    {
+        $couriers = Courier::all();
+
+        return Inertia::render('Admin/Verify_Courier_Admin', [
+            'couriers' => $couriers,
+
+        ]);
+    }
+
 
 
     public function vendor_add(Request $request)
@@ -297,12 +307,14 @@ class AdminController extends Controller
         $orders = Order::all();
         $user = User::all();
         $courier = Courier::all();
+        $vendor = Vendor::all();
 
         return Inertia::render('Admin/Edit_Order', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
             'courier' => $courier,
+            'vendor' => $vendor,
         ]);
     }
 }

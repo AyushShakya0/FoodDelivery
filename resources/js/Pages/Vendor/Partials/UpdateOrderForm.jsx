@@ -24,11 +24,6 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
         });
     };
 
-
-    console.log("order ", order)
-    console.log("vendor info", auth.user)
-
-
     const statusOptions = [
         'Ordered',
         'Prepping',

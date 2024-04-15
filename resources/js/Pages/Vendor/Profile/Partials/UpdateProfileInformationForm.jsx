@@ -23,13 +23,16 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
         image: user.image,
         address: user.address,
-        number: user.number,
+        // number: user.number,
         city: user.city,
         cuisine: user.cuisine,
         time1: user.time1, // Add time1 to form state
         time2: user.time2,
         time: `${user.time1} - ${user.time2}`,
     });
+
+    console.log(data)
+
 
     const submit = (e) => {
         e.preventDefault();
@@ -108,7 +111,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.address} />
                 </div>
 
-                <div>
+                {/* <div>
                     <InputLabel htmlFor="Number" value="Number" />
 
                     <TextInput
@@ -119,7 +122,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.number} />
-                </div>
+                </div> */}
 
                 <div>
                     <InputLabel htmlFor="time" value="time" />

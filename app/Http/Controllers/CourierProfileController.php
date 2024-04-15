@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 // use App\Http\Requests\VendorProfileUpdateRequest;
-use App\Http\Requests\VendorProfileUpdateRequest;
+use App\Http\Requests\CourierProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,9 +26,11 @@ class CourierProfileController extends Controller
     }
 
 
-    public function update(CourierProfileController $request): RedirectResponse
+    public function update(CourierProfileUpdateRequest $request): RedirectResponse
     {
-        $courier = Auth::guard('vendor')->user();
+        $courier = Auth::guard('courier')->user();
+
+        // dd($courier);
 
         // Fill the vendor model with all fields from the request
         $courier->fill($request->all());
@@ -51,15 +53,15 @@ class CourierProfileController extends Controller
     {
         $request->validate(['password' => ['required', 'password:courier'],]);
 
-        $admin = Auth::guard('courier')->user();
+        $courier = Auth::guard('courier')->user();
 
         Auth::guard('courier')->logout();
 
-        $admin->delete();
+        $courier->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/courier/login'); // Redirect to admin login after account deletion
+        return Redirect::to('/courier/login'); // Redirect to courier login after account deletion
     }
 }

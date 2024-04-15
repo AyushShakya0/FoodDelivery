@@ -37,7 +37,7 @@ export default function Authenticated({ user, header, children }) {
                             <div className="mt-8 pb-8 text-5xl">
                                 <div>
                                     <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Admin Dashboard
+                                        Dashboard
                                     </NavLink>
                                 </div>
                                 <div>
@@ -45,43 +45,46 @@ export default function Authenticated({ user, header, children }) {
                                         Orders
                                     </NavLink>
                                 </div>
-                                <NavLink href={route('admin_vendor')} active={route().current('admin_vendor')} className="block py-2 px-4 text-sm text-gray-700">
-                                    Vendor
-                                </NavLink>
                                 <div>
-                                    <NavLink href={route('admin_vendor_display')} active={route().current('admin_vendor_display')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Vendor verify
+                                    <NavLink href={route('admin_vendor')} active={route().current('admin_vendor')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Vendor
                                     </NavLink>
+                                </div>
+                                <div>
                                     <NavLink href={route('admin_courier')} active={route().current('admin_courier')} className="block py-2 px-4 text-sm text-gray-700">
                                         Couriers
                                     </NavLink>
+                                </div>
+                                {/* here */}
+
+                                <div className="block py-2 px-4 text-sm text-gray-700 pt-6">
+                                    <button className="" onClick={() => setShowDropdown(!showDropdown)} >
+                                        Verify
+                                    </button>
+                                    {showDropdown && (
+                                        <div className="">
+                                            <div>
+                                                <NavLink href={route('admin_vendor_display')} active={route().current('admin_vendor_display')} className="block py-2 px-4 text-sm text-gray-700 pt-4">
+                                                    Vendors
+                                                </NavLink>
+                                            </div>
+                                            <div>
+                                                <NavLink href={route('admin_courier_display')} active={route().current('admin_courier_display')} className="block py-2 px-4 text-sm text-gray-700 pt-4">Courier</NavLink>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+
                                 </div>
                                 <div>
                                     <NavLink href={route('admin_finance')} active={route().current('admin_finance')} className="block py-2 px-4 text-sm text-gray-700">
                                         Order & Transaction
                                     </NavLink>
                                 </div>
-                                {/* <div>
-                                    <NavLink href={route('admin_setting')} active={route().current('admin_setting')} className="block py-2 px-4 text-sm text-gray-700">
-                                        Settings
-                                    </NavLink>
-                                </div> */}
-                                <div className="block py-2 px-4 text-sm text-gray-700">
-                                    <button className="" onClick={() => setShowDropdown(!showDropdown)}>
-                                        Pending
-                                    </button>
-                                    {showDropdown && (
-                                        <div className="">
-                                            <div>
-                                                <NavLink href={route('admin_setting')} active={route().current('admin_setting')} className="block py-2 px-4 text-sm text-gray-700">Vendor</NavLink>
 
-                                            </div>
-                                            <div>
-                                                <NavLink href={route('admin_setting')} active={route().current('admin_setting')} className="block py-2 px-4 text-sm text-gray-700">Courier</NavLink>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+
                             </div>
                         </div>
 

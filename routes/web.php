@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\CourierProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
@@ -26,6 +27,8 @@ Route::get('/', function () {
     ]);
 });
 
+
+//CUSTOMER
 Route::get('/dashboard', function () {
     $res = Vendor::all();
     $food = Menu::all();
@@ -45,7 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
     Route::get('/restaurantdetails/{id}', [CustomerController::class, 'restaurantdetails'])->name('restaurant.details');
     Route::get('/myprofile', [CustomerController::class, 'myprofile'])->name('myprofile');
     Route::get('/myorders', [CustomerController::class, 'myorders'])->name('myorders');
@@ -57,7 +59,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/mycart', [CustomerController::class, 'cart'])->name('cart');
     Route::get('/orderhistory', [CustomerController::class, 'order_history'])->name('order.history');
 
-    // Route::get('/addtocart/{product_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::patch('/updatecart/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
 
@@ -72,23 +73,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
     Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
-
     Route::get('/order/{id}', [OrderController::class, 'trackorder'])->name('track.order');
-
-
 
 });
 
 require __DIR__ . '/auth.php';
 
 
-
-
-
-
-
-
-
+//ADMIN
 Route::get('/admin/dashboard', function () {
     return Inertia::render('Admin/Dashboard');
 })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
@@ -103,27 +95,19 @@ Route::middleware('auth:admin')->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/orders', [AdminController::class, 'order'])->name('admin_order');
-
-
+    Route::get('/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
 
     Route::get('/admin/vendors', [AdminController::class, 'vendor'])->name('admin_vendor');
     Route::get('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_edit'])->name('vendor.edit');
     Route::patch('/admin/vendor/{id}/edit', [AdminController::class, 'vendor_update'])->name('vendor.update');
     Route::delete('/admin/deletevendor4/{id}', [AdminController::class, 'vendor_delete'])->name('vendor.delete');
 
+
     Route::get('/admin/vendors/verify', [AdminController::class, 'vendor_verify_display'])->name('admin_vendor_display');
     Route::patch('/admin/vendor/{id}/verify', [AdminController::class, 'vendor_verify'])->name('vendor.verify');
 
-
-    // Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
-
-    Route::get('/orders/{id}', [AdminController::class, 'admin_orders_edit'])->name('admin.orders.edit');
-
-
-
-
-
-
+    Route::get('/admin/couriers/verify', [AdminController::class, 'courier_verify_display'])->name('admin_courier_display');
+    Route::patch('/admin/courier/{id}/verify', [AdminController::class, 'courier_verify'])->name('courier.verify');
 
 
     Route::get('/admin/courier', [AdminController::class, 'courier'])->name('admin_courier');
@@ -147,8 +131,7 @@ require __DIR__ . '/adminauth.php';
 
 
 
-
-
+//COURIER
 Route::get('/courier/dashboard', function () {
     return Inertia::render('Courier/Dashboard');
 })->middleware(['auth:courier', 'verified'])->name('courier.dashboard');
@@ -157,24 +140,32 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/profile', [CourierProfileController::class, 'edit'])->name('courier.profile.edit');
     Route::patch('/courier/profile', [CourierProfileController::class, 'update'])->name('courier.profile.update');
     Route::delete('/courier/profile', [CourierProfileController::class, 'destroy'])->name('courier.profile.destroy');
+
+
+    Route::get('/courier/orders', [CourierController::class, 'order'])->name('courier_order');
+    Route::get('/courier/orders/selected', [CourierController::class, 'my_order'])->name('courier_order_selected');
+    Route::get('/orders/{id}', [CourierController::class, 'courier_orders_edit'])->name('courier.orders.edit');
+
+    Route::patch('/orders/{id}', [CourierController::class, 'update'])->name('courier.orders.update');
+
+    Route::get('/courier/orders/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
+    Route::get('/orders/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
+
+
+
+
+
+
+
+
+
 });
-
-
-
-
-
-
 
 
 require __DIR__ . '/courierauth.php';
 
 
-
-
-
-
-
-
+//VENDOR
 Route::get('/vendor/dashboard', function () {
     return Inertia::render('Vendor/Dashboard');
 })->middleware(['auth:vendor', 'verified'])->name('vendor.dashboard');
@@ -191,6 +182,8 @@ Route::middleware('auth:vendor')->group(function () {
     // Route::patch('/vendor/profile', [VendorProfileController::class, 'status_update'])->name('vendor.status.update');
 
 });
+
+
 
 Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

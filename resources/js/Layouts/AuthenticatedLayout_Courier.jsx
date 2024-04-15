@@ -39,13 +39,18 @@ export default function Authenticated({ user, header, children }) {
                                     </NavLink>
                                 </div>
                                 <div>
-                                    <NavLink href={route('admin_order')} active={route().current('admin_order')} className="block py-2 px-4 text-sm text-gray-700">
+                                    <NavLink href={route('courier_order_selected')} active={route().current('courier_order_selected')} className="block py-2 px-4 text-sm text-gray-700">
                                         Your delivery
                                     </NavLink>
                                 </div>
                                 <div>
-                                    <NavLink href={route('admin_order')} active={route().current('admin_order')} className="block py-2 px-4 text-sm text-gray-700">
+                                    <NavLink href={route('courier_order')} active={route().current('courier_order')} className="block py-2 px-4 text-sm text-gray-700">
                                         Pending requests
+                                    </NavLink>
+                                </div>
+                                <div>
+                                    <NavLink href={route('courier_order_history')} active={route().current('courier_order_history')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Your delivery History
                                     </NavLink>
                                 </div>
                             </div>

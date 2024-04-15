@@ -15,25 +15,18 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
         status: checkout.status,
     });
 
-    // const submit = (e) => {
-    //     e.preventDefault();
+    const submit = (e) => {
+        e.preventDefault();
 
-    //     patch(route('orders.update', checkout.id),{
-    //         status: data.status, // Include the updated status in the patch request
-    //         preserveScroll: true
-    //     });
-    // };
-
-    console.log("vendor  11", vendor);
-    console.log("order 11", order);
-
+        patch(route('courier.orders.update', checkout.id), {
+            status: data.status, // Include the updated status in the patch request
+            preserveScroll: true
+        });
+    };
 
     const statusOptions = [
-        'Ordered',
-        'Prepping',
-        'Ready',
         'Delivering',
-        'Reached'
+        'Destination reached'
     ];
 
     return (
@@ -118,11 +111,12 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
 
                 <div>
                     <p className='font-bold text-2xl text-green-600'>
-                    {checkout.status}
+                        {checkout.status}
                     </p>
                 </div>
+
             </div>
-            {/* <form onSubmit={submit} className="mt-6 space-y-6">
+            <form onSubmit={submit} className="mt-6 space-y-6">
 
                 <div>
                     <InputLabel htmlFor="status" value="Status" />
@@ -151,7 +145,7 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
                         <p className="text-sm text-gray-600">Saved.</p>
                     </Transition>
                 </div>
-            </form> */}
+            </form>
         </section>
     );
 }
