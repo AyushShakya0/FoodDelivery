@@ -215,42 +215,38 @@ class AdminController extends Controller
 
 
 
-    public function vendor_verify(Vendor $vendor, Request $request)
-    {
-        try {
-            $vendor->verified = $request->input('verified');
-
-            // Save the changes excluding the password field
-            $vendor->save(['timestamps' => false, 'touch' => false]);
-
-            return response()->json(['message' => 'Vendor verified successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
-    // public function vendor_verifyy(VendorProfileUpdateRequest $request): RedirectResponse
+    // public function vendor_verify(Vendor $vendor, Request $request)
     // {
-    //     $vendor = Auth::guard('vendor')->user();
+    //     try {
+    //         $vendor->verified = $request->input('verified');
 
-    //     // Fill the vendor model with all fields from the request
-    //     $vendor->fill($request->all());
+    //         // Save the changes excluding the password field
+    //         $vendor->save(['timestamps' => false, 'touch' => false]);
 
-    //     // Check if email is being updated
-    //     if ($vendor->isDirty('email')) {
-    //         // If email is being updated, mark email as unverified
-    //         $vendor->email_verified_at = null;
+    //         return response()->json(['message' => 'Vendor verified successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => $e->getMessage()], 500);
     //     }
-
-    //     // Save the changes to the database
-    //     $vendor->save();
-
-    //     // Redirect back to the profile edit page
-    //     return redirect()->route('vendor.profile.edit');
     // }
 
 
+    public function vendor_verify( $vendorid, Request $request): void
+    {
+        // dd($vendorid);
+        $vendor = Vendor::findOrFail($vendorid);
+        $vendor->update([
+            'verified' => "yes"
+        ]);
+    }
 
+
+    public function courier_verify( $courierid, Request $request): void
+    {
+        $courier = Courier::findOrFail($courierid);
+        $courier->update([
+            'verified' => "yes"
+        ]);
+    }
 
 
 

@@ -1,25 +1,40 @@
 import React, { useState } from 'react';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 import DoneIcon from '@mui/icons-material/Done';
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import PrimaryButton from './PrimaryButton';
 
 
 export default function Table_Courier_verify({ couriers, primary, action }) {
-    console.log("couriers from table couriers:", couriers);
+    // console.log("couriers from table couriers:", couriers);
 
-    const [verifiedCourierId, setVerifiedCourierId] = useState(null);
+    // const [verifiedCourierId, setVerifiedCourierId] = useState(null);
 
 
-    const verifyCourier = (id) => {
-        Inertia.post(route('courier.verify', { id }), {
+    // const verifyCourier = (id) => {
+    //     Inertia.post(route('courier.verify', { id }), {
+    //         verified: 'yes',
+    //     }).then(() => {
+    //         setVerifiedCourierId(id);
+    //     }).catch((error) => {
+    //         console.error('Error verifying courier:', error);
+    //         // Handle error, show error message to user, etc.
+    //     });
+    // };
+
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        verified: 'yes',
+    });
+
+    const submit = (e, courierId) => {
+        e.preventDefault();
+
+        // Patch the checkout with the given ID
+        patch(route('courier.verify', courierId), {
             verified: 'yes',
-        }).then(() => {
-            setVerifiedCourierId(id);
-        }).catch((error) => {
-            console.error('Error verifying courier:', error);
-            // Handle error, show error message to user, etc.
+            preserveScroll: true
         });
     };
 
@@ -69,19 +84,19 @@ export default function Table_Courier_verify({ couriers, primary, action }) {
                             <td className="px-6 py-4">{courier.address}</td>
                             <td className="px-6 py-4">
 
-                            <button
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                                    onClick={() => verifyCourier(courier.id)}
-                                >
-                                    <DoneIcon/>
-                                </button>
+                                <form onSubmit={(e) => submit(e, courier.id)} className="">
+                                    {/* Button for submitting */}
+                                    <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
+                                        <PrimaryButton disabled={processing}><DoneIcon /></PrimaryButton>
+                                    </div>
+                                </form>
 
 
                                 <button
                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
                                     onClick={() => deleteCourier(courier.id)}
                                 >
-                                    <DangerousIcon/>
+                                    <DangerousIcon />
                                 </button>
                             </td>
                         </tr>

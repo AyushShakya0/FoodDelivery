@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 import DoneIcon from '@mui/icons-material/Done';
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import PrimaryButton from './PrimaryButton';
 
 
 export default function Table_Vendor_verify({ vendors, primary, action }) {
@@ -11,15 +12,28 @@ export default function Table_Vendor_verify({ vendors, primary, action }) {
 
     const [verifiedVendorId, setVerifiedVendorId] = useState(null);
 
+    // const verifyVendor = (id) => {
+    //     Inertia.post(route('vendor.verify', { id }), {
+    //         verified: 'yes',
+    //     }).then(() => {
+    //         setVerifiedVendorId(id);
+    //     }).catch((error) => {
+    //         console.error('Error verifying vendor:', error);
+    //         // Handle error, show error message to user, etc.
+    //     });
+    // };
 
-    const verifyVendor = (id) => {
-        Inertia.post(route('vendor.verify', { id }), {
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        verified: 'yes',
+    });
+
+    const submit = (e, vendorId) => {
+        e.preventDefault();
+
+        // Patch the checkout with the given ID
+        patch(route('vendor.verify', vendorId), {
             verified: 'yes',
-        }).then(() => {
-            setVerifiedVendorId(id);
-        }).catch((error) => {
-            console.error('Error verifying vendor:', error);
-            // Handle error, show error message to user, etc.
+            preserveScroll: true
         });
     };
 
@@ -69,19 +83,18 @@ export default function Table_Vendor_verify({ vendors, primary, action }) {
                             <td className="px-6 py-4">{vendor.address}</td>
                             <td className="px-6 py-4">
 
-                            <button
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                                    onClick={() => verifyVendor(vendor.id)}
-                                >
-                                    <DoneIcon/>
-                                </button>
-
+                                <form onSubmit={(e) => submit(e, vendor.id)} className="">
+                                    {/* Button for submitting */}
+                                    <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
+                                        <PrimaryButton disabled={processing}><DoneIcon /></PrimaryButton>
+                                    </div>
+                                </form>
 
                                 <button
                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
                                     onClick={() => deleteVendor(vendor.id)}
                                 >
-                                    <DangerousIcon/>
+                                    <DangerousIcon />
                                 </button>
                             </td>
                         </tr>

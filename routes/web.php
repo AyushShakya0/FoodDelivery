@@ -107,10 +107,11 @@ Route::middleware(['auth:admin'])->group(function () {
 
 
     Route::get('/admin/vendors/verify', [AdminController::class, 'vendor_verify_display'])->name('admin_vendor_display');
-    Route::patch('/admin/vendor/{id}/verify', [AdminController::class, 'vendor_verify'])->name('vendor.verify');
+    Route::patch('/admin/vendor/verify/{id}', [AdminController::class, 'vendor_verify'])->name('vendor.verify');
+
 
     Route::get('/admin/couriers/verify', [AdminController::class, 'courier_verify_display'])->name('admin_courier_display');
-    Route::patch('/admin/courier/{id}/verify', [AdminController::class, 'courier_verify'])->name('courier.verify');
+    Route::patch('/admin/courier/verify/{id}', [AdminController::class, 'courier_verify'])->name('courier.verify');
 
 
     Route::get('/admin/courier', [AdminController::class, 'courier'])->name('admin_courier');
