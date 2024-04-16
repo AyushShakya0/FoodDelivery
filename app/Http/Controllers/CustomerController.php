@@ -234,6 +234,12 @@ class CustomerController extends Controller
 
         $cartItem->save();
 
+        $orderIds = $request->order_id;
+
+        Order::whereIn('id', $orderIds)->update([
+            'status' => 'checkedout'
+        ]);
+
         // Return a response, such as a success message or redirect
         return response()->json(['message' => 'Product checked out successfully']);
     }

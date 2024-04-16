@@ -152,8 +152,11 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/orders/{id}', [CourierController::class, 'courier_orders_edit'])->name('courier.orders.edit');
     Route::patch('/courier/orders/{id}', [CourierController::class, 'update'])->name('courier.orders.update');
 
-    Route::get('/courier/orders/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
-    Route::get('/courier/orders/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
+    Route::patch('/courier/orders/status/{id}', [CourierController::class, 'status_update'])->name('courier.order_status.update');
+    Route::patch('/courier/orders/cancel_delivery/{id}', [CourierController::class, 'cancel_delivery'])->name('courier.cancel_delivery');
+
+    Route::get('/courier/delivery/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
+    Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
 
 
 

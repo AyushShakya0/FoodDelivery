@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -10,21 +11,42 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
 export default function UpdateOrderForm({ order, checkout, user, vendor, courier, className = '' }) {
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         status: checkout.status,
     });
 
+    console.log(vendor)
+
     const submit = (e) => {
         e.preventDefault();
-
-        patch(route('courier.orders.update', checkout.id), {
+        patch(route('courier.order_status.update', checkout.id), {
             status: data.status, // Include the updated status in the patch request
             preserveScroll: true
         });
     };
 
+    const cancel = (e) => {
+        e.preventDefault();
+        setShowConfirmation(true); // Show confirmation dialog
+    };
+
+    const confirmCancel = () => {
+        // Handle cancellation confirmation
+        // For example, you can perform the cancellation action here
+        patch(route('courier.cancel_delivery', checkout.id), {
+            preserveScroll: true
+        });
+        setShowConfirmation(false); // Hide confirmation dialog after action
+    };
+
+    const cancelCancellation = () => {
+        setShowConfirmation(false); // Hide confirmation dialog
+    };
+
     const statusOptions = [
+        'Ordered',
         'Delivering',
         'Destination reached'
     ];
@@ -35,9 +57,8 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
                 <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
             </header>
 
-
             {order.map((orders) => (
-                <div>
+                <div key={orders.id}>
                     <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
                         <div className="shrink-0">
                             <img className="h-24 w-24 max-w-full rounded-lg object-cover" src={`http://127.0.0.1:8000/storage/${orders.image}`} alt="food img" />
@@ -57,15 +78,13 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
                                     </p>
                                 </div>
                             </div>
-
                         </div>
                     </li>
                 </div>
-
             ))}
 
             {/* Customization Section */}
-            {checkout.customization && (  // Checking if checkout.customization is not null or undefined
+            {checkout.customization && (
                 <div className="bg-gray-100 p-4 rounded-md">
                     <div className="mb-4">
                         <p className="font-semibold">Customization:</p>
@@ -82,70 +101,88 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
                         <p className="font-semibold">Name:</p>
                         <p>{user.name}</p>
                         <p className="font-semibold">Phone number:</p>
-
                         <p>{user.number}</p>
                         <p className="font-semibold">Address:</p>
-
                         <p>{user.address}, {user.city}, {user.pincode}</p>
                     </div>
                 </div>
 
                 {/* Courier Section */}
                 <div className="w-full md:w-1/2 mb-4 md:pl-2">
-                    {courier ? (
-                        <div>
-                            <p className="font-semibold">Courier</p>
-                            <p className="font-semibold">Name:</p>
-                            <p>{courier.name}</p>
-                            <p className="font-semibold">Phone Number:</p>
-                            <p>{courier.number}</p>
-                        </div>
-                    ) : (
-                        <div>
-                            <p className="font-semibold">Courier: Pending</p>
-                            <p className="font-semibold">Name: </p>
-                            <p className="font-semibold">Phone Number: </p>
-                        </div>
-                    )}
+                    {Array.from(new Set(order.map(order => order.vendor_id))).map(vendorId => {
+                        const vendorInfo = vendor.find(v => v.id === vendorId);
+                        return (
+                            <div key={vendorId} className='mb-2'>
+                                <p className="font-semibold">Vendor</p>
+                                <p className="font-semibold">Name: </p>
+                                <p className="">{vendorInfo?.name || `Vendor-${vendorId}`} </p>
+                                <p className="font-semibold">Phone Number: </p>
+                                <p className="">{vendorInfo?.phone || 'N/A'} </p>
+                                <p className="font-semibold">Address:</p>
+                                <p className="">{vendorInfo?.address || 'N/A'}, {vendorInfo?.city || 'N/A'}</p>
+                            </div>
+                        );
+                    })}
                 </div>
+
 
                 <div>
                     <p className='font-bold text-2xl text-green-600'>
                         {checkout.status}
                     </p>
                 </div>
-
             </div>
-            <form onSubmit={submit} className="mt-6 space-y-6">
 
-                <div>
-                    <InputLabel htmlFor="status" value="Status" />
+            {/* Update Order Form */}
+            {checkout.status !== 'Destination reached' && (
+                <form onSubmit={submit} className="mt-6 space-y-6">
+                    <div>
+                        <InputLabel htmlFor="status" value="Status" />
+                        <SelectInput
+                            id="status"
+                            className="mt-1 block w-full"
+                            options={statusOptions}
+                            value={data.status}
+                            onChange={(e) => setData('status', e.target.value)}
+                        />
+                        <InputError className="mt-2" message={errors.status} />
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
+                        <Transition
+                            show={recentlySuccessful}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <p className="text-sm text-gray-600">Saved.</p>
+                        </Transition>
+                    </div>
+                </form>
+            )}
 
-                    <SelectInput
-                        id="status"
-                        className="mt-1 block w-full"
-                        options={statusOptions}
-                        value={data.status}
-                        onChange={(e) => setData('status', e.target.value)}
-                    />
+            {checkout.status !== 'Destination reached' && (
+                <form onSubmit={cancel} className="mt-6 space-y-6">
+                    <div className="flex items-center gap-4">
+                        <PrimaryButton disabled={processing}>Cancel delivery</PrimaryButton>
+                    </div>
+                </form>
+            )}
 
-                    <InputError className="mt-2" message={errors.status} />
+            {/* Confirmation Dialog */}
+            {showConfirmation && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white p-8 rounded-md shadow-md">
+                        <p>Are you sure you want to cancel the delivery?</p>
+                        <div className="flex justify-end mt-4">
+                            <PrimaryButton onClick={confirmCancel}>Yes</PrimaryButton>
+                            <PrimaryButton onClick={cancelCancellation} className="ml-4">No</PrimaryButton>
+                        </div>
+                    </div>
                 </div>
+            )}
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
-                </div>
-            </form>
         </section>
     );
 }

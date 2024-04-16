@@ -79,6 +79,27 @@ class CourierController extends Controller
         ]);
     }
 
+
+    public function status_update( $checkout, Request $request): void
+    {
+        // dd($request->status);
+        $checkout = Checkout::findOrFail($checkout);
+        $checkout->update([
+            'status' => $request->status
+        ]);
+    }
+
+    public function cancel_delivery( $checkout, Request $request): RedirectResponse
+    {
+        $checkout = Checkout::findOrFail($checkout);
+        $checkout->update([
+            'courier_id' => $request->courier_id,
+            'status' => 'Ordered',
+        ]);
+
+        return redirect()->route('courier_order');
+    }
+
     public function my_order_history(): Response
     {
         $orders = Order::all();

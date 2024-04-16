@@ -3,10 +3,10 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function TrackOrder({ auth, order, fav, checkout }) {
 
-    console.log('authhhh',auth)
-    console.log('fav',fav)
-    console.log('order',order)
-    console.log('checkout',checkout)
+    // console.log('authhhh',auth)
+    // console.log('fav',fav)
+    // console.log('order',order)
+    // console.log('checkout',checkout)
 
     return (
         <AuthenticatedLayout user={auth} order={order} fav={fav}>

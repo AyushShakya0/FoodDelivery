@@ -57,12 +57,11 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
 
             <div className='px5 lg:px-20 '>
                 <section>
-                    <h3 className='text-gray-500 py-0 mt-3'>Home/Nepal/Moyes Royos/3</h3>
-                    <div>
+                    <div className='mt-6'>
                         <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
                     </div>
 
-                    <div className='pt-2 pb-5'>
+                    <div className='pt-3 pb-5'>
                         <h1 className='text-4xl font-semibold'>{vendor.name}</h1>
                         <p className='text-gray-500 mt-1'>
                             {vendor.name}
@@ -74,19 +73,16 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
                                 <LocationOnIcon />
                                 <span>
                                     {/* Kathmandu, Nepal */}
-                                    {vendor.address}
+                                    {vendor.address}, {vendor.city}
                                 </span>
 
                             </p>
                             <p className='text-gray-500 flex items-center gap-3'>
                                 <CalendarTodayIcon />
                                 <span>
-                                    {/* {vendor.name} */}
                                     {vendor.time}
-
                                 </span>
                             </p>
-
                         </div>
 
                     </div>
