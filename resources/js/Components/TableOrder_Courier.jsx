@@ -4,6 +4,10 @@ import PrimaryButton from "./PrimaryButton";
 export default function TableOrder_Courier({ auth, user, courier, vendor, checkout, orders, columns, primary, action }) {
     // Filter checkout records where courier_id is null
     const checkoutsWithoutCourier = checkout.filter(checkout => !checkout.courier_id);
+    // Filter out checkout items with status "Destination reached"
+    const filteredCheckout = checkout.filter(item => item.status !== 'Destination reached');
+    // Check if the authenticated user is a courier for any non "Destination reached" checkout
+    const isCourier = filteredCheckout.some(item => item.courier_id === auth.user.id);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         courier_id: auth.user.id,
@@ -63,17 +67,17 @@ export default function TableOrder_Courier({ auth, user, courier, vendor, checko
                                 <td className="px-6 py-4">{checkouts.address}</td>
                                 <td className="px-6 py-4">{checkouts.status}</td>
                                 <td className="px-6 py-4">
+                                    {isCourier ? (
+                                        <p>Delivery Pending</p>
 
-
-                                    <form onSubmit={(e) => submit(e, checkouts.id)} className="">
-                                        {/* Button for submitting */}
-                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
-                                            <PrimaryButton disabled={processing}>Accept</PrimaryButton>
-                                        </div>
-                                    </form>
+                                    ) : (
+                                        <form onSubmit={(e) => submit(e, checkouts.id)} className="">
+                                            {/* Button for submitting */}
+                                            <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
+                                                <PrimaryButton disabled={processing}>Accept</PrimaryButton>
+                                            </div>
+                                        </form>)}
                                 </td>
-
-                                {/* <a href={route(action, checkouts.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">Accept</a> */}
                             </tr>
                         );
                     })}

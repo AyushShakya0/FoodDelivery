@@ -10,7 +10,7 @@ const columns = [
 ];
 
 export default function All({ auth, orders, checkout, user, courier, vendor }) {
-    console.log('checking', auth.user.verified)
+    console.log('checkout check', checkout)
 
     return (
         <AuthenticatedLayout_Courier
