@@ -9,7 +9,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
-export default function UpdateOrderForm({ order, checkout, user, vendor, courier, className = '' }) {
+export default function UpdateOrderForm({ auth, order, checkout, user, vendor, courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         status: checkout.status,
@@ -26,6 +26,7 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
 
     console.log("vendor  11", vendor);
     console.log("order 11", order);
+    console.log("order 11", auth);
 
 
     const statusOptions = [

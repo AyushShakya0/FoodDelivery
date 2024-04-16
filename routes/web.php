@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
     Route::get('/trackorder', [CustomerController::class, 'trackorder'])->name('track.order');
+    Route::get('/trackorder/{id}', [CustomerController::class, 'trackorder_id'])->name('track.order_id');
 
 });
 

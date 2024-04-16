@@ -24,6 +24,8 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
     };
 
+    console.log("hehe",auth)
+
     const verifiedVendors = vendor.filter(vendor => vendor.verified === 'yes');
 
     const food_available = food.filter(food => food.availability === 'available');
@@ -35,7 +37,6 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
     return (
         <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
             <Head title="Dashboard" />
-
 
             <div className='pb-8'>
                 <section className='relative bg-green h-screen flex items-center' style={{ backgroundImage: `url(./db1.jpg)`, backgroundSize: 'cover' }}>

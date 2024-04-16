@@ -41,7 +41,13 @@ export default function TrackOrders({ checkout, order }) {
                                 <button>and more...</button>
                             </div>
                         )}
+
+                        <div className="flex justify-center mt-4">
+                            <a href={route("track.order_id", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
+                        </div>
                     </Card>
+
+
                 </div>
             </div>
         </div>

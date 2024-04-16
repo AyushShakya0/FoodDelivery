@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkout;
+use App\Models\Courier;
 use Illuminate\Http\Request;
 
 use App\Models\Order;
@@ -189,10 +190,10 @@ class CustomerController extends Controller
         $user_id = Auth::id();
 
         // dd($request->all());
-        $price=$request->price;
-        $quantity=$request->quantity;
+        $price = $request->price;
+        $quantity = $request->quantity;
 
-        $original_price=$price/$quantity;
+        $original_price = $price / $quantity;
 
         // Add the item to the cart
         $cartItem = new Order();
@@ -281,7 +282,7 @@ class CustomerController extends Controller
     {
 
         $user_id = Auth::id();
-        $vendor=Vendor::findOrFail($id);
+        $vendor = Vendor::findOrFail($id);
 
         try {
             // Create Product
@@ -343,6 +344,23 @@ class CustomerController extends Controller
             'fav' => $fav,
             'checkout' => $checkout,
             'auth' => $user,
+        ]);
+    }
+
+    public function trackorder_id($id): Response
+    {
+        $checkout = Checkout::findOrFail($id);
+        $order = $checkout->order_id ? Order::whereIn('id', $checkout->order_id)->get() : [];
+        $vendor = $checkout->vendor_id ? Vendor::whereIn('id', $checkout->vendor_id)->get() : [];
+        $courier = $checkout->courier_id ? Courier::findOrFail($checkout->courier_id) : null;
+        $fav = Favorite::all();
+
+        return Inertia::render('Customer/TrackOrder_ID', [
+            'order' => $order,
+            'fav' => $fav,
+            'checkout' => $checkout,
+            'vendor' => $vendor,
+            'courier' => $courier,
         ]);
     }
 }
