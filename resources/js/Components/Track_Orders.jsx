@@ -14,12 +14,14 @@ export default function TrackOrders({ checkout, order }) {
     const ordersToShow = order.filter(orderItem => checkout.order_id.includes(orderItem.id));
     const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Reached'];
 
+    const mainOrders = ordersToShow.slice(0, 4); // Get first 4 items
+
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full">
-                <div key={checkout.id}>
+                <div key={checkout.id} className="mx-4 md:mx-10">
                     <Card className="w-full h-20p p-4 mb-4 overflow-auto">
-                        <div className="flex space-x-2">
+                        <div className="flex items-center justify-center space-x-2 mb-4">
                             {statuses.map((s) => (
                                 <Chip
                                     key={s}
@@ -29,12 +31,16 @@ export default function TrackOrders({ checkout, order }) {
                                 />
                             ))}
                         </div>
-                        <div className="p-4 flex flex-wrap ">
-                            {ordersToShow.map((listing) => (
-                                <Track_Orders_inside_it key={listing.id} order={listing} />
+                        <div className="p-4 flex flex-wrap gap-4 justify-center">
+                            {mainOrders.map((listing) => (
+                                <Track_Orders_inside_it key={listing.id} order={listing} allOrders={ordersToShow} />
                             ))}
                         </div>
-
+                        {ordersToShow.length > 4 && (
+                            <div className="p-4">
+                                <button>and more...</button>
+                            </div>
+                        )}
                     </Card>
                 </div>
             </div>

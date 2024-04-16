@@ -5,10 +5,6 @@ import UpdateOrderForm from './Partials/UpdateOrderForm';
 
 
 export default function Edit({ auth, orders, checkout, user, courier, vendor }) {
-    // console.log("checkout", checkout)
-    console.log("order", orders)
-    // console.log("user", user)
-    console.log("courier", courier)
 
     // Filter orders based on checkout order_id
     const final_order = orders.filter(order => checkout.order_id.includes(order.id) && order.status === "checkedout");
@@ -40,8 +36,6 @@ export default function Edit({ auth, orders, checkout, user, courier, vendor }) 
 
         // Use userName or any other properties as needed
     }
-
-    console.log("couriersssss", courierObject)
 
     return (
         <AuthenticatedLayout_Admin

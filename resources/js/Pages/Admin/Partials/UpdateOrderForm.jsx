@@ -122,36 +122,6 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, courier
                     </p>
                 </div>
             </div>
-            {/* <form onSubmit={submit} className="mt-6 space-y-6">
-
-                <div>
-                    <InputLabel htmlFor="status" value="Status" />
-
-                    <SelectInput
-                        id="status"
-                        className="mt-1 block w-full"
-                        options={statusOptions}
-                        value={data.status}
-                        onChange={(e) => setData('status', e.target.value)}
-                    />
-
-                    <InputError className="mt-2" message={errors.status} />
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
-                </div>
-            </form> */}
         </section>
     );
 }
