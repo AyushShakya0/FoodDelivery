@@ -1,28 +1,38 @@
+import RestaurantCard from '@/Components/RestaurantCard';
+import Track_Orders from '@/Components/Track_Orders';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
 export default function TrackOrder({ auth, order, fav, checkout }) {
 
-    // console.log('authhhh',auth)
+    // console.log('authhhh',auth.id)
     // console.log('fav',fav)
     // console.log('order',order)
     // console.log('checkout',checkout)
+
+    // Filter checkout items by user_id
+    const userCheckouts = checkout.filter(item => item.user_id === auth.id && item.status !== 'Destination reached');
+
+    // const checkedout_orders = order.filter(orderItem => checkout.order_id.some(id => id === orderItem.id));
+
+    console.log('userCheckouts', userCheckouts)
 
     return (
         <AuthenticatedLayout user={auth} order={order} fav={fav}>
             <Head title="Track Order" />
 
-            <div className='pb-8'>
-                <section className='p-5 lg:p-20 flex justify-center items-center h-full'> {/* Centering content */}
-                    <div>
-                        <h1 className='text-xl font-semibold text-gray-500 pb-8'>Track my Order</h1>
-                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
-                            <ul className="-my-8">
+            <div className='flex justify-center text-2xl '>
+                Track my Order
+            </div>
 
-                            </ul>
+            <div className='pb-8'>
+                <div>
+                    {userCheckouts.map((listing) => (
+                        <div key={listing.id}>
+                            <Track_Orders checkout={listing} order={order} user={auth} />
                         </div>
-                    </div>
-                </section>
+                    ))}
+                </div>
             </div>
         </AuthenticatedLayout>
     );
