@@ -21,34 +21,62 @@ class CourierController extends Controller
     //
     public function order(): Response
     {
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+            ->where('courier_id', null)
+            ->get();
+
+        $courierId = Auth::id();
+        $occupied = Checkout::where('courier_id', $courierId)
+            ->whereNot('status', 'Destination reached')->get();
+
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
         return Inertia::render('Courier/Order_Courier', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
-            'courier' => $courier,
             'vendor' => $vendor,
+            'occupied' => $occupied,
         ]);
     }
 
     public function my_order(): Response
     {
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $courier = Auth::id();
+
+        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+            ->where('courier_id', $courier)
+            ->get();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
         return Inertia::render('Courier/MyOrder_Courier', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
-            'courier' => $courier,
             'vendor' => $vendor,
         ]);
     }
@@ -56,21 +84,27 @@ class CourierController extends Controller
     public function courier_orders_edit($checkoutId): Response
     {
         $checkout = Checkout::findOrFail($checkoutId);
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+
+        $orderIds = $checkout->order_id;
+        $userIds = $checkout->user_id;
+        $vendorIds = $checkout->vendor_id;
+
+        $orders = Order::whereIn('id', $orderIds)
+            ->where('status', 'checkedout')
+            ->get();
+
+        $user = User::where('id', $userIds)->get();
+        $vendor = Vendor::where('id', $vendorIds)->get();
 
         return Inertia::render('Courier/Edit_Order', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
-            'courier' => $courier,
             'vendor' => $vendor,
         ]);
     }
 
-    public function update( $checkout, Request $request): void
+    public function update($checkout, Request $request): void
     {
         // dd($request->courier_id);
         $checkout = Checkout::findOrFail($checkout);
@@ -80,7 +114,7 @@ class CourierController extends Controller
     }
 
 
-    public function status_update( $checkout, Request $request): void
+    public function status_update($checkout, Request $request): void
     {
         // dd($request->status);
         $checkout = Checkout::findOrFail($checkout);
@@ -89,7 +123,7 @@ class CourierController extends Controller
         ]);
     }
 
-    public function cancel_delivery( $checkout, Request $request): RedirectResponse
+    public function cancel_delivery($checkout, Request $request): RedirectResponse
     {
         $checkout = Checkout::findOrFail($checkout);
         $checkout->update([
@@ -102,34 +136,61 @@ class CourierController extends Controller
 
     public function my_order_history(): Response
     {
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $courier = Auth::id();
+
+        $checkout = Checkout::whereIn('status', ['Destination reached'])
+            ->where('courier_id', $courier)
+            ->get();
+
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
 
         return Inertia::render('Courier/MyOrderhistory_Courier', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
-            'courier' => $courier,
             'vendor' => $vendor,
         ]);
     }
 
     public function courier_orders_history($checkoutId): Response
     {
-        $checkout = Checkout::findOrFail($checkoutId);
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $checkout = Checkout::whereIn('status', ['Destination reached'])
+            ->where('courier_id', $checkoutId)
+            ->get();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
         return Inertia::render('Courier/Edit_Order', [
             'orders' => $orders,
             'checkout' => $checkout,
             'user' => $user,
-            'courier' => $courier,
             'vendor' => $vendor,
         ]);
     }

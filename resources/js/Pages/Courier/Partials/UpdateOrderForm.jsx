@@ -10,14 +10,12 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
-export default function UpdateOrderForm({ order, checkout, user, vendor, courier, className = '' }) {
+export default function UpdateOrderForm({ order, checkout, user, vendor, className = '' }) {
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         status: checkout.status,
     });
-
-    console.log(vendor)
 
     const submit = (e) => {
         e.preventDefault();

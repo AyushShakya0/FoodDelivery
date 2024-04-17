@@ -1,7 +1,4 @@
-export default function TableOrder_Courier_Selected({ user, courier, vendor, checkout, orders, columns, primary, action }) {
-
-    const ongoing = checkout.filter(checkout => checkout.status !== 'Destination reached');
-
+export default function TableOrder_Courier_Selected({ user, vendor, checkout, orders, columns, primary, action }) {
 
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
@@ -20,7 +17,7 @@ export default function TableOrder_Courier_Selected({ user, courier, vendor, che
                     </tr>
                 </thead>
                 <tbody>
-                    {ongoing.map((checkouts) => {
+                    {checkout.map((checkouts) => {
                         const matchingUser = user.find(u => u.id === checkouts.user_id);
                         const userName = matchingUser ? matchingUser.name : '';
                         const userNumber = matchingUser ? matchingUser.number : '';

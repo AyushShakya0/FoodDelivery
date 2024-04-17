@@ -9,7 +9,7 @@ const columns = [
     'status',
 ];
 
-export default function All({ auth, orders, checkout, user, courier, vendor }) {
+export default function All({ auth, orders, checkout, user, vendor, occupied }) {
     console.log('checkout check', checkout)
 
     return (
@@ -30,8 +30,8 @@ export default function All({ auth, orders, checkout, user, courier, vendor }) {
                                     columns={columns}
                                     checkout={checkout}
                                     user={user}
-                                    courier={courier}
                                     vendor={vendor}
+                                    occupied={occupied}
                                     primary="Order Number"
                                     action="courier.orders.edit"
                                 />

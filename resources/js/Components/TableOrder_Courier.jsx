@@ -1,14 +1,11 @@
 import { useForm } from "@inertiajs/inertia-react";
 import PrimaryButton from "./PrimaryButton";
 
-export default function TableOrder_Courier({ auth, user, courier, vendor, checkout, orders, columns, primary, action }) {
-    // Filter checkout records where courier_id is null
-    const checkoutsWithoutCourier = checkout.filter(checkout => !checkout.courier_id);
-    // Filter out checkout items with status "Destination reached"
-    const filteredCheckout = checkout.filter(item => item.status !== 'Destination reached');
-    // Check if the authenticated user is a courier for any non "Destination reached" checkout
-    const isCourier = filteredCheckout.some(item => item.courier_id === auth.user.id);
+export default function TableOrder_Courier({ auth, user, vendor, checkout, orders,occupied, columns, primary, action }) {
 
+    const isCourier = occupied.some(item => item.courier_id === auth.user.id);
+
+    console.log("sadfjksadhfj",isCourier)
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         courier_id: auth.user.id,
     });
@@ -39,7 +36,7 @@ export default function TableOrder_Courier({ auth, user, courier, vendor, checko
                     </tr>
                 </thead>
                 <tbody>
-                    {checkoutsWithoutCourier.map((checkouts) => {
+                    {checkout.map((checkouts) => {
                         const matchingUser = user.find(u => u.id === checkouts.user_id);
                         const userName = matchingUser ? matchingUser.name : '';
                         const userNumber = matchingUser ? matchingUser.number : '';
