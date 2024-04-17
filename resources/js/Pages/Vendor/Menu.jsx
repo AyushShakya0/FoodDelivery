@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 
-export default function All({ auth, user ,vendor }) {
+export default function All({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         description: "",
@@ -13,10 +13,8 @@ export default function All({ auth, user ,vendor }) {
         category: "appetizers", // Default category option
         availability: "available",
         customization: [""],
-        vendor_id: vendor.id // Set the vendor ID as default value
+        // vendor_id: vendor.id // Set the vendor ID as default value
     });
-
-    console.log(user);
 
     const submit = (e) => {
         e.preventDefault();

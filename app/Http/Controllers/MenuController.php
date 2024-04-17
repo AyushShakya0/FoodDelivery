@@ -22,20 +22,12 @@ class MenuController extends Controller
 
         return Inertia::render('Vendor/Menu_Display', [
             'menu' => $menus,
-            'vendor' => $vendor,
         ]);
     }
 
     public function add(): Response
     {
-
-        $user_id = Auth::id();
-        $vendor = Vendor::all();
-
         return Inertia::render('Vendor/Menu', [
-            'vendor' => $vendor,
-            'user' => $user_id,
-
         ]);
     }
 
@@ -57,10 +49,7 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-
         $user_id = Auth::id();
-
-        // dd($user_id);
 
         try {
             $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();

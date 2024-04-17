@@ -20,13 +20,16 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
         ]);
     }

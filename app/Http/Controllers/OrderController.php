@@ -19,15 +19,23 @@ class OrderController extends Controller
     {
         $vendor=Auth::id();
 
-        // $checkout = Checkout::all();
-
         $checkout = Checkout::
         whereJsonContains('vendor_id', $vendor)
         ->whereNot('status','Destination reached')
         ->get();
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $courierids = $checkout->pluck('courier_id')->flatten()->toArray();
+        $courier = Courier::whereIn('id', $courierids)->get();
 
         return Inertia::render('Vendor/Order', [
             'orders' => $orders,

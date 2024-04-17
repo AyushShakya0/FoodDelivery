@@ -21,11 +21,24 @@ class VendorController extends Controller
 
     public function order_history(): Response
     {
-        $vendor=Auth::id();
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
+        $vendor = Auth::id();
+
+        $checkout = Checkout::whereJsonContains('vendor_id', $vendor)
+            ->where('status', 'Destination reached')
+            ->get();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $courierids = $checkout->pluck('courier_id')->flatten()->toArray();
+        $courier = Courier::whereIn('id', $courierids)->get();
 
         return Inertia::render('Vendor/OrderHistory_Vendor', [
             'orders' => $orders,
@@ -34,26 +47,6 @@ class VendorController extends Controller
             'courier' => $courier,
         ]);
     }
-
-    // public function order_history(): Response
-    // {
-    //     $vendor = Auth::id();
-
-    //     $checkout = Checkout::where('vendor_id', $vendor)->get();
-    //     $orders = Order::where('user_id', $vendor)
-    //         ->where('status', 'checkedout')
-    //         ->get();
-
-    //     $user = User::all();
-    //     $courier = Courier::all();
-
-    //     return Inertia::render('Vendor/OrderHistory_Vendor', [
-    //         'orders' => $orders,
-    //         'checkout' => $checkout,
-    //         'user' => $user,
-    //         'courier' => $courier,
-    //     ]);
-    // }
 
     public function order_history_details($checkoutId): Response
     {
@@ -70,7 +63,7 @@ class VendorController extends Controller
         ]);
     }
 
-    public function status_update( $id, Request $request): void
+    public function status_update($id, Request $request): void
     {
 
         dd($request->status);

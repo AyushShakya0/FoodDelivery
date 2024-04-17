@@ -15,20 +15,6 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
         status: checkout.status,
     });
 
-    // const submit = (e) => {
-    //     e.preventDefault();
-
-    //     patch(route('orders.update', checkout.id),{
-    //         status: data.status, // Include the updated status in the patch request
-    //         preserveScroll: true
-    //     });
-    // };
-
-    console.log("vendor  11", vendor);
-    console.log("order 11", order);
-    console.log("order 11", auth);
-
-
     const statusOptions = [
         'Ordered',
         'Prepping',

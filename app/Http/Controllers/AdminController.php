@@ -21,11 +21,24 @@ class AdminController extends Controller
 
     public function order(): Response
     {
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+            ->get();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
+        $courierIds = $checkout->pluck('courier_id')->flatten()->toArray();
+        $courier = Courier::whereIn('id', $courierIds)->get();
 
         return Inertia::render('Admin/Order_Admin', [
             'orders' => $orders,
@@ -38,11 +51,25 @@ class AdminController extends Controller
 
     public function order_history(): Response
     {
-        $orders = Order::all();
-        $checkout = Checkout::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+        $checkout = Checkout::whereIn('status', ['Destination reached'])
+            ->get();
+
+        $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+        $orders = Order::where(function ($query) use ($orderIds) {
+            foreach ($orderIds as $orderId) {
+                $query->orWhereJsonContains('id', $orderId);
+            }
+        })->get();
+
+        $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+        $user = User::whereIn('id', $userIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
+        $courierIds = $checkout->pluck('courier_id')->flatten()->toArray();
+        $courier = Courier::whereIn('id', $courierIds)->get();
+
 
         return Inertia::render('Admin/OrderHistory_Admin', [
             'orders' => $orders,
@@ -55,7 +82,7 @@ class AdminController extends Controller
 
     public function vendor()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::where('verified','yes')->get();
 
         return Inertia::render('Admin/Vendor_Admin', [
             'vendors' => $vendors,
@@ -65,21 +92,19 @@ class AdminController extends Controller
 
     public function vendor_verify_display()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::where('verified',null)->get();
 
         return Inertia::render('Admin/Verify_Vendor_Admin', [
             'vendors' => $vendors,
-
         ]);
     }
 
     public function courier_verify_display()
     {
-        $couriers = Courier::all();
+        $couriers = Courier::where('verified',null)->get();
 
         return Inertia::render('Admin/Verify_Courier_Admin', [
             'couriers' => $couriers,
-
         ]);
     }
 
@@ -187,7 +212,7 @@ class AdminController extends Controller
     //     }
     // }
 
-    public function vendor_update(Request $request,$vendorid)
+    public function vendor_update(Request $request, $vendorid)
     {
         $vendor = Vendor::findOrFail($vendorid);
 
@@ -208,10 +233,9 @@ class AdminController extends Controller
     }
 
 
-    public function courier_update(Request $request,$courierid)
+    public function courier_update(Request $request, $courierid)
     {
         $courier = Courier::findOrFail($courierid);
-
 
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -229,7 +253,7 @@ class AdminController extends Controller
     }
 
 
-    public function vendor_verify( $vendorid, Request $request): void
+    public function vendor_verify($vendorid, Request $request): void
     {
         // dd($vendorid);
         $vendor = Vendor::findOrFail($vendorid);
@@ -239,7 +263,7 @@ class AdminController extends Controller
     }
 
 
-    public function courier_verify( $courierid, Request $request): void
+    public function courier_verify($courierid, Request $request): void
     {
         $courier = Courier::findOrFail($courierid);
         $courier->update([
@@ -287,7 +311,7 @@ class AdminController extends Controller
 
     public function courier()
     {
-        $couriers = Courier::all();
+        $couriers = Courier::where('verified','yes')->get();
 
         return Inertia::render('Admin/Courier_Admin', [
             'couriers' => $couriers,
@@ -320,10 +344,19 @@ class AdminController extends Controller
     public function admin_orders_edit($checkoutId): Response
     {
         $checkout = Checkout::findOrFail($checkoutId);
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
-        $vendor = Vendor::all();
+
+        $orderIds = $checkout->order_id;
+        $userIds = $checkout->user_id;
+        $vendorIds = $checkout->vendor_id;
+        $courierIds = $checkout->courier_id;
+
+        $orders = Order::whereIn('id', $orderIds)
+            ->where('status', 'checkedout')
+            ->get();
+
+        $user = User::where('id', $userIds)->get();
+        $vendor = Vendor::where('id', $vendorIds)->get();
+        $courier = Vendor::where('id', $courierIds)->get();
 
         return Inertia::render('Admin/Edit_Order', [
             'orders' => $orders,

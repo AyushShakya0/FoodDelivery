@@ -12,6 +12,7 @@ const columns = [
 
 export default function Menu_Display({ auth, menu }) {
 
+
     return (
         <Router> {/* Wrap your component with BrowserRouter */}
             <AuthenticatedLayout_Vendor

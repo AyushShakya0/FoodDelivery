@@ -1,7 +1,5 @@
 export default function TableOrder_Admin({ user, courier, vendor, checkout, orders, columns, primary, action }) {
 
-    console.log(vendor)
-
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
