@@ -115,11 +115,15 @@ class CustomerController extends Controller
             ->where('status', 'checkedout')
             ->get();
         $fav = Favorite::where('user_id', $user)->get();
+        $checkout = Checkout::where('user_id', $user)
+        ->whereIn('status', ['Destination reached'])
+        ->get();;
 
 
         return Inertia::render('Customer/Order_history', [
             'order' => $order,
             'fav' => $fav,
+            'checkout' => $checkout,
 
         ]);
     }
@@ -327,6 +331,41 @@ class CustomerController extends Controller
         }
     }
 
+    public function order_delete($id)
+    {
+        // Find the trainer by ID
+        $order = Order::find($id);
+
+        // dd($fav);
+
+        if (!$order) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Order not found!');
+        }
+
+        // Delete the trainer
+        $order->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Order deleted successfully!');
+    }
+
+    public function checkout_order_delete($id)
+    {
+        // Find the trainer by ID
+        $order = Order::find($id);
+
+        if (!$order) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Order not found!');
+        }
+
+        // Delete the trainer
+        $order->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Order deleted successfully!');
+    }
 
 
     public function favorite_delete($id)
@@ -338,14 +377,14 @@ class CustomerController extends Controller
 
         if (!$fav) {
             // Trainer not found, you may want to handle this case differently (e.g., show error message)
-            return redirect()->back()->with('error', 'Trainer not found!');
+            return redirect()->back()->with('error', 'Fav not found!');
         }
 
         // Delete the trainer
         $fav->delete();
 
         // Redirect back with success message
-        return redirect()->back()->with('success', 'Trainer deleted successfully!');
+        return redirect()->back()->with('success', 'Fav deleted successfully!');
     }
 
 

@@ -16,9 +16,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
     // Calculate the total price of the items in the cart array
     const totalPrice = cart.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
     const orders = cart.filter(cart => cart.status === null);
-    const shipping = 12;
+    const shipping = 12 * vendor_idss.length;
     const total = totalPrice + shipping;
-
 
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: user.id,

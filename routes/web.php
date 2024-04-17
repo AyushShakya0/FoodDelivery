@@ -81,6 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
     Route::post('/checkout_store', [CustomerController::class, 'checkout_store'])->name('checkout_store');
 
+    Route::delete('/checkout/{id}', [CustomerController::class, 'checkout_order_delete'])->name('checkout.order.delete');
+
+
     Route::get('/trackorder', [CustomerController::class, 'trackorder'])->name('track.order');
     Route::get('/trackorder/{id}', [CustomerController::class, 'trackorder_id'])->name('track.order_id');
 
@@ -193,7 +196,7 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/vendor/orders/history', [VendorController::class, 'order_history'])->name('order_history_vendor');
     Route::get('/vendor/orders/history/{id}', [VendorController::class, 'order_history_details'])->name('order_history_details_vendor');
 
-    Route::patch('/vendor/dashboard/{id}', [VendorController::class, 'status_update'])->name('vendor.status');
+    Route::patch('/vendor/status_update/{id}', [VendorController::class, 'status_update'])->name('vendor.status');
 
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
     Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');

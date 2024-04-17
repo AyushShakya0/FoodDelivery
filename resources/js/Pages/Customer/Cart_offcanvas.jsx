@@ -14,6 +14,7 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
         if (confirm('Are you sure you want to delete this product?')) {
             // Send a DELETE request to the appropriate endpoint
             Inertia.delete(route('order.delete', { id: id }), {
+                preserveScroll:true,
                 onSuccess: () => {
                     // Reload the page after successful deletion
                     Inertia.reload();
@@ -23,6 +24,7 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
                     // Handle error, show error message to user, etc.
                 }
             });
+
         }
     };
 

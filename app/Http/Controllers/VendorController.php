@@ -63,15 +63,22 @@ class VendorController extends Controller
         ]);
     }
 
-    public function status_update($id, Request $request): void
-    {
 
-        dd($request->status);
+    public function status_update(Request $request, $id)
+    {
         $vendor = Vendor::findOrFail($id);
+        // Determine the new status based on the current status
+        $newStatus = $vendor->status === 'open' ? 'closed' : 'open';
+
+        // Update the vendor's status
         $vendor->update([
-            'status' => $request->status
+            'status' => $newStatus
         ]);
+
+        // Return the new status as a response
+        return redirect()->back();
     }
+
 
     public function courier()
     {

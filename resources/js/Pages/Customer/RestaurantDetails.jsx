@@ -31,9 +31,6 @@ const foodTypes = [
 ]
 
 
-
-
-
 export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
     const [foodType, setFoodType] = useState("all")
     const handleFilter = (e) => {

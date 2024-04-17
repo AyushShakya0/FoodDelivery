@@ -6,6 +6,8 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
+import { Inertia } from "@inertiajs/inertia";
+
 
 const CheckoutCard = ({ listing, vendor }) => {
     const [count, setCount] = useState(listing.quantity);
@@ -33,9 +35,9 @@ const CheckoutCard = ({ listing, vendor }) => {
         price: listing.original_price * listing.quantity,
     });
 
-    const submit = async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    const submitt = async (e) => {
+        // e.preventDefault();
+        // e.stopPropagation();
 
         const payload = {
             quantity: count,
@@ -45,11 +47,42 @@ const CheckoutCard = ({ listing, vendor }) => {
 
         console.log('Payload:', payload); // Log the payload
 
-        try {
-            await patch(route('updatecart', listing.id), payload);
-            console.log('Patch request successful');
-        } catch (error) {
-            console.error('Patch request failed', error);
+        // try {
+        //     await patch(route('updatecart', listing.id), payload);
+        //     console.log('Patch request successful');
+        // } catch (error) {
+        //     console.error('Patch request failed', error);
+        // }
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        // e.stopPropagation();
+
+        patch(route('updatecart', listing.id), {
+            quantity: count,
+            price: listing.original_price * count, // Include the updated status in the patch request
+            preserveScroll: true
+        });
+    };
+
+
+    const deleteProduct = (id) => {
+        if (confirm('Are you sure you want to delete this product?')) {
+            // Send a DELETE request to the appropriate endpoint
+            Inertia.delete(route('checkout.order.delete', { id: id }), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    // Reload the page after successful deletion
+                    Inertia.reload();
+                },
+                onError: (error) => {
+                    console.error('Error deleting product:', error);
+                    // Handle error, show error message to user, etc.
+                }
+            });
+
+
         }
     };
 
@@ -94,7 +127,7 @@ const CheckoutCard = ({ listing, vendor }) => {
                             </Transition>
 
                             <div>
-                                <button type="submit" className=" py-2 px-4 "><CloseIcon /></button>
+                                <button type="submit" onClick={() => deleteProduct(listing.id)} className=" py-2 px-4 "><CloseIcon /></button>
                             </div>
                         </div>
                     </div>
