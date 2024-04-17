@@ -17,8 +17,15 @@ class OrderController extends Controller
 {
     public function index(): Response
     {
+        $vendor=Auth::id();
+
+        // $checkout = Checkout::all();
+
+        $checkout = Checkout::
+        whereJsonContains('vendor_id', $vendor)
+        ->whereNot('status','Destination reached')
+        ->get();
         $orders = Order::all();
-        $checkout = Checkout::all();
         $user = User::all();
         $courier = Courier::all();
 
@@ -33,9 +40,17 @@ class OrderController extends Controller
     public function edit($checkoutId): Response
     {
         $checkout = Checkout::findOrFail($checkoutId);
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
+
+        $orderIds = $checkout->order_id;
+        $userIds = $checkout->user_id;
+        $courierIds = $checkout->courier_id;
+
+        $orders = Order::whereIn('id', $orderIds)
+        ->where('status','checkedout')
+        ->get();
+
+        $user = User::where('id', $userIds)->get();
+        $courier = Courier::where('id', $courierIds)->get();
 
         return Inertia::render('Vendor/Edit_Order', [
             'orders' => $orders,
@@ -45,7 +60,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update( $checkout, Request $request): void
+    public function update($checkout, Request $request): void
     {
 
         // dd($request->status);
@@ -106,6 +121,4 @@ class OrderController extends Controller
         //     'order' => $order,
         // ]);
     }
-
-
 }

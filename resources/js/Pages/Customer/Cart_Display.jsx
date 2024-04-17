@@ -5,13 +5,9 @@ import Cart from '@/Components/Cart/Cart';
 
 
 export default function Cart_Display({ auth, cart, menus ,order }) {
-    // console.log("cart",cart);
-    // console.log("food",menus);
-    // console.log("auth",auth.user.id);
 
     const userMenus = cart.filter(cartItem => cartItem.user_id === auth.user.id );
 
-    // const filteredMenus = cart.filter(cartItem => cartItem.menu_id === menus.id);
     console.log("userMenus",userMenus);
 
     return (

@@ -24,18 +24,8 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
     };
 
-    console.log("hehe",auth)
-
-    const verifiedVendors = vendor.filter(vendor => vendor.verified === 'yes');
-
-    const food_available = food.filter(food => food.availability === 'available');
-
-    const orders = order.filter(order => order.status === null);
-
-
-
     return (
-        <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
+        <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
             <Head title="Dashboard" />
 
             <div className='pb-8'>
@@ -64,7 +54,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                 <section className='p-5 lg:p-20 lg:pb-0'>
                     <p className='text-xl font-semibold text-gray-500 pb-8'>Popular Items</p>
                     <Slider {...settings}>
-                        {food_available.map((listing) => (
+                        {food.map((listing) => (
                             <MultiItemCarousel key={listing.id} listing={listing} />
                         ))}
                     </Slider>
@@ -74,7 +64,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                     <div>
                         <h1 className='text-xl font-semibold text-gray-500 pb-8'>Popular Restaurants</h1>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 '>
-                            {verifiedVendors.map((listing) => (
+                            {vendor.map((listing) => (
                                 <div key={listing.id}>
                                     <RestaurantCard listing={listing} fav={fav} vendor={vendor} user={auth.user} />
                                 </div>

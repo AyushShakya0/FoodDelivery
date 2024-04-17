@@ -14,7 +14,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function TrackOrder_ID({ order, checkout, vendor, courier, auth, fav, className = '' }) {
 
-    console.log(vendor)
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
 

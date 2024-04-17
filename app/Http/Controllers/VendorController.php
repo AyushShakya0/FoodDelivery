@@ -10,6 +10,8 @@ use App\Models\Courier;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 use Inertia\Response;
 
@@ -19,6 +21,7 @@ class VendorController extends Controller
 
     public function order_history(): Response
     {
+        $vendor=Auth::id();
         $orders = Order::all();
         $checkout = Checkout::all();
         $user = User::all();
@@ -32,15 +35,35 @@ class VendorController extends Controller
         ]);
     }
 
+    // public function order_history(): Response
+    // {
+    //     $vendor = Auth::id();
+
+    //     $checkout = Checkout::where('vendor_id', $vendor)->get();
+    //     $orders = Order::where('user_id', $vendor)
+    //         ->where('status', 'checkedout')
+    //         ->get();
+
+    //     $user = User::all();
+    //     $courier = Courier::all();
+
+    //     return Inertia::render('Vendor/OrderHistory_Vendor', [
+    //         'orders' => $orders,
+    //         'checkout' => $checkout,
+    //         'user' => $user,
+    //         'courier' => $courier,
+    //     ]);
+    // }
+
     public function order_history_details($checkoutId): Response
     {
         $checkout = Checkout::findOrFail($checkoutId);
-        $orders = Order::all();
-        $user = User::all();
-        $courier = Courier::all();
+        $order = $checkout->order_id ? Order::whereIn('id', $checkout->order_id)->get() : [];
+        $user = $checkout->user_id ? User::whereIn('id', $checkout->user_id)->get() : [];
+        $courier = $checkout->courier_id ? Courier::findOrFail($checkout->courier_id) : null;
 
         return Inertia::render('Vendor/Edit_Order', [
-            'orders' => $orders,
+            'orders' => $order,
             'checkout' => $checkout,
             'user' => $user,
             'courier' => $courier,

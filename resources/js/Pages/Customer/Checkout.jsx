@@ -10,14 +10,11 @@ import TextInput from '@/Components/TextInput';
 
 
 export default function Checkout({ auth, cart, vendors, user, fav }) {
-    const userMenus = cart.filter(cartItem => {
-        return cartItem.user_id === auth.user.id && cartItem.status !== "checkedout";
-    });
-    const userMenuIds = userMenus.map(cartItem => cartItem.id);
-    const vendor_idss = userMenus.map(cartItem => cartItem.vendor_id);
+    const userMenuIds = cart.map(cartItem => cartItem.id);
+    const vendor_idss = cart.map(cartItem => cartItem.vendor_id);
 
-    // Calculate the total price of the items in the userMenus array
-    const totalPrice = userMenus.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
+    // Calculate the total price of the items in the cart array
+    const totalPrice = cart.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
     const orders = cart.filter(cart => cart.status === null);
     const shipping = 12;
     const total = totalPrice + shipping;
@@ -37,11 +34,6 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
         e.preventDefault();
         setData({ ...data, price: total }); // Update total before submission
         post(route("checkout_store"), { ...data }); // Pass data to the backend
-
-        // patch(route('updatecart', userMenuIds),{
-        //     status: datas.status, // Include the updated status in the patch request
-        //     preserveScroll: true
-        // });
         reset(); // Reset form after successful submission
     };
 
@@ -64,7 +56,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                         <div className="px-4 py-6 sm:px-8 sm:py-10">
                                             <div className="flow-root">
                                                 <ul className="-my-8">
-                                                    {userMenus.map((listing) => (
+                                                    {cart.map((listing) => (
                                                         <CheckoutCard key={listing.id} listing={listing} vendor={vendors} />
                                                     ))}
 

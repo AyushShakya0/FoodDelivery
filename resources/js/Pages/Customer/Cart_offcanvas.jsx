@@ -7,16 +7,8 @@ import { Inertia } from '@inertiajs/inertia';
 
 export default function Cart_offcanvas({ open, onClose, order, user }) {
 
-    const userMenus = order.filter(orders => {
-        return orders.user_id === user && orders.status !== "checkedout";
-    });
-    const userMenuIds = userMenus.map(orders => orders.id);
-
-    // Calculate the total price of the items in the userMenus array
-    const totalPrice = userMenus.reduce((total, orders) => total + parseInt(orders.price), 0);
-
-
-    console.log("user menusss from cart canvas",userMenus)
+    // Calculate the total price of the items in the order array
+    const totalPrice = order.reduce((total, orders) => total + parseInt(orders.price), 0);
 
     const deleteProduct = (id) => {
         if (confirm('Are you sure you want to delete this product?')) {
@@ -82,7 +74,7 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
                                             <div className="mt-8">
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                                        {userMenus.map((product) => (
+                                                        {order.map((product) => (
                                                             <li key={product.id} className="flex py-6">
                                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                     <img

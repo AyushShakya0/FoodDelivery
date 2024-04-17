@@ -38,19 +38,9 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
 
     const { id } = usePage().props; // Access route parameters
 
-    console.log('lll',menus);
-    console.log('mmm',vendor);
-
-    const vendorMenus = menus.filter(menuItem => menuItem.vendor_id === vendor.id && menuItem.availability === 'available');
-
-    const orders = order.filter(order => order.status === null);
-
-
-
-
     return (
         <AuthenticatedLayout
-            user={auth.user} order={orders} fav={fav}
+            user={auth.user} order={order} fav={fav}
         // header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <Head title="Restaurant Details" />
@@ -137,20 +127,14 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
                     <div className='flex lg:w-[80%] lg:pl-10 pt-5'>
                         <div className="flex-1">
                             <div className="space-y-5">
-                                {vendorMenus.map((listing) => (
+                                {menus.map((listing) => (
                                     <MenuCard key={listing.id} listing={listing}/>
                                 ))}
                             </div>
                         </div>
                     </div>
                 </section>
-
-
-
             </div>
-
-
-
         </AuthenticatedLayout>
 
     );

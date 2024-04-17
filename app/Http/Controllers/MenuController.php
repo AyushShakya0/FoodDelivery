@@ -17,20 +17,14 @@ class MenuController extends Controller
 {
     public function index(): Response
     {
-        $menu = Menu::all();
-        $vendor = Vendor::all();
-        $user_id = Auth::id();
-
-
+        $vendor = Auth::user();
+        $menus = Menu::where('vendor_id', $vendor->id)->get();
 
         return Inertia::render('Vendor/Menu_Display', [
-            'menu' => $menu,
-            'user' => $user_id,
+            'menu' => $menus,
             'vendor' => $vendor,
-
         ]);
     }
-
 
     public function add(): Response
     {
@@ -47,18 +41,18 @@ class MenuController extends Controller
 
     public function show($id)
     {
-       // Product Detail
-       $product = Menu::find($id);
-       if(!$product){
-         return response()->json([
-            'message'=>'Product Not Found.'
-         ],404);
-       }
+        // Product Detail
+        $product = Menu::find($id);
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product Not Found.'
+            ], 404);
+        }
 
-       // Return Json Response
-       return response()->json([
-          'menu' => $product
-       ],200);
+        // Return Json Response
+        return response()->json([
+            'menu' => $product
+        ], 200);
     }
 
     public function store(Request $request)
@@ -69,7 +63,7 @@ class MenuController extends Controller
         // dd($user_id);
 
         try {
-            $imageName = Str::random(32).".".$request->image->getClientOriginalExtension();
+            $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
 
             // Create Product
             Menu::create([
@@ -103,27 +97,27 @@ class MenuController extends Controller
         try {
             // Find product
             $menu = Menu::find($id);
-            if(!$menu){
-              return response()->json([
-                'message'=>'Product Not Found.'
-              ],404);
+            if (!$menu) {
+                return response()->json([
+                    'message' => 'Product Not Found.'
+                ], 404);
             }
 
             //echo "request : $request->image";
             $menu->name = $request->name;
             $menu->description = $request->description;
 
-            if($request->image) {
+            if ($request->image) {
 
                 // Public storage
                 $storage = Storage::disk('public');
 
                 // Old iamge delete
-                if($storage->exists($menu->image))
+                if ($storage->exists($menu->image))
                     $storage->delete($menu->image);
 
                 // Image name
-                $imageName = Str::random(32).".".$request->image->getClientOriginalExtension();
+                $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
                 $menu->image = $imageName;
 
                 // Image save in public folder
@@ -136,12 +130,12 @@ class MenuController extends Controller
             // Return Json Response
             return response()->json([
                 'message' => "menu successfully updated."
-            ],200);
+            ], 200);
         } catch (\Exception $e) {
             // Return Json Response
             return response()->json([
                 'message' => "Something went really wrong!"
-            ],500);
+            ], 500);
         }
     }
 
@@ -160,17 +154,17 @@ class MenuController extends Controller
     {
         // Detail
         $product = Menu::find($id);
-        if(!$product){
-          return response()->json([
-             'message'=>'Product Not Found.'
-          ],404);
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product Not Found.'
+            ], 404);
         }
 
         // Public storage
         $storage = Storage::disk('public');
 
         // Iamge delete
-        if($storage->exists($product->image))
+        if ($storage->exists($product->image))
             $storage->delete($product->image);
 
         // Delete Product
@@ -179,8 +173,6 @@ class MenuController extends Controller
         // Return Json Response
         return response()->json([
             'message' => "Product successfully deleted."
-        ],200);
+        ], 200);
     }
-
-
 }

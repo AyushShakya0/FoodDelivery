@@ -17,6 +17,8 @@ use App\Models\Favorite;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,13 +32,19 @@ Route::get('/', function () {
 
 //CUSTOMER
 Route::get('/dashboard', function () {
-    $res = Vendor::all();
-    $food = Menu::all();
-    $order= Order::all();
-    $fav= Favorite::all();
+
+    $user = Auth::id();
+
+    $order = Order::where('user_id', $user)
+        ->where('status', null)
+        ->get();
+    $fav = Favorite::where('user_id', $user)->get();
+
+    $vendor = Vendor::where('verified','yes')->get();
+    $food = Menu::where('availability','available')->get();
 
     return Inertia::render('Dashboard', [
-        'vendor' => $res,
+        'vendor' => $vendor,
         'food' => $food,
         'order' => $order,
         'fav' => $fav,
@@ -124,9 +132,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/finance', [AdminController::class, 'finance'])->name('admin_finance');
     Route::get('/admin/setting', [AdminController::class, 'setting'])->name('admin_setting');
+
 });
-
-
 
 require __DIR__ . '/adminauth.php';
 
@@ -160,15 +167,7 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
 
 
-
-
-
-
-
-
-
 });
-
 
 require __DIR__ . '/courierauth.php';
 
@@ -183,12 +182,6 @@ Route::middleware('auth:vendor')->group(function () {
     Route::get('/vendor/profile', [VendorProfileController::class, 'edit'])->name('vendor.profile.edit');
     Route::patch('/vendor/profile', [VendorProfileController::class, 'update'])->name('vendor.profile.update');
     Route::delete('/vendor/profile', [VendorProfileController::class, 'destroy'])->name('vendor.profile.destroy');
-
-    // Route::patch('/vendor/status', [VendorProfileController::class, 'status_update'])->name('vendor.status');
-
-
-    // Route::patch('/vendor/profile', [VendorProfileController::class, 'status_update'])->name('vendor.status.update');
-
 });
 
 
@@ -221,23 +214,8 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     // Route::get('products/{id}', [MenuController::class, 'show']);
     // Route::post('products', [MenuController::class, 'store']);
 
-
-
-    // Route::get('/menu/{id}/toggleAvailability', [MenuController::class,'toggleAvailability'])->name('menu.toggleAvailability');
     Route::patch('/menu/{id}/toggleAvailability', 'MenuController@toggleAvailability')->name('menu.toggleAvailability');
 
-
-
-
-
-    // Route::post('/uploadfood', [MenuController::class, 'store'])->name('menu.store');
-
-
-    // Route::get('/menu/show', [MenuController::class,'show'])->name('menu.show');
-    // Route::post('/menu/insert', [VendorController::class,'insert'])->name('menu.insert');
 });
-
-
-
 
 require __DIR__ . '/vendorauth.php';

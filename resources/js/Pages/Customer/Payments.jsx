@@ -10,8 +10,7 @@ import { useState } from 'react';
 
 
 export default function Cart_Display({ auth, vendor, food,order }) {
-    console.log(vendor);
-    console.log(food);
+
     const [openSideBar, setOpenSideBar] = useState(false);
 
     return (

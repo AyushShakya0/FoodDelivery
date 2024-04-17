@@ -1,7 +1,5 @@
 export default function Table({ auth, checkout, orders, user, courier, columns, primary, action }) {
 
-    const filteredCheckouts = checkout.filter(checkouts => checkouts.vendor_id.includes(auth.user.id)  && checkouts.status !== 'Destination reached');
-
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -18,7 +16,7 @@ export default function Table({ auth, checkout, orders, user, courier, columns, 
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredCheckouts.map((checkouts) => {
+                    {checkout.map((checkouts) => {
                         const matchingUser = user.find(u => u.id === checkouts.user_id);
                         const userName = matchingUser ? matchingUser.name : '';
                         const userNumber = matchingUser ? matchingUser.number : '';

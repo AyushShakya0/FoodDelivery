@@ -10,16 +10,7 @@ const columns = [
     'Action',
 ];
 
-export default function Courier_Vendor({ auth, menu, user, vendor }) {
-    // Filter menus based on user ID
-    const filteredMenus = menu.filter(menuItem => menuItem.vendor_id === user);
-
-    console.log("filteredMenus:", filteredMenus);
-
-    const isVerified = vendor.some(vendor => vendor.id === user && vendor.verified === 'yes');
-
-    console.log("isVerified:", isVerified);
-
+export default function Menu_Display({ auth, menu }) {
 
     return (
         <Router> {/* Wrap your component with BrowserRouter */}
@@ -33,9 +24,9 @@ export default function Courier_Vendor({ auth, menu, user, vendor }) {
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900">
-                                {isVerified ? (
+                                {auth.user.verified === 'yes' ? (
                                     <div className="p-6 text-gray-900">
-                                        <Table_Menu menus={filteredMenus} columns={columns} primary="menu number"></Table_Menu>
+                                        <Table_Menu menus={menu} columns={columns} primary="menu number"></Table_Menu>
                                         <a href={route('menu.add')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                             Add Menu
                                         </a>

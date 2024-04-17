@@ -11,15 +11,10 @@ import { Transition } from '@headlessui/react';
 
 export default function Dashboard({ auth }) {
     const user = usePage().props.auth.user;
-    console.log("user",user.id);
-
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         status: user.status,
     });
-
-
-    console.log("status",data.status);
 
     const submit = (e) => {
         e.preventDefault();

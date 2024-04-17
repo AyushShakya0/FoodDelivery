@@ -9,13 +9,6 @@ import { Favorite } from '@mui/icons-material';
 
 
 export default function Favorites_offcanvas({ open, onClose, fav, user }) {
-
-    const userMenus = fav.filter(fav => {
-        return fav.user_id === user;
-    });
-
-
-
     return (
         <Transition.Root show={open}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -68,7 +61,7 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
                                                 </h2>
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                                        {userMenus.map((product) => (
+                                                        {fav.map((product) => (
                                                             <li key={product.id} className="flex py-6">
                                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                     <img

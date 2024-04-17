@@ -24,24 +24,20 @@ class CustomerController extends Controller
 {
     //
 
-    // public function dashboard()
-    // {
-    //     $res = Vendor::all();
-    //     $food = Menu::all();
-    //     return Inertia::render('Dashboard', [
-    //         'vendor'=>$res,
-    //         'food'=>$food,
-    //     ]);
-    // }
-
     public function restaurantdetails($id)
     {
+
+        $user = Auth::id();
         $ven = Vendor::findOrFail($id);
-        $menus = Menu::all();
-        $cart = Order::all();
-        $fav = Favorite::all();
 
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
+        $menus = Menu::where('vendor_id', $ven->id)
+            ->where('availability', 'available')
+            ->get();
 
         return Inertia::render('Customer/RestaurantDetails', [
             'vendor' => $ven,
@@ -54,10 +50,15 @@ class CustomerController extends Controller
 
     public function cart()
     {
-        $cart = Order::all();
+        $user = Auth::id();
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
+
         $menus = Menu::all();
         $vendors = Vendor::all();
-        $fav = Favorite::all();
+
 
 
         return Inertia::render('Customer/Checkout', [
@@ -72,10 +73,13 @@ class CustomerController extends Controller
     public function checkout()
     {
         $user = Auth::user();
-        $cart = Order::all();
+        $users = Auth::id();
+        $cart = Order::where('user_id', $users)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $users)->get();
         $menus = Menu::all();
         $vendors = Vendor::all();
-        $fav = Favorite::all();
 
         return Inertia::render('Customer/Checkout', [
             'cart' => $cart,
@@ -89,8 +93,11 @@ class CustomerController extends Controller
 
     public function myprofile()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
+        $user = Auth::id();
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/Profile_Display', [
@@ -103,8 +110,11 @@ class CustomerController extends Controller
 
     public function order_history()
     {
-        $order = Order::all();
-        $fav = Favorite::all();
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', 'checkedout')
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/Order_history', [
@@ -116,13 +126,14 @@ class CustomerController extends Controller
 
     public function favorites()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-
-
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
         return Inertia::render('Customer/Favorites', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
 
         ]);
@@ -130,13 +141,15 @@ class CustomerController extends Controller
 
     public function myorders()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/MyOrders', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
 
         ]);
@@ -144,13 +157,15 @@ class CustomerController extends Controller
 
     public function address()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/Address', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
 
         ]);
@@ -158,13 +173,15 @@ class CustomerController extends Controller
 
     public function notification()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/Notification', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
 
         ]);
@@ -172,13 +189,15 @@ class CustomerController extends Controller
 
     public function payments()
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-
+        $user = Auth::id();
+        $order = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
 
 
         return Inertia::render('Customer/Payments', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
 
         ]);
@@ -334,13 +353,18 @@ class CustomerController extends Controller
 
     public function trackorder(): Response
     {
-        $cart = Order::all();
-        $fav = Favorite::all();
-        $checkout = Checkout::all();
+        $users = Auth::id();
+        $order = Order::where('user_id', $users)
+            ->where('status', 'checkedout')
+            ->get();
+        $fav = Favorite::where('user_id', $users)->get();
+        $checkout = Checkout::where('user_id', $users)
+            ->whereNotIn('status', ['Destination reached'])
+            ->get();;
         $user = Auth::user();
 
         return Inertia::render('Customer/TrackOrder', [
-            'order' => $cart,
+            'order' => $order,
             'fav' => $fav,
             'checkout' => $checkout,
             'auth' => $user,
@@ -349,11 +373,13 @@ class CustomerController extends Controller
 
     public function trackorder_id($id): Response
     {
+        $user = Auth::id();
+        $fav = Favorite::where('user_id', $user)->get();
+
         $checkout = Checkout::findOrFail($id);
         $order = $checkout->order_id ? Order::whereIn('id', $checkout->order_id)->get() : [];
         $vendor = $checkout->vendor_id ? Vendor::whereIn('id', $checkout->vendor_id)->get() : [];
         $courier = $checkout->courier_id ? Courier::findOrFail($checkout->courier_id) : null;
-        $fav = Favorite::all();
 
         return Inertia::render('Customer/TrackOrder_ID', [
             'order' => $order,

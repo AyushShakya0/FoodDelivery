@@ -4,8 +4,7 @@ import Profile from '@/Components/Profile/Profile';
 
 
 export default function Cart_Display({ auth, vendor, food ,order, fav }) {
-    console.log(vendor);
-    console.log(food);
+
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
             <Head title="Dashboard" />

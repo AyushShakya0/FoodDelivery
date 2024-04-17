@@ -11,17 +11,13 @@ import { useState } from 'react';
 
 
 export default function MyOrders({ auth, vendor, food ,order }) {
-    console.log(vendor);
-    console.log(food);
+
     const [openSideBar, setOpenSideBar] = useState(false);
 
     return (
 
         <div>
             <Head title="My orders" />
-
-
-
             <div className='lg:flex'>
                 <div className='sticky background-red-500' style={{ position: 'relative', width: '100%' }}>
                     {/* <div className='sticky h-[80vh] lg:w-{20%} background-red-500'> */}
