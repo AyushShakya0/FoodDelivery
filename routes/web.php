@@ -166,7 +166,6 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/delivery/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
     Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
 
-
 });
 
 require __DIR__ . '/courierauth.php';
@@ -194,9 +193,7 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::get('/vendor/orders/history', [VendorController::class, 'order_history'])->name('order_history_vendor');
     Route::get('/vendor/orders/history/{id}', [VendorController::class, 'order_history_details'])->name('order_history_details_vendor');
 
-
     Route::patch('/vendor/dashboard/{id}', [VendorController::class, 'status_update'])->name('vendor.status');
-
 
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
     Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');

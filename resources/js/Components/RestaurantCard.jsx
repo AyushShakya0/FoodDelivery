@@ -13,8 +13,6 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
     const isFavoritedByUser = fav.some(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id);
 
-    const favorite = fav.filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id);
-
     const favoriteIds = fav
     .filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id)
     .map(favorite => favorite.id);
@@ -32,13 +30,6 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
         post(route("addfavorite", { id: listing.id }));
         reset(); // Reset form after successful submission
     };
-
-    console.log("user",user)
-    console.log('vendor',vendor)
-    console.log('fav',favoriteIds)
-
-
-
 
 
     const removeFavorite = (id) => {

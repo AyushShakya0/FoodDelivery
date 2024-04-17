@@ -26,6 +26,8 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
         }
     };
 
+
+
     return (
         <Transition.Root show={open}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -75,7 +77,7 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                         {order.map((product) => (
-                                                            <li key={product.id} className="flex py-6">
+                                                            <li key={product.id} className="flex py-6" >
                                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                     <img
                                                                         src={`http://127.0.0.1:8000/storage/${product.image}`}
@@ -98,12 +100,12 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
                                                                         <p className="text-gray-500">Qty {product.quantity}</p>
 
                                                                         <div className="flex">
-                                                                        <button
-                                                                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                                            onClick={() => deleteProduct(product.id)}
-                                                                        >
-                                                                            Remove
-                                                                        </button>
+                                                                            <button
+                                                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                                onClick={() => deleteProduct(product.id)}
+                                                                            >
+                                                                                Remove
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -1,14 +1,41 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Favorite } from '@mui/icons-material';
+import { Inertia } from "@inertiajs/inertia";
+import { Card, Chip, IconButton } from '@mui/material';
+
+
 
 
 
 export default function Favorites_offcanvas({ open, onClose, fav, user }) {
+
+    const onClickHandler = (product) => {
+        console.log(product.vendor_id);
+        Inertia.visit(route("restaurant.details", { id: product.vendor_id }));
+    };
+
+
+    const removeFavorite = (id) => {
+
+        // console.log('works till here',id)
+        Inertia.delete(route('favorites.delete', id), {
+            onSuccess: () => {
+                // Reload the page after successful deletion
+                Inertia.reload();
+            },
+            onError: (error) => {
+                console.error('Error deleting vendor:', error);
+                // Handle error, show error message to user, etc.
+            }
+        });
+    };
+
+
     return (
         <Transition.Root show={open}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -62,7 +89,8 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                         {fav.map((product) => (
-                                                            <li key={product.id} className="flex py-6">
+                                                            <li key={product.id} className="flex py-6" onClick={() => onClickHandler(product)}>
+                                                            {/* <li key={product.id} className="flex py-6" > */}
                                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                     <img
                                                                         src={`http://127.0.0.1:8000/storage/${product.image}`}
@@ -89,12 +117,12 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
                                                                     <div className="flex flex-1 items-end justify-between text-sm">
                                                                         <p className="text-gray-500">{product.status}</p>
                                                                         <div className="flex">
-                                                                            <button
-                                                                                type="button"
-                                                                                className="font-medium text-red-600 hover:text-indigo-500"
-                                                                            >
-                                                                                <FavoriteIcon />
-                                                                            </button>
+                                                                            <IconButton onClick={() => removeFavorite(product.id)}>
+
+
+                                                                                <FavoriteIcon className='text-red-600' />
+                                                                            </IconButton>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
