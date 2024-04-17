@@ -27,7 +27,9 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("addfavorite", { id: listing.id }));
+        post(route("addfavorite", { id: listing.id }),{
+            preserveScroll: true,
+        });
         reset(); // Reset form after successful submission
     };
 
@@ -36,6 +38,7 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
         // console.log('works till here',id)
         Inertia.delete(route('favorites.delete', { id: favoriteIds }), {
+            preserveScroll: true,
             onSuccess: () => {
                 // Reload the page after successful deletion
                 Inertia.reload();

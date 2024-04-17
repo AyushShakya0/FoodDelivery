@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import MultiItemCarousel from '@/Components/MultiItemCarousel';
 import RestaurantCard from '@/Components/RestaurantCard';
 import { Grid, Divider, Typography, FormControl, RadioGroup, Radio, FormControlLabel } from '@mui/material';
@@ -7,6 +7,10 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { useState } from 'react';
 import MenuCard from '@/Components/MenuCard';
+import { Card, Chip, IconButton } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Inertia } from "@inertiajs/inertia";
 
 
 
@@ -38,6 +42,40 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
 
     const { id } = usePage().props; // Access route parameters
 
+    const { data, setData, post, processing, errors, reset } = useForm({
+        vendor: vendor.id,
+    });
+
+    const isFavoritedByUser = fav.some(favorite => favorite.user_id === auth.user.id && favorite.vendor_id === vendor.id);
+
+    const favoriteIds = fav
+        .filter(favorite => favorite.user_id === auth.user.id && favorite.vendor_id === vendor.id)
+        .map(favorite => favorite.id);
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("addfavorite", { id: vendor.id }),{
+            preserveScroll: true
+        });
+        reset(); // Reset form after successful submission
+    };
+
+
+    const removeFavorite = (id) => {
+
+        Inertia.delete(route('favorites.delete', { id: favoriteIds }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Reload the page after successful deletion
+                Inertia.reload();
+            },
+            onError: (error) => {
+                console.error('Error deleting vendor:', error);
+                // Handle error, show error message to user, etc.
+            }
+        });
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user} order={order} fav={fav}
@@ -54,8 +92,7 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
                     <div className='pt-3 pb-5'>
                         <h1 className='text-4xl font-semibold'>{vendor.name}</h1>
                         <p className='text-gray-500 mt-1'>
-                            {vendor.name}
-                            {/* {vendor.description} */}
+                            {vendor.description}
                             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio ab saepe voluptas blanditiis deleniti quia ut repellendus explicabo accusantium non laboriosam quos eaque iusto a, soluta necessitatibus aperiam mollitia quam!
                         </p>
                         <div className='space-y-3 mt-2'>
@@ -75,6 +112,19 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
                             </p>
                         </div>
 
+                    </div>
+                    <div>
+                        {isFavoritedByUser ? (
+                            <IconButton onClick={() => removeFavorite(vendor.id)}>
+                                <FavoriteIcon className='text-red-600' />
+                            </IconButton>
+                        ) : (
+                            <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
+                                <button type="submit" className="">
+                                    <FavoriteBorderIcon />
+                                </button>
+                            </form>
+                        )}
                     </div>
                 </section>
                 <Divider />
@@ -128,7 +178,7 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav }) {
                         <div className="flex-1">
                             <div className="space-y-5">
                                 {menus.map((listing) => (
-                                    <MenuCard key={listing.id} listing={listing}/>
+                                    <MenuCard key={listing.id} listing={listing} />
                                 ))}
                             </div>
                         </div>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react'; // Import usePage hook
 // import { route } from '@inertiajs/inertia-react';
 
 const MenuCard = ({ listing }) => {
     const [count, setCount] = useState(1);
-
-    // console.log("listing",listing)
+    const { props: { success } } = usePage(); // Access success message from props
 
     const { data, setData, post, processing, errors, reset } = useForm({
         quantity: count,
@@ -41,13 +40,20 @@ const MenuCard = ({ listing }) => {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("addtocart", { id: listing.id }));
+        post(route("addtocart", { id: listing.id }),{
+            preserveScroll:true
+        });
         reset(); // Reset form after successful submission
     };
 
     return (
         <div className="relative">
             <div key={listing.id}>
+                {success && ( // Check if success message exists
+                    <div className="bg-green-200 text-green-800 p-3 mb-3 rounded">
+                        {success}
+                    </div>
+                )}
                 <div className="lg:flex items-center justify-between">
                     <div className="lg:flex items-center lg:gap-5">
                         <img className="w-[7rem] h-[7rem] object-cover" src={`http://127.0.0.1:8000/storage/${listing.image}`} alt="food img" />

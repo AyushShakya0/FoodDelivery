@@ -227,10 +227,8 @@ class CustomerController extends Controller
 
         $cartItem->save();
 
-
-
         // Return a response, such as a success message or redirect
-        return response()->json(['message' => 'Product added to cart successfully']);
+        return redirect()->back()->with('success', 'Product added to cart successfully');
     }
 
 
@@ -319,7 +317,7 @@ class CustomerController extends Controller
 
             // Save Image in Storage folder
             // Redirect back to the index page or any other appropriate page
-            return Inertia::location(route('dashboard'));
+            return Inertia::location(url()->previous());
         } catch (\Exception $e) {
             // Handle exception
             // Log the exception if necessary

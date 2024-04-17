@@ -21,9 +21,9 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
 
 
     const removeFavorite = (id) => {
-
         // console.log('works till here',id)
         Inertia.delete(route('favorites.delete', id), {
+            preserveScroll: true,
             onSuccess: () => {
                 // Reload the page after successful deletion
                 Inertia.reload();
