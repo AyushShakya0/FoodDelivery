@@ -12,6 +12,9 @@ const statusColors = {
 
 export default function TrackOrders({ checkout, order }) {
     const ordersToShow = order.filter(orderItem => checkout.order_id.includes(orderItem.id));
+console.log(order)
+console.log(ordersToShow)
+
     const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Reached'];
 
     const mainOrders = ordersToShow.slice(0, 4); // Get first 4 items

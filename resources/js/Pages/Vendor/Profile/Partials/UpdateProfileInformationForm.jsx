@@ -22,8 +22,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         name: user.name,
         email: user.email,
         image: user.image,
+        description: user.description,
         address: user.address,
-        // number: user.number,
+        number: user.number,
         city: user.city,
         cuisine: user.cuisine,
         time1: user.time1, // Add time1 to form state
@@ -96,6 +97,21 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.image} />
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="description" value="description" />
+
+                    <TextInput
+                        id="description"
+                        className="mt-1 block w-full"
+                        value={data.description}
+                        onChange={(e) => setData('description', e.target.value)}
+                        autoComplete="description" // Assuming you want to autocomplete for address
+                    />
+
+                    <InputError className="mt-2" message={errors.description} />
+                </div>
+
+
 
                 <div>
                     <InputLabel htmlFor="address" value="address" />
@@ -111,7 +127,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.address} />
                 </div>
 
-                {/* <div>
+                <div>
                     <InputLabel htmlFor="Number" value="Number" />
 
                     <TextInput
@@ -122,7 +138,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.number} />
-                </div> */}
+                </div>
 
                 <div>
                     <InputLabel htmlFor="time" value="time" />

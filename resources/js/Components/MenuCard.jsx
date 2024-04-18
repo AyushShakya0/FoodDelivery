@@ -7,6 +7,16 @@ import { useForm, usePage } from '@inertiajs/react'; // Import usePage hook
 const MenuCard = ({ listing }) => {
     const [count, setCount] = useState(1);
     const { props: { success } } = usePage(); // Access success message from props
+    // const [checkOut,setCheckOut] = useState([])
+    // const [itemn,setCheckOut] = useState([])
+
+
+    // const addToCart = {
+        // itemName =
+        // itemPrice = data.price,
+        // itemQuantity = data.count
+    // }
+    // console.log(addToCart)
 
     const { data, setData, post, processing, errors, reset } = useForm({
         quantity: count,
@@ -46,6 +56,8 @@ const MenuCard = ({ listing }) => {
         reset(); // Reset form after successful submission
     };
 
+    // console.log(object)
+
     return (
         <div className="relative">
             <div key={listing.id}>
@@ -67,7 +79,7 @@ const MenuCard = ({ listing }) => {
                     <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
                         <div className="absolute top-0 right-0 flex items-center">
                             <div className='p-2'>
-                                <RemoveCircleIcon onClick={handleDecrement} />
+                                <RemoveCircleIcon onClick={handleDecrement}/>
                                 <span className='p-2'>{count} </span>
                                 <AddCircleIcon onClick={handleIncrement} />
                             </div>

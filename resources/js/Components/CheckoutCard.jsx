@@ -46,13 +46,6 @@ const CheckoutCard = ({ listing, vendor }) => {
         };
 
         console.log('Payload:', payload); // Log the payload
-
-        // try {
-        //     await patch(route('updatecart', listing.id), payload);
-        //     console.log('Patch request successful');
-        // } catch (error) {
-        //     console.error('Patch request failed', error);
-        // }
     };
 
     const submit = (e) => {
@@ -67,24 +60,7 @@ const CheckoutCard = ({ listing, vendor }) => {
     };
 
 
-    const deleteProduct = (id) => {
-        if (confirm('Are you sure you want to delete this product?')) {
-            // Send a DELETE request to the appropriate endpoint
-            Inertia.delete(route('checkout.order.delete', { id: id }), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    // Reload the page after successful deletion
-                    Inertia.reload();
-                },
-                onError: (error) => {
-                    console.error('Error deleting product:', error);
-                    // Handle error, show error message to user, etc.
-                }
-            });
 
-
-        }
-    };
 
 
     return (

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('image')->nullable();
             $table->string('address')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->string('number')->nullable();
             $table->string('city')->nullable();
             $table->string('verified')->nullable();
             $table->integer('rating')->nullable();

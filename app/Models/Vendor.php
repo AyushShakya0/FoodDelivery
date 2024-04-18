@@ -24,6 +24,7 @@ class Vendor extends Authenticatable
         'email',
         'password',
         'number',
+        'description',
         'address',
         'city',
         'image',

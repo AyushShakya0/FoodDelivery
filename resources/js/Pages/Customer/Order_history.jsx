@@ -12,6 +12,9 @@ export default function Order_history({ auth, order, fav, checkout }) {
             <Head title="Dashboard" />
 
             <div className='pb-8'>
+                <div className='flex justify-center text-2xl '>
+                    Order History
+                </div>
                 <div>
                     {checkout.map((listing) => (
                         <div key={listing.id}>

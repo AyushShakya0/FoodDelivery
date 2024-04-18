@@ -13,7 +13,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
         image: user.image,
         address: user.address,
-        phone_number: user.phone_number,
+        number: user.number,
         city: user.city,
     });
 
@@ -104,13 +104,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <TextInput
                         id="number"
                         className="mt-1 block w-full"
-                        value={data.phone_number}
-                        onChange={(e) => setData('phone_number', e.target.value)}
+                        value={data.number}
+                        onChange={(e) => setData('number', e.target.value)}
                     // required
                     // autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.phone_number} />
+                    <InputError className="mt-2" message={errors.number} />
                 </div>
 
                 <div>

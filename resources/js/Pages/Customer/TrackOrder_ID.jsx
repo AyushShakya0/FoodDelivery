@@ -1,109 +1,82 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import SelectInput from "@/Components/SelectInput.jsx";
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Chip, IconButton } from '@mui/material';
-
+import { Chip } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
+export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, fav, className = '' }) {
 
-export default function TrackOrder_ID({ order, checkout, vendor, courier, auth, fav, className = '' }) {
-
+    console.log('ven', vendor)
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
+            <div className="fixed inset-0 flex justify-center items-center bg-gray-200"> {/* Fixed container covering entire viewport */}
+                <section className="w-full h-90vh bg-white shadow-md rounded-md p-8 overflow-auto mt-20 mb-4 ml-4 mr-4"> {/* Adjusted width and height */}
+                    <header className="mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
+                    </header>
 
-            <section className={className}>
-                <header>
-                    <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
-                </header>
-
-
-                {order.map((orders) => (
-                    <div>
-                        <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
-                            <div className="shrink-0">
-                                <img className="h-24 w-24 max-w-full rounded-lg object-cover" src={`http://127.0.0.1:8000/storage/${orders.image}`} alt="food img" />
-                            </div>
-
-                            <div className="relative flex flex-1 flex-col justify-between">
-                                <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                                    <div className="pr-8 sm:pr-5">
-                                        <p className="text-base font-semibold text-gray-900">{orders.name}</p>
-                                    </div>
-
-                                    <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"> Qty- {orders.quantity}</p>
-                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">${orders.price}</p>
-                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
-                                            {/* {vendor.find(vendor => vendor.id === orders.vendor_id) ? vendor.find(vendor => vendor.id === orders.vendor_id).name : `Vendor-${orders.vendor_id}`} */}
-                                        </p>
+                    {/* Order Information */}
+                    <div className="grid grid-cols-5 gap-6">
+                        {order.map((orders, index) => (
+                            <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
+                                <div className="p-4">
+                                    <div className="flex items-center space-x-4">
+                                        <div className="w-24 h-24 flex-shrink-0 overflow-hidden">
+                                            <img
+                                                className="w-full h-full object-cover rounded-lg"
+                                                src={`http://127.0.0.1:8000/storage/${orders.image}`}
+                                                alt="food img"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-lg font-semibold text-gray-900">{orders.name}</p>
+                                            <p className="text-gray-400 text-sm">Qty: {orders.quantity}</p>
+                                            <p className="text-gray-400 text-sm">${orders.price}</p>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </li>
+                        ))}
                     </div>
 
-                ))}
-
-                {/* Customization Section */}
-                {checkout.customization && (  // Checking if checkout.customization is not null or undefined
-                    <div className="bg-gray-100 p-4 rounded-md">
-                        <div className="mb-4">
-                            <p className="font-semibold">Customization:</p>
+                    {/* Customization Section */}
+                    {checkout.customization && (
+                        <div className="bg-gray-100 p-4 mt-8 rounded-md">
+                            <p className="font-semibold mb-2">Customization:</p>
                             <p>{checkout.customization}</p>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                <div className="bg-gray-100 p-4 mt-4 rounded-md flex flex-wrap">
-                    {/* auth Section */}
-                    <div className="w-full md:w-1/2 mb-4 md:pr-2">
-                        <div>
-                            <p className="font-semibold">auth</p>
-                            <p className="font-semibold">Name:</p>
-                            <p>{auth.name}</p>
-                            <p className="font-semibold">Phone number:</p>
+                    {/* Auth and Courier Sections */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        <div className="bg-gray-100 p-4 rounded-md">
+                            <p className="font-semibold mb-2">Vendor</p>
+                            {vendor.map((vendor, ) => (
+                                <div>
+                                    <p className="mb-1"><span className="font-semibold">Name:</span> {vendor.name}</p>
+                                    <p className="mb-1"><span className="font-semibold">Phone number:</span> {vendor.number}</p>
+                                    <p><span className="font-semibold">Address:</span> {vendor.address}, {vendor.city}</p>
+                                </div>
+                            ))}
 
-                            <p>{auth.number}</p>
-                            <p className="font-semibold">Address:</p>
+                        </div>
 
-                            <p>{auth.address}, {auth.city}, {auth.pincode}</p>
+                        <div className="bg-gray-100 p-4 rounded-md">
+                            <p className="font-semibold mb-2">Courier</p>
+                            {courier ? (
+                                <>
+                                    <p className="mb-1"><span className="font-semibold">Name:</span> {courier.name}</p>
+                                    <p><span className="font-semibold">Phone Number:</span> {courier.number}</p>
+                                </>
+                            ) : (
+                                <p className="font-semibold">Courier: Pending</p>
+                            )}
                         </div>
                     </div>
 
-                    {/* Courier Section */}
-                    <div className="w-full md:w-1/2 mb-4 md:pl-2">
-                        {courier ? (
-                            <div>
-                                <p className="font-semibold">Courier</p>
-                                <p className="font-semibold">Name:</p>
-                                <p>{courier.name}</p>
-                                <p className="font-semibold">Phone Number:</p>
-                                <p>{courier.number}</p>
-                            </div>
-                        ) : (
-                            <div>
-                                <p className="font-semibold">Courier: Pending</p>
-                                <p className="font-semibold">Name: </p>
-                                <p className="font-semibold">Phone Number: </p>
-                            </div>
-                        )}
+                    {/* Checkout Status */}
+                    <div className="flex justify-end mt-8">
+                        <Chip label={checkout.status} color="success" size="large" />
                     </div>
-
-                    <div>
-                        <p className='font-bold text-2xl text-green-600'>
-                            {checkout.status}
-                        </p>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </AuthenticatedLayout>
-
     );
 }
