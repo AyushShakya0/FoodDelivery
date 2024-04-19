@@ -7,17 +7,13 @@ const statusColors = {
     prepping: 'hsl(195, 100%, 50%)',
     ready: 'hsl(165, 100%, 50%)',
     delivering: 'hsl(135, 100%, 50%)',
-    reached: 'hsl(105, 100%, 50%)'
+    'destination reached': 'hsl(105, 100%, 50%)' // Updated key to 'destination reached'
 };
 
 export default function TrackOrders({ checkout, order }) {
-    const ordersToShow = order.filter(orderItem => checkout.order_id.includes(orderItem.id));
-console.log(order)
-console.log(ordersToShow)
+    const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Destination reached']; // Updated to 'Destination reached'
 
-    const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Reached'];
-
-    const mainOrders = ordersToShow.slice(0, 4); // Get first 4 items
+    console.log(checkout.status)
 
     return (
         <div className="flex justify-center mt-10">
@@ -29,17 +25,21 @@ console.log(ordersToShow)
                                 <Chip
                                     key={s}
                                     size="small"
-                                    style={{ backgroundColor: statusColors[s.toLowerCase()] }}
+                                    style={{
+                                        backgroundColor: checkout.status.toLowerCase() === s.toLowerCase() ? statusColors[s.toLowerCase()] : 'transparent',
+                                        fontSize: '14px', // Set font size to 14px
+                                    }}
                                     label={s}
                                 />
                             ))}
                         </div>
+
                         <div className="p-4 flex flex-wrap gap-4 justify-center">
-                            {mainOrders.map((listing) => (
-                                <Track_Orders_inside_it key={listing.id} order={listing} allOrders={ordersToShow} />
+                            {order.slice(0, 4).map((listing) => (
+                                <Track_Orders_inside_it key={listing.id} order={listing} allOrders={order} />
                             ))}
                         </div>
-                        {ordersToShow.length > 4 && (
+                        {order.length > 4 && (
                             <div className="p-4">
                                 <button>and more...</button>
                             </div>
@@ -49,8 +49,6 @@ console.log(ordersToShow)
                             <a href={route("track.order_id", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
                         </div>
                     </Card>
-
-
                 </div>
             </div>
         </div>

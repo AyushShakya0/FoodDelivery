@@ -39,11 +39,33 @@ class CustomerController extends Controller
             ->where('availability', 'available')
             ->get();
 
+        $main_course = Menu::where('vendor_id', $ven->id)
+            ->where('availability', 'available')
+            ->where('category', 'main_course')
+            ->get();
+
+        $appetizers = Menu::where('vendor_id', $ven->id)
+            ->where('availability', 'available')
+            ->where('category', 'appetizers')
+            ->get();
+
+
+        $desserts = Menu::where('vendor_id', $ven->id)
+            ->where('availability', 'available')
+            ->where('category', 'desserts')
+            ->get();
+
+
+
+
         return Inertia::render('Customer/RestaurantDetails', [
             'vendor' => $ven,
             'menus' => $menus,
             'order' => $cart,
             'fav' => $fav,
+            'main_course' => $main_course,
+            'appetizers' => $appetizers,
+            'desserts' => $desserts,
 
         ]);
     }
@@ -116,8 +138,8 @@ class CustomerController extends Controller
             ->get();
         $fav = Favorite::where('user_id', $user)->get();
         $checkout = Checkout::where('user_id', $user)
-        ->whereIn('status', ['Destination reached'])
-        ->get();;
+            ->whereIn('status', ['Destination reached'])
+            ->get();;
 
 
         return Inertia::render('Customer/Order_history', [
