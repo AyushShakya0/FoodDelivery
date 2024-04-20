@@ -70,6 +70,29 @@ class CustomerController extends Controller
         ]);
     }
 
+
+    public function restaurants()
+    {
+        $user = Auth::id();
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
+
+        $menus = Menu::all();
+        $vendors = Vendor::all();
+
+
+
+        return Inertia::render('Customer/Restaurantss', [
+            'order' => $cart,
+            'menus' => $menus,
+            'vendor' => $vendors,
+            'fav' => $fav,
+
+        ]);
+    }
+
     public function cart()
     {
         $user = Auth::id();
@@ -446,6 +469,24 @@ class CustomerController extends Controller
             'checkout' => $checkout,
             'vendor' => $vendor,
             'courier' => $courier,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+
+        $checkout = Checkout::where(function ($query) use ($search) {
+            $query->where('title', 'like', "%$search%")
+                ->orWhere('description', 'like', "%$search%");
+        })
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%");
+            })->get();
+
+        return Inertia::render('Customer/Restaurantss', [
+            'checkout' => $checkout,
+
         ]);
     }
 }

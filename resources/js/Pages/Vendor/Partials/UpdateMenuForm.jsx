@@ -1,138 +1,148 @@
-import Table from '@/Components/Table';
 import AuthenticatedLayout_Vendor from '@/Layouts/AuthenticatedLayout_Vendor';
 import { Head } from '@inertiajs/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import SelectInput from "@/Components/SelectInput.jsx";
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
+import { useForm } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
-import { useState } from 'react';
 
+export default function UpdateMenuForm({ auth, menu }) {
+    const { data, setData, patch, processing, errors, reset } = useForm({
+        name: menu.name,
+        description: menu.description,
+        price: menu.price,
+        image: menu.image,
+        category: menu.category, // Default category option
+        availability: menu.availability,
+        customization: [""],
+        // vendor_id: vendor.id // Set the vendor ID as default value
+    });
 
-const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-    name: '',
-    itemCode: '',
-    description: '',
-    price: '',
-    category: '',
-    images: [],
-    availability: '',
-    customization: ''
-});
-
-
-
-
-const submit = (formData) => {
-    // Prevent the default form submission behavior
-    e.preventDefault();
-
-    // Logic to handle form submission
-    fetch(route('menu.insert'), {
-        method: 'POST', // Sending a POST request to insert data
-        headers: {
-            'Content-Type': 'application/json', // Specify the content type as JSON
-        },
-        body: JSON.stringify(formData), // Convert the formData object to JSON string
-    })
-        .then(response => {
-            if (response.ok) {
-                // Handle successful submission
-                console.log('Data inserted successfully');
-                // Optionally, clear the form fields after successful submission
-                setData({
-                    name: '',
-                    itemCode: '',
-                    description: '',
-                    price: '',
-                    category: '',
-                    images: [],
-                    availability: '',
-                    customization: ''
-                });
-            } else {
-                // Handle error response
-                console.error('Failed to insert data');
-            }
-        })
-        .catch(error => {
-            // Handle network or other errors
-            console.error('Error:', error);
+    const submit = (e) => {
+        e.preventDefault();
+        patch(route('menu.update', menu.id), {
+            name: menu.name || '',
+            description: menu.description || '',
+            price: menu.price || '',
+            category: menu.category || '',
+            availability: menu.availability || '',
+            image: menu.image || '',
+            preserveScroll: true,
+            data: data
         });
-};
+        reset(); // Reset form after successful submission
+    };
 
+    function handleCustomizationChange(index, value) {
+        const newCustomization = [...data.customization];
+        newCustomization[index] = value;
+        setData("customization", newCustomization);
+    }
 
-const statusOptions = [
-    'Available',
-    'Unavailable'
-];
+    function handleAddCustomization() {
+        setData("customization", [...data.customization, ""]);
+    }
 
-
-
-export default function Dashboard_Vendor({ auth, orders }) {
     return (
-        <AuthenticatedLayout_Vendor
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Menu</h2>}
-        >
-            <Head title="Vendor" />
 
 
-            <div>
-                <form onSubmit={submit} className="mt-6 space-y-6">
-                    <div>
-                        <InputLabel htmlFor="name" value="Name" />
+            <div className="max-w-md mx-auto">
+                <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
+                    <div className="flex flex-col">
+                        <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
                         <TextInput
                             id="name"
-                            className="mt-1 block w-full"
+                            name="name"
                             value={data.name}
-                            onChange={(e) => setData({ ...data, name: e.target.value })}
+                            autoComplete="name"
+                            onChange={(e) => setData("name", e.target.value)}
+                            required
                         />
                     </div>
 
-                    {/* Add other input fields for itemCode, description, price, category, images, availability, customization */}
-
-                    <div>
-                        <InputLabel htmlFor="status" value="Status" />
-                        <SelectInput
-                            id="status"
-                            className="mt-1 block w-full"
-                            options={statusOptions}
-                            value={data.availability} // Change to data.availability or data.status as per your data structure
-                            onChange={(e) => setData({ ...data, availability: e.target.value })} // Change to data.availability or data.status as per your data structure
+                    <div className="flex flex-col">
+                        <label htmlFor="description" className="text-sm font-medium text-gray-700">Description</label>
+                        <TextInput
+                            id="description"
+                            name="description"
+                            value={data.description}
+                            autoComplete="description"
+                            onChange={(e) => setData("description", e.target.value)}
+                            required
                         />
-                        <InputError className="mt-2" message={errors.availability} /> {/* Change to errors.availability or errors.status as per your data structure */}
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
-                        <Transition
-                            show={recentlySuccessful}
-                            enter="transition ease-in-out"
-                            enterFrom="opacity-0"
-                            leave="transition ease-in-out"
-                            leaveTo="opacity-0"
+                    <div className="flex flex-col">
+                        <label htmlFor="price" className="text-sm font-medium text-gray-700">Price</label>
+                        <TextInput
+                            id="price"
+                            name="price"
+                            type="number"
+                            value={data.price}
+                            autoComplete="price"
+                            onChange={(e) => setData("price", e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="image" className="text-sm font-medium text-gray-700">Image</label>
+                        <TextInput
+                            id="image"
+                            name="image"
+                            type="file"
+                            autoComplete="image"
+                            onChange={(e) => setData("image", e.target.files[0])}
+                            // required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="category" className="text-sm font-medium text-gray-700">Category</label>
+                        <select
+                            id="category"
+                            name="category"
+                            value={data.category}
+                            onChange={(e) => setData("category", e.target.value)}
+                            required
+                            className="bg-white border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         >
-                            <p className="text-sm text-gray-600">Saved.</p>
-                        </Transition>
+                            <option value="appetizers">Appetizers</option>
+                            <option value="main_course">Main Course</option>
+                            <option value="desserts">Desserts</option>
+                            {/* Add more options as needed */}
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="availability" className="text-sm font-medium text-gray-700">Availability</label>
+                        <select
+                            id="availability"
+                            name="availability"
+                            value={data.availability}
+                            onChange={(e) => setData("availability", e.target.value)}
+                            required
+                            className="bg-white border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+
+                    {data.customization.map((customization, index) => (
+                        <div key={index} className="flex flex-col">
+                            <label htmlFor={`customization${index}`} className="text-sm font-medium text-gray-700">Customization {index + 1}</label>
+                            <TextInput
+                                id={`customization${index}`}
+                                name={`customization${index}`}
+                                value={customization}
+                                onChange={(e) => handleCustomizationChange(index, e.target.value)}
+                            />
+                        </div>
+                    ))}
+
+                    <button type="button" onClick={handleAddCustomization} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Customization</button>
+                    <div>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                     </div>
                 </form>
-
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-        </AuthenticatedLayout_Vendor>
     );
 }

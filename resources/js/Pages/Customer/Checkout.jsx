@@ -42,10 +42,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
 
             <div className=' bg-gray-100'>
                 <form onSubmit={submit} encType="multipart/form-data">
-
-
                     <div className="h-screen bg-gray-100 py-6 sm:py-16 lg:py-8">
-                        <div class="flex items-center justify-center mt-10">
+                        <div class="flex items-center justify-center mt-1">
                             <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
                         </div>
                         <div className="mx-auto px-4 sm:px-6 lg:px-8 flex">
@@ -119,7 +117,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                         </div>
                                     </div>
                                 </div>
-
+{/*
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                     <div className="bg-white shadow">
                                         <div className="px-4 py-6 sm:px-8 sm:py-10">
@@ -133,7 +131,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                     <div className="bg-white shadow">

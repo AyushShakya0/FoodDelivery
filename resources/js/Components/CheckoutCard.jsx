@@ -8,10 +8,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 import { Inertia } from "@inertiajs/inertia";
 
-
 const CheckoutCard = ({ listing, vendor }) => {
     const [count, setCount] = useState(listing.quantity);
-
 
     useEffect(() => {
         setData({
@@ -35,33 +33,16 @@ const CheckoutCard = ({ listing, vendor }) => {
         price: listing.original_price * listing.quantity,
     });
 
-    const submitt = async (e) => {
-        // e.preventDefault();
-        // e.stopPropagation();
-
-        const payload = {
+    const submit = (e) => {
+        e.preventDefault();
+        patch(route('updatecart', listing.id), {
             quantity: count,
             price: listing.original_price * count,
             preserveScroll: true
-        };
-
-        console.log('Payload:', payload); // Log the payload
-    };
-
-    const submit = (e) => {
-        e.preventDefault();
-        // e.stopPropagation();
-
-        patch(route('updatecart', listing.id), {
-            quantity: count,
-            price: listing.original_price * count, // Include the updated status in the patch request
-            preserveScroll: true
+        }).then(() => {
+            console.log("Cart Items in Local Storage:", localStorage.getItem('cartItems'));
         });
     };
-
-
-
-
 
     return (
         <div>

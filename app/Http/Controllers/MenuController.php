@@ -27,8 +27,7 @@ class MenuController extends Controller
 
     public function add(): Response
     {
-        return Inertia::render('Vendor/Menu', [
-        ]);
+        return Inertia::render('Vendor/Menu', []);
     }
 
     public function show($id)
@@ -135,7 +134,7 @@ class MenuController extends Controller
         $menu->availability = $menu->availability === 'available' ? 'unavailable' : 'available';
         $menu->save();
 
-        return response()->json(['message' => 'Availability toggled successfully']);
+        return  redirect()->back();
     }
 
 
@@ -163,5 +162,49 @@ class MenuController extends Controller
         return response()->json([
             'message' => "Product successfully deleted."
         ], 200);
+    }
+
+    public function delete_menuItem($id)
+    {
+        // Find the trainer by ID
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Menu not found!');
+        }
+
+        // Delete the trainer
+        $menu->delete();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Menu deleted successfully!');
+    }
+
+
+    public function edit_menu($menuId): Response
+    {
+        $menu = Menu::findOrFail($menuId);
+
+        return Inertia::render('Vendor/Edit_Menu', [
+            'menu' => $menu,
+        ]);
+    }
+
+
+    public function update_menu($id, Request $request)
+    {
+        // dd($request->status);
+        $menu = Menu::findOrFail($id);
+        $menu->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'image' => $request->image,
+            'category' => $request->category,
+        ]);
+
+        return redirect()->route('menu.index')->with('success', 'Menu updated successfully.');
+
     }
 }

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 
-export default function All({ auth }) {
+export default function Menu({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         description: "",

@@ -7,6 +7,8 @@ import MultiItemCarousel from '@/Components/MultiItemCarousel';
 import RestaurantCard from '@/Components/RestaurantCard';
 import Slider from 'react-slick';
 import Cart_offcanvas from './Customer/Cart_offcanvas';
+import { Grid, Divider } from '@mui/material';
+
 
 
 
@@ -23,6 +25,9 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
         arrows: false
 
     };
+
+    const displayRestaurants = vendor.slice(0, 4);
+
 
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
@@ -52,26 +57,98 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
 
                 <section className='p-5 lg:p-20 lg:pb-0'>
-                    <p className='text-xl font-semibold text-gray-500 pb-8'>Popular Items</p>
+                    <p className='text-xl font-semibold text-gray-500 pb-8'>Categories</p>
                     <Slider {...settings}>
                         {food.map((listing) => (
                             <MultiItemCarousel key={listing.id} listing={listing} />
                         ))}
                     </Slider>
                 </section>
-
-                <section className='p-5 lg:p-20 '>
+                <section className="p-5 lg:p-20">
                     <div>
-                        <h1 className='text-xl font-semibold text-gray-500 pb-8'>Popular Restaurants</h1>
-                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 '>
-                            {vendor.map((listing) => (
+                        <h1 className="text-xl font-semibold text-gray-500 pb-8">Restaurants</h1>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                            {displayRestaurants.map((listing) => (
                                 <div key={listing.id}>
                                     <RestaurantCard listing={listing} fav={fav} vendor={vendor} user={auth.user} />
                                 </div>
                             ))}
+                            <div className="flex justify-end items-center">
+
+                                <Link href={route('restaurants')} className="bg-white text-sm hover:bg-blue-300 text-black font-bold py-4 px-6 rounded-full flex items-center justify-center w-12 h-12 border border-blue-500">
+                                More
+                                </Link>
+
+
+                            </div>
                         </div>
                     </div>
                 </section>
+
+                <Divider />
+
+                <section className="bg-gray-100 py-12 mt-10 mb-10">
+                    <div className="container mx-auto text-center">
+                        <div className="mb-8">
+                            <h2 className="text-red-600 text-2xl font-bold mb-4">What we serve</h2>
+                            <div className="text-4xl text-black mb-6">
+                                <p>Just sit back at home</p>
+                                <p>we will <span className="text-red-500">take care</span></p>
+                            </div>
+                            <p className="text-gray-700 mb-10">Lorem ipsum dolor sit amet consectetur adipisicing e</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <div className="w-1/3 px-4">
+                                <img src="/quick_delivery.png" alt="Quick Delivery" className="mx-auto mb-4 w-32 h-32" />
+                                <h3 className="text-lg font-semibold mb-2">Quick Delivery</h3>
+                                <p className="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <div className="w-1/3 px-4">
+                                <img
+                                    src="/dine_in.png"
+                                    alt="Dine In"
+                                    className="mx-auto mb-4 w-32 h-32" // Adjusted classes
+                                />
+                                <h3 className="text-lg font-semibold mb-2">Super Dine In</h3>
+                                <p className="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <div className="w-1/3 px-4">
+                                <img src="/easy_pickup.png" alt="Easy Pickup" className="mx-auto mb-4 w-32 h-32" />
+                                <h3 className="text-lg font-semibold mb-2">Easy Pick Up</h3>
+                                <p className="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <Divider />
+
+
+                <section className="py-12 mt-10 mb-10">
+                    <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between">
+                        <div className="w-full md:w-1/3 mb-4 md:mb-0">
+                            <img src="/whyGoFood.png" alt="Why GoFood?" className="mx-auto mb-4 md:mb-0 w-72 h-auto" />
+                        </div>
+                        <div className="w-full md:w-2/3 md:pl-8 md:pr-4">
+                            <h2 className="text-4xl font-bold mb-4">Why <span className=" text-green-500">GoFood</span>?</h2>
+                            <p className="text-md mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <ul className="list-disc pl-6 mb-2">
+                                <li className="text-lg mb-2">Convenient Ordering</li>
+                                <p className="text-md mb-2">Lorem ipsum dolor sit amet,incididunt ut labore et dolore magna aliqua.</p>
+
+                                <li className="text-lg mb-2">Fast Delivery</li>
+                                <p className="text-md mb-2">Lorem Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                                <li className="text-lg mb-2">Quality Food</li>
+                                <p className="text-md">Lorem ipsum dolor sctetur labore et dolore magna aliqua.</p>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
 
             </div>
         </AuthenticatedLayout>

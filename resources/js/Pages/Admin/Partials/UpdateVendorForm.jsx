@@ -37,19 +37,6 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
         });
     };
 
-
-    // const submit = (e) => {
-    //     e.preventDefault();
-
-    //     const routeUrl = route('vendor.update', { id: vendor.id }); // Pass the id as an object
-    //     console.log('Route URL:', routeUrl); // Debugging statement
-
-    //     patch(routeUrl, {
-    //         preserveScroll: true,
-    //         data: data
-    //     })
-    // };
-
     return (
         <section className={className}>
             <header>

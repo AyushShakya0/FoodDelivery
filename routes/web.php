@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorProfileController;
+use App\Models\Checkout;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Vendor;
@@ -18,6 +19,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Courier;
+
 
 
 Route::get('/', function () {
@@ -68,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orderhistory', [CustomerController::class, 'order_history'])->name('order.history');
 
     Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
-    Route::patch('/updatecart/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
+    Route::patch('/checkout/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
 
     Route::post('/addfavorite/{id}', [CustomerController::class, 'addfavorite'])->name('addfavorite');
 
@@ -86,6 +90,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/trackorder', [CustomerController::class, 'trackorder'])->name('track.order');
     Route::get('/trackorder/{id}', [CustomerController::class, 'trackorder_id'])->name('track.order_id');
+
+
+    Route::get('/restaurants', [CustomerController::class, 'restaurants'])->name('restaurants');
+
 
 });
 
@@ -176,7 +184,43 @@ require __DIR__ . '/courierauth.php';
 
 //VENDOR
 Route::get('/vendor/dashboard', function () {
-    return Inertia::render('Vendor/Dashboard');
+    $checkout = Checkout::all();
+    $checkout_completed = Checkout::where('status','Destination reached');
+    $menu_completed = Menu::where('availablity','available');
+    $menu = Menu::all();
+
+
+    $vendor=Auth::id();
+
+    $checkouts = Checkout::
+    whereJsonContains('vendor_id', $vendor)
+    ->whereNot('status','Destination reached')
+    ->take(5)
+    ->get();
+
+    $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+    $orders = Order::where(function ($query) use ($orderIds) {
+        foreach ($orderIds as $orderId) {
+            $query->orWhereJsonContains('id', $orderId);
+        }
+    })->get();
+
+    $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+    $users = User::whereIn('id', $userIds)->get();
+
+    $courierids = $checkout->pluck('courier_id')->flatten()->toArray();
+    $couriers = Courier::whereIn('id', $courierids)->get();
+
+    return Inertia::render('Vendor/Dashboard', [
+        'menu' => $menu,
+        'checkout' => $checkout,
+        'checkout_c' => $checkout,
+        'menu_c' => $checkout,
+        'checkouts' => $checkouts,
+        'orders' => $orders,
+        'users' => $users,
+        'couriers' => $couriers,
+    ]);
 })->middleware(['auth:vendor', 'verified'])->name('vendor.dashboard');
 
 
@@ -208,13 +252,16 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::post('/addmenu', [MenuController::class, 'store'])->name('menu.store');
     Route::put('menuupdate/{id}', [MenuController::class, 'update'])->name('menu.update');
     Route::get('/addmenu', [MenuController::class, 'add'])->name('menu.add');
+    Route::get('/editmenu/{id}', [MenuController::class, 'edit_menu'])->name('menu.edit');
+    Route::patch('/editmenu/{id}', [MenuController::class, 'update_menu'])->name('menu.update');
     // Route::delete('menudelete/{id}', [MenuController::class, 'destroy'])->name('menu.store');
 
     // Route::get('products', [MenuController::class, 'index']);
     // Route::get('products/{id}', [MenuController::class, 'show']);
     // Route::post('products', [MenuController::class, 'store']);
 
-    Route::patch('/menu/{id}/toggleAvailability', 'MenuController@toggleAvailability')->name('menu.toggleAvailability');
+    Route::patch('/vendor/menu/{id}', [MenuController::class, 'toggleAvailability'])->name('toggle.availability');
+    Route::delete('/vendor/menu/delete/{id}', [MenuController::class, 'delete_menuItem'])->name('menu.delete');
 
 });
 
