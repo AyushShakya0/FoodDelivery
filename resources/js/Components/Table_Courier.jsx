@@ -50,7 +50,7 @@ export default function Table_Courier({ couriers, primary, action }) {
                             {/* <td className="px-6 py-4">{vendor.id}</td> */}
                             <td className="px-6 py-4">{courier.name}</td>
                             <td className="px-6 py-4">{courier.email}</td>
-                            <td className="px-6 py-4">{courier.phone_number}</td>
+                            <td className="px-6 py-4">{courier.number}</td>
                             <td className="px-6 py-4">{courier.city}</td>
                             <td className="px-6 py-4">{courier.address}</td>
                             <td className="px-6 py-4">

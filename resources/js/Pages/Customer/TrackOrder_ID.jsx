@@ -1,11 +1,11 @@
 import { Chip } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, fav, className = '' }) {
+export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, order_cart, fav, className = '' }) {
 
     console.log('ven', vendor)
     return (
-        <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
+        <AuthenticatedLayout user={auth.user} order={order_cart} fav={fav}>
             <div className="fixed inset-0 flex justify-center items-center bg-gray-200"> {/* Fixed container covering entire viewport */}
                 <section className="w-full h-90vh bg-white shadow-md rounded-md p-8 overflow-auto mt-20 mb-4 ml-4 mr-4"> {/* Adjusted width and height */}
                     <header className="mb-8">

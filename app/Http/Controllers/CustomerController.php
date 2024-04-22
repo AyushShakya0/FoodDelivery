@@ -490,17 +490,24 @@ class CustomerController extends Controller
     public function trackorder(): Response
     {
         $users = Auth::id();
-        $order = Order::where('user_id', $users)
-            ->where('status', 'checkedout')
+
+        $order_cart = Order::where('user_id', $users)
+            ->where('status', null)
             ->get();
         $fav = Favorite::where('user_id', $users)->get();
         $checkout = Checkout::where('user_id', $users)
             ->whereNotIn('status', ['Destination reached'])
             ->get();;
+
+        $order = Order::where('user_id', $users)
+            ->where('status', 'checkedout')
+            ->get();
+
         $user = Auth::user();
 
         return Inertia::render('Customer/TrackOrder', [
             'order' => $order,
+            'order_cart' => $order_cart,
             'fav' => $fav,
             'checkout' => $checkout,
             'auth' => $user,
@@ -512,6 +519,10 @@ class CustomerController extends Controller
         $user = Auth::id();
         $fav = Favorite::where('user_id', $user)->get();
 
+        $order_cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+
         $checkout = Checkout::findOrFail($id);
         $order = $checkout->order_id ? Order::whereIn('id', $checkout->order_id)->get() : [];
         $vendor = $checkout->vendor_id ? Vendor::whereIn('id', $checkout->vendor_id)->get() : [];
@@ -521,6 +532,7 @@ class CustomerController extends Controller
             'order' => $order,
             'fav' => $fav,
             'checkout' => $checkout,
+            'order_cart' => $order_cart,
             'vendor' => $vendor,
             'courier' => $courier,
         ]);
