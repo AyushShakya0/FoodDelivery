@@ -15,7 +15,6 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
 
     // Calculate the total price of the items in the cart array
     const totalPrice = cart.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
-    const orders = cart.filter(cart => cart.status === null);
     const shipping = 12 * vendor_idss.length;
     const total = totalPrice + shipping;
 
@@ -37,7 +36,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} order={orders} fav={fav}>
+        <AuthenticatedLayout user={auth.user} order={cart} fav={fav}>
             <Head title="Checkout" />
 
             <div className=' bg-gray-100'>
@@ -53,9 +52,14 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                         <div className="px-4 py-6 sm:px-8 sm:py-10">
                                             <div className="flow-root">
                                                 <ul className="-my-8">
-                                                    {cart.map((listing) => (
-                                                        <CheckoutCard key={listing.id} listing={listing} vendor={vendors} />
-                                                    ))}
+                                                    {cart.length === 0 ? (
+                                                        <p className="text-gray-500 flex justify-center mt-10">Your cart is empty</p>
+                                                    ) : (
+                                                        cart.map((listing) => (
+                                                            <CheckoutCard key={listing.id} listing={listing} vendor={vendors} />
+                                                        ))
+                                                    )}
+
 
                                                 </ul>
                                             </div>
@@ -117,7 +121,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                         </div>
                                     </div>
                                 </div>
-{/*
+                                {/*
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                     <div className="bg-white shadow">
                                         <div className="px-4 py-6 sm:px-8 sm:py-10">

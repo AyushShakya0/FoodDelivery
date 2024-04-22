@@ -11,13 +11,6 @@ const MenuCard = ({ listing }) => {
     // const [itemn,setCheckOut] = useState([])
 
 
-    // const addToCart = {
-        // itemName =
-        // itemPrice = data.price,
-        // itemQuantity = data.count
-    // }
-    // console.log(addToCart)
-
     const { data, setData, post, processing, errors, reset } = useForm({
         quantity: count,
         name: listing.name,
@@ -48,15 +41,35 @@ const MenuCard = ({ listing }) => {
         }
     };
 
+    // const submit = (e) => {
+    //     e.preventDefault();
+    //     post(route("addtocart", { id: listing.id }),{
+    //         preserveScroll:true
+    //     });
+    //     reset(); // Reset form after successful submission
+    // };
+
     const submit = (e) => {
         e.preventDefault();
-        post(route("addtocart", { id: listing.id }),{
-            preserveScroll:true
+        post(route("addtocart", { id: listing.id }), {
+            preserveScroll: true
+        }).then(() => {
+            // Show success message using react-toastify
+            toast.success('Item added to cart successfully', {
+                position: 'top-right',
+                autoClose: 3000, // Close the toast after 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            reset(); // Reset form after successful submission
+        }).catch((error) => {
+            console.error('Error adding item to cart:', error);
+            // Handle error, show error message to user, etc.
         });
-        reset(); // Reset form after successful submission
     };
-
-    // console.log(object)
 
     return (
         <div className="relative">
@@ -79,7 +92,7 @@ const MenuCard = ({ listing }) => {
                     <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
                         <div className="absolute top-0 right-0 flex items-center">
                             <div className='p-2'>
-                                <RemoveCircleIcon onClick={handleDecrement}/>
+                                <RemoveCircleIcon onClick={handleDecrement} />
                                 <span className='p-2'>{count} </span>
                                 <AddCircleIcon onClick={handleIncrement} />
                             </div>

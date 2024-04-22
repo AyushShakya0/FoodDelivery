@@ -56,8 +56,6 @@ class CustomerController extends Controller
             ->get();
 
 
-
-
         return Inertia::render('Customer/RestaurantDetails', [
             'vendor' => $ven,
             'menus' => $menus,
@@ -93,6 +91,62 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->search;
+
+        $vendors = Vendor::where('name', 'like', "%$search%")
+            ->orWhere('description', 'like', "%$search%")
+            ->orWhere('address', 'like', "%$search%")
+            ->orWhere('city', 'like', "%$search%")
+            ->get();
+
+        $user = Auth::id();
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
+
+        $menus = Menu::all();
+
+        return Inertia::render('Customer/Restaurantss', [
+            'vendor' => $vendors,
+            'order' => $cart,
+            'menus' => $menus,
+            'fav' => $fav,
+        ]);
+    }
+
+
+    public function category(Request $request)
+    {
+        $search = $request->search;
+
+        $menu = Menu::where('name', 'like', "%$search%")
+            ->orWhere('description', 'like', "%$search%")
+            ->orWhere('category', 'like', "%$search%")
+            ->get();
+
+        // Extract unique vendor ids from the menu items
+        $vendorIds = $menu->pluck('vendor_id')->unique()->toArray();
+
+        // Fetch the vendors based on the extracted vendor ids
+        $vendors = Vendor::whereIn('id', $vendorIds)->get();
+
+        $user = Auth::id();
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+        $fav = Favorite::where('user_id', $user)->get();
+
+        return Inertia::render('Customer/Restaurantss', [
+            'vendor' => $vendors,
+            'order' => $cart,
+            'menus' => $menu,
+            'fav' => $fav,
+        ]);
+    }
+
     public function cart()
     {
         $user = Auth::id();
@@ -106,7 +160,7 @@ class CustomerController extends Controller
 
 
 
-        return Inertia::render('Customer/Checkout', [
+        return Inertia::render('Customer/Cart_Display', [
             'cart' => $cart,
             'menus' => $menus,
             'vendors' => $vendors,
@@ -469,24 +523,6 @@ class CustomerController extends Controller
             'checkout' => $checkout,
             'vendor' => $vendor,
             'courier' => $courier,
-        ]);
-    }
-
-    public function search(Request $request)
-    {
-        $search = $request->search;
-
-        $checkout = Checkout::where(function ($query) use ($search) {
-            $query->where('title', 'like', "%$search%")
-                ->orWhere('description', 'like', "%$search%");
-        })
-            ->orWhereHas('category', function ($query) use ($search) {
-                $query->where('title', 'like', "%$search%");
-            })->get();
-
-        return Inertia::render('Customer/Restaurantss', [
-            'checkout' => $checkout,
-
         ]);
     }
 }

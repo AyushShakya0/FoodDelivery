@@ -17,8 +17,6 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
     .filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id)
     .map(favorite => favorite.id);
 
-
-
     const onClickHandler = (e) => {
         console.log(listing.id);
         Inertia.visit(route("restaurant.details", { id: listing.id }));
@@ -32,7 +30,6 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
         });
         reset(); // Reset form after successful submission
     };
-
 
     const removeFavorite = (id) => {
 

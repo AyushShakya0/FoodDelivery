@@ -8,6 +8,9 @@ import RestaurantCard from '@/Components/RestaurantCard';
 import Slider from 'react-slick';
 import Cart_offcanvas from './Customer/Cart_offcanvas';
 import { Grid, Divider } from '@mui/material';
+import { useState } from 'react';
+import { Inertia } from '@inertiajs/inertia';
+import burger from '../../../public/burger.jpg'
 
 
 
@@ -26,8 +29,30 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
     };
 
+
+const staticItems = [
+    { id: 1, name: "Burger", image: '/burger.jpg' },
+    { id: 2, name: "Pizza", image: "./pizza.jpg" },
+    { id: 3, name: "Momo", image: "momo.jpeg" },
+    { id: 4, name: "Sandwich", image: "sandwich.jpg" },
+    { id: 5, name: "Pasta", image: "pasta.jpg" },
+    { id: 6, name: "Pancake", image: "pancake.jpeg" },
+    { id: 7, name: "Cake", image: "cake.jpeg" },
+];
+
     const displayRestaurants = vendor.slice(0, 4);
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Perform actions with the searchQuery state, like making an API call
+        Inertia.visit(route('search', { search: searchQuery })); // Assuming you have a named route 'search' defined in your Laravel routes
+    };
+
+    const handleChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
 
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
@@ -39,7 +64,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                     <div className='max-w-md mx-auto px-5  ml-10'>
                         <p className='text-gray-800 text-xl lg:text-3xl'>Taste the Convenience: Food, Fast and Delivered</p>
                         {/* Logo and Search Container */}
-                        <form className="mt-8">
+                        <form className="mt-8" onSubmit={handleSubmit}>
                             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                             <div className="relative flex justify-start items-center">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -47,19 +72,30 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search Restaurants and more..." required />
-                                <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                                <input
+                                    type="search"
+                                    id="default-search"
+                                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Search Restaurants and more..."
+                                    value={searchQuery}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className="text-white absolute right-2.5 bottom-2.5 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+                                >
+                                    Search
+                                </button>
                             </div>
                         </form>
                     </div>
                 </section>
 
-
-
                 <section className='p-5 lg:p-20 lg:pb-0'>
                     <p className='text-xl font-semibold text-gray-500 pb-8'>Categories</p>
                     <Slider {...settings}>
-                        {food.map((listing) => (
+                        {staticItems.map((listing) => (
                             <MultiItemCarousel key={listing.id} listing={listing} />
                         ))}
                     </Slider>
@@ -76,7 +112,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                             <div className="flex justify-end items-center">
 
                                 <Link href={route('restaurants')} className="bg-white text-sm hover:bg-blue-300 text-black font-bold py-4 px-6 rounded-full flex items-center justify-center w-12 h-12 border border-blue-500">
-                                More
+                                    More
                                 </Link>
 
 
@@ -146,10 +182,51 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                     </div>
                 </section>
 
-
-
-
-
+                <Divider />
+                <footer className="bg-gray-100 text-gray-800 py-8 px-4 md:px-16">
+                    <div className="container mx-auto flex flex-wrap justify-between">
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">WE'RE GOFOOD</h4>
+                            <ul className='text-gray-500 text-md'>
+                                <li>About Us</li>
+                                <li>Available Areas</li>
+                                <li>Delivery Charges</li>
+                                <li>Blog</li>
+                            </ul>
+                        </div>
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">SERVICE HOURS</h4>
+                            <p className='text-gray-500'>08:00 AM to 9:00 PM (NST)</p>
+                        </div>
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">GET HELP</h4>
+                            <ul className='text-gray-500'>
+                                <li>How to Order?</li>
+                                <li>FAQs</li>
+                                <li>Contact Us</li>
+                            </ul>
+                        </div>
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">CALL US</h4>
+                            <p className='text-gray-500'>Kathmandu: 5970477, 4544177, 4540979, 9802034008</p>
+                            <p className='text-gray-500'>Pokhara: 9802859990, 9802853330</p>
+                        </div>
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">DOWNLOAD APP</h4>
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Download Now</button>
+                        </div>
+                        <div className="footer__section mb-4">
+                            <h4 className="text-lg font-semibold mb-2">CONNECT WITH US</h4>
+                            <ul className='text-gray-500'>
+                                <li>Terms of Usage</li>
+                                <li>Privacy Policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="container mx-auto text-center mt-10 mb-1">
+                        <p>© 2020 GoFood Pvt. Ltd. All Rights Reserved</p>
+                    </div>
+                </footer>
             </div>
         </AuthenticatedLayout>
     );

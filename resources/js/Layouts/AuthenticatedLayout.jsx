@@ -45,6 +45,10 @@ export default function Authenticated({ user, header, children, food, order, fav
                                     Restaurants
                                 </NavLink>
 
+                                <NavLink href={route('cart')} active={route().current('cart')}>
+                                    My Cart
+                                </NavLink>
+
                                 <NavLink href={route('track.order')} active={route().current('track.order')}>
                                     Track Order
                                 </NavLink>
@@ -171,7 +175,7 @@ export default function Authenticated({ user, header, children, food, order, fav
 
             <main className='mb-10 flex-grow'>{children}</main>
 
-            <Divider />
+            {/* <Divider />
                 <footer className="bg-gray-100 text-gray-800 py-8 px-4 md:px-16">
                     <div className="container mx-auto flex flex-wrap justify-between">
                         <div className="footer__section mb-4">
@@ -215,7 +219,7 @@ export default function Authenticated({ user, header, children, food, order, fav
                     <div className="container mx-auto text-center mt-8">
                         <p>© 2020 GoFood Pvt. Ltd. All Rights Reserved</p>
                     </div>
-                </footer>
+                </footer> */}
 
         </div>
     );

@@ -94,6 +94,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/restaurants', [CustomerController::class, 'restaurants'])->name('restaurants');
 
+    Route::get('/search', [CustomerController::class, 'search'])->name('search');
+    Route::get('/category', [CustomerController::class, 'category'])->name('category');
+
 
 });
 
@@ -102,7 +105,47 @@ require __DIR__ . '/auth.php';
 
 //ADMIN
 Route::get('/admin/dashboard', function () {
-    return Inertia::render('Admin/Dashboard');
+    $checkout=Checkout::all();
+    $order_ongoing=Checkout::whereNot('status','Destination reached')->get();
+    $courier=Courier::all();
+    $pending_courier=Courier::whereNot('verified','yes')->get();
+    $pending_vendor=Vendor::whereNot('verified','yes')->get();
+    $vendor=Vendor::all();
+
+    $checkouts=Checkout::whereNot('status','Destination reached')->take(5)->get();
+
+    $orderIds = $checkouts->pluck('order_id')->flatten()->toArray();
+    $orders = Order::where(function ($query) use ($orderIds) {
+        foreach ($orderIds as $orderId) {
+            $query->orWhereJsonContains('id', $orderId);
+        }
+    })->get();
+
+    $userIds = $checkouts->pluck('user_id')->flatten()->toArray();
+    $users = User::whereIn('id', $userIds)->get();
+
+    $vendorIds = $checkouts->pluck('vendor_id')->flatten()->toArray();
+    $vendors = Vendor::whereIn('id', $vendorIds)->get();
+
+    $courierIds = $checkouts->pluck('courier_id')->flatten()->toArray();
+    $couriers = Courier::whereIn('id', $courierIds)->get();
+
+
+    return Inertia::render('Admin/Dashboard', [
+        'vendor' => $vendor,
+        'checkout' => $checkout,
+        'order_ongoing' => $order_ongoing,
+        'courier' => $courier,
+        'pending_courier' => $pending_courier,
+        'pending_vendor' => $pending_vendor,
+
+        'orders' => $orders,
+        'users' => $users,
+        'vendors' => $vendors,
+        'couriers' => $couriers,
+        'checkouts' => $checkouts,
+    ]);
+
 })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 Route::middleware('auth:admin')->group(function () {
@@ -250,7 +293,7 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     // Route::get('/menu_add', [MenuController::class, 'index'])->name('menu.index');
     Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
     Route::post('/addmenu', [MenuController::class, 'store'])->name('menu.store');
-    Route::put('menuupdate/{id}', [MenuController::class, 'update'])->name('menu.update');
+    Route::put('menuupdate/{id}', [MenuController::class, 'update'])->name('menu.updates');
     Route::get('/addmenu', [MenuController::class, 'add'])->name('menu.add');
     Route::get('/editmenu/{id}', [MenuController::class, 'edit_menu'])->name('menu.edit');
     Route::patch('/editmenu/{id}', [MenuController::class, 'update_menu'])->name('menu.update');

@@ -10,6 +10,11 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                 <section className="w-full h-90vh bg-white shadow-md rounded-md p-8 overflow-auto mt-20 mb-4 ml-4 mr-4"> {/* Adjusted width and height */}
                     <header className="mb-8">
                         <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
+
+                        {/* Checkout Status */}
+                        <div className="flex justify-end mt-8">
+                            <Chip label={checkout.status} color="success" size="large" />
+                        </div>
                     </header>
 
                     {/* Order Information */}
@@ -48,7 +53,7 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
                         <div className="bg-gray-100 p-4 rounded-md">
                             <p className="font-semibold mb-2">Vendor</p>
-                            {vendor.map((vendor, ) => (
+                            {vendor.map((vendor,) => (
                                 <div>
                                     <p className="mb-1"><span className="font-semibold">Name:</span> {vendor.name}</p>
                                     <p className="mb-1"><span className="font-semibold">Phone number:</span> {vendor.number}</p>
@@ -66,15 +71,12 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                                     <p><span className="font-semibold">Phone Number:</span> {courier.number}</p>
                                 </>
                             ) : (
-                                <p className="font-semibold">Courier: Pending</p>
+                                <p className="font-semibold">Pending</p>
                             )}
                         </div>
                     </div>
 
-                    {/* Checkout Status */}
-                    <div className="flex justify-end mt-8">
-                        <Chip label={checkout.status} color="success" size="large" />
-                    </div>
+
                 </section>
             </div>
         </AuthenticatedLayout>
