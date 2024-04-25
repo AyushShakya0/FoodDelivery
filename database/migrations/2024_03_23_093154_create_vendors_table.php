@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('description')->nullable();
             $table->string('address')->nullable();
-            $table->bigInteger('phone_number')->nullable()->change();
+            $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
-            $table->string('time')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->string('status')->nullable();
             $table->integer('rating')->nullable();
             $table->string('verified')->nullable();

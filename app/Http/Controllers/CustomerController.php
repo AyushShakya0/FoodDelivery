@@ -397,7 +397,6 @@ class CustomerController extends Controller
         return Inertia::render('Customer/Payments', []);
     }
 
-
     public function addfavorite(Request $request, $id)
     {
 

@@ -23,6 +23,9 @@ export default function Dashboard({ auth, checkout, vendor, courier, order_ongoi
     const pending_vendorCount = pending_vendor.length;
     const pending_courierCount = pending_courier.length;
 
+    console.log('pending courier',pending_courier)
+    console.log('pending_vendor',pending_vendor)
+
     return (
         <AuthenticatedLayout_Admin
             user={auth.user}

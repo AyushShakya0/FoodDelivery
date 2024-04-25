@@ -82,7 +82,7 @@ class AdminController extends Controller
 
     public function vendor()
     {
-        $vendors = Vendor::where('verified','yes')->get();
+        $vendors = Vendor::where('verified', 'yes')->get();
 
         return Inertia::render('Admin/Vendor_Admin', [
             'vendors' => $vendors,
@@ -92,7 +92,7 @@ class AdminController extends Controller
 
     public function vendor_verify_display()
     {
-        $vendors = Vendor::where('verified',null)->get();
+        $vendors = Vendor::where('verified', null)->get();
 
         return Inertia::render('Admin/Verify_Vendor_Admin', [
             'vendors' => $vendors,
@@ -101,7 +101,7 @@ class AdminController extends Controller
 
     public function courier_verify_display()
     {
-        $couriers = Courier::where('verified',null)->get();
+        $couriers = Courier::where('verified', null)->get();
 
         return Inertia::render('Admin/Verify_Courier_Admin', [
             'couriers' => $couriers,
@@ -216,14 +216,17 @@ class AdminController extends Controller
     {
         $vendor = Vendor::findOrFail($vendorid);
 
-
+        // dd($request->all());
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($vendor->id)],
-            // 'phone_number' => ['required', 'string', 'max:10'],
+            // 'number' => ['required', 'integer', 'max:10'],
+            'number' => ['required', 'string', 'max:10','min:10'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
+            'start_time' => 'required|string',
+            'end_time' => 'required|string',
         ]);
 
         // Update the vendor with the validated data
@@ -237,14 +240,19 @@ class AdminController extends Controller
     {
         $courier = Courier::findOrFail($courierid);
 
+        // dd($request->all());
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('vendors')->ignore($courier->id)],
-            // 'phone_number' => ['required', 'string', 'max:10'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('couriers')->ignore($courier->id)],
+            'number' => ['required', 'string', 'max:10','min:10'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
         ]);
+
+        // dd($validatedData);
+
 
         // Update the vendor with the validated data
         $courier->update($validatedData);
@@ -311,7 +319,7 @@ class AdminController extends Controller
 
     public function courier()
     {
-        $couriers = Courier::where('verified','yes')->get();
+        $couriers = Courier::where('verified', 'yes')->get();
 
         return Inertia::render('Admin/Courier_Admin', [
             'couriers' => $couriers,

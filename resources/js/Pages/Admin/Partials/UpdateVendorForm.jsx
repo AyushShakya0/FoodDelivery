@@ -16,7 +16,8 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
         number: vendor.number || '',
         address: vendor.address || '',
         city: vendor.city || '',
-        time: vendor.time || '',
+        start_time: vendor.start_time || '',
+        end_time: vendor.end_time || '',
         image: vendor.image || '',
     });
 
@@ -30,7 +31,8 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
             number: vendor.number || '',
             address: vendor.address || '',
             city: vendor.city || '',
-            time: vendor.time || '',
+            start_time: vendor.start_time || '',
+            end_time: vendor.end_time || '',
             image: vendor.image || '',
             preserveScroll: true,
             data: data
@@ -121,17 +123,25 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
                     {errors && errors.city && <InputError message={errors.city[0]} />}
                 </div>
 
+                {/* Time */}
                 <div>
-                    <InputLabel htmlFor="time" value="Time(AM-PM)" />
+                    <InputLabel htmlFor="start_time" value="start_time" />
                     <TextInput
-                        id="time"
-                        className="mt-1 block w-full"
-                        value={data.time}
-                        // onChange={(e) => setData({ ...data, cuisine: e.target.value })}
-                        onChange={(e) => setData('time', e.target.value)}
-
+                        type="time"
+                        value={data.start_time}
+                        onChange={(e) =>setData("start_time", e.target.value)}
                     />
-                    {errors && errors.time && <InputError message={errors.time[0]} />}
+                    <InputError className="mt-2" message={errors.start_time} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="end_time" value="end_time" />
+                    <TextInput
+                        type="time"
+                        value={data.end_time}
+                        onChange={(e) =>setData("end_time", e.target.value)}
+                    />
+                    <InputError className="mt-2" message={errors.end_time} />
                 </div>
 
                 <PrimaryButton type="submit" disabled={processing}>Update</PrimaryButton>

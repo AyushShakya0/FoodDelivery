@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorProfileController;
 use App\Models\Checkout;
@@ -97,6 +98,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', [CustomerController::class, 'search'])->name('search');
     Route::get('/category', [CustomerController::class, 'category'])->name('category');
 
+    //rating and reviews
+    Route::get('/restaurantdetails/reviews/{id}', [RatingController::class, 'restaurant_review'])->name('restaurant.reviews');
+    Route::post('/addreview/{id}', [RatingController::class, 'addreview'])->name('addreview');
+    Route::delete('/review/{id}', [RatingController::class, 'review_delete'])->name('review.delete');
+
+    Route::get('/courier/reviews/{id}', [RatingController::class, 'courier_review'])->name('courier.reviews');
+    Route::post('/addreviewcourier/{id}', [RatingController::class, 'addreview_courier'])->name('addreview.courier');
+    Route::delete('/reviewcourier/{id}', [RatingController::class, 'review_delete_courier'])->name('review.delete.courier');
+
+
+
+
 
 });
 
@@ -108,8 +121,8 @@ Route::get('/admin/dashboard', function () {
     $checkout=Checkout::all();
     $order_ongoing=Checkout::whereNot('status','Destination reached')->get();
     $courier=Courier::all();
-    $pending_courier=Courier::whereNot('verified','yes')->get();
-    $pending_vendor=Vendor::whereNot('verified','yes')->get();
+    $pending_courier = Courier::whereNull('verified')->get();
+    $pending_vendor = Vendor::whereNull('verified')->get();
     $vendor=Vendor::all();
 
     $checkouts=Checkout::whereNot('status','Destination reached')->take(5)->get();
@@ -228,10 +241,9 @@ require __DIR__ . '/courierauth.php';
 //VENDOR
 Route::get('/vendor/dashboard', function () {
     $checkout = Checkout::all();
-    $checkout_completed = Checkout::where('status','Destination reached');
-    $menu_completed = Menu::where('availablity','available');
+    $checkout_completed = Checkout::where('status','Destination reached')->get();
+    $menu_completed = Menu::where('availability','available')->get();
     $menu = Menu::all();
-
 
     $vendor=Auth::id();
 
@@ -257,8 +269,8 @@ Route::get('/vendor/dashboard', function () {
     return Inertia::render('Vendor/Dashboard', [
         'menu' => $menu,
         'checkout' => $checkout,
-        'checkout_c' => $checkout,
-        'menu_c' => $checkout,
+        'checkout_c' => $checkout_completed,
+        'menu_c' => $menu_completed,
         'checkouts' => $checkouts,
         'orders' => $orders,
         'users' => $users,

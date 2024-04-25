@@ -122,7 +122,7 @@ export default function Menu({ auth }) {
                         </select>
                     </div>
 
-                    {data.customization.map((customization, index) => (
+                    {/* {data.customization.map((customization, index) => (
                         <div key={index} className="flex flex-col">
                             <label htmlFor={`customization${index}`} className="text-sm font-medium text-gray-700">Customization {index + 1}</label>
                             <TextInput
@@ -132,9 +132,9 @@ export default function Menu({ auth }) {
                                 onChange={(e) => handleCustomizationChange(index, e.target.value)}
                             />
                         </div>
-                    ))}
+                    ))} */}
 
-                    <button type="button" onClick={handleAddCustomization} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Customization</button>
+                    {/* <button type="button" onClick={handleAddCustomization} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Customization</button> */}
                     <div>
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
                     </div>

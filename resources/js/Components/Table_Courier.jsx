@@ -36,8 +36,8 @@ export default function Table_Courier({ couriers, primary, action }) {
                         <th scope="col" className="px-6 py-3">Name</th>
                         <th scope="col" className="px-6 py-3">Email</th>
                         <th scope="col" className="px-6 py-3">Phone Number</th>
-                        <th scope="col" className="px-6 py-3">City</th>
                         <th scope="col" className="px-6 py-3">Address</th>
+                        <th scope="col" className="px-6 py-3">City</th>
                         <th scope="col" className="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -51,8 +51,8 @@ export default function Table_Courier({ couriers, primary, action }) {
                             <td className="px-6 py-4">{courier.name}</td>
                             <td className="px-6 py-4">{courier.email}</td>
                             <td className="px-6 py-4">{courier.number}</td>
-                            <td className="px-6 py-4">{courier.city}</td>
                             <td className="px-6 py-4">{courier.address}</td>
+                            <td className="px-6 py-4">{courier.city}</td>
                             <td className="px-6 py-4">
 
                                 <a href={route(action, courier.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">edit</a>

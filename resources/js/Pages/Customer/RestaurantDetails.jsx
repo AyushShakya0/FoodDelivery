@@ -11,6 +11,8 @@ import { Card, Chip, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/react';
+
 
 const foodTypes = [
     { label: "All", value: "all", },
@@ -145,6 +147,21 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
                         </div>
                     </div>
                 </section>
+                <Divider />
+                <div className="flex gap-4 mt-4 mb-4">
+                    <span>
+                        <Link href={route("restaurant.details", { id: vendor.id })} className="flex items-center">
+                            Menu
+                        </Link>
+                    </span>
+                    <span>
+                        <Link href={route("restaurant.reviews", { id: vendor.id })} className="flex items-center">
+                            Reviews
+                        </Link>
+                    </span>
+                </div>
+
+
                 <Divider />
 
                 <section className='pt-[2 rem ] lg:flex relative'>

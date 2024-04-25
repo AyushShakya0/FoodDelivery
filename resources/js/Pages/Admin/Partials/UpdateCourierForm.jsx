@@ -13,23 +13,22 @@ export default function UpdateCourierForm({ courier, className = '' }) {
 
         email: courier.email || '',
         name: courier.name || '',
-        phone_number: courier.phone_number || '',
+        number: courier.number || '',
         address: courier.address || '',
-        image: courier.image || '',
+        // image: courier.image || '',
         city: courier.city || '',
     });
 
-console.log(courier)
     const submit = (e) => {
         e.preventDefault();
 
         patch(route('courier.update', courier.id), {
             email: courier.email || '',
             name: courier.name || '',
-            phone_number: courier.phone_number || '',
+            number: courier.number || '',
             address: courier.address || '',
             city: courier.city || '',
-            image: courier.image || '',
+            // image: courier.image || '',
             preserveScroll: true,
             data: data
         });
@@ -70,18 +69,18 @@ console.log(courier)
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="phone_number" value="Phone number" />
+                    <InputLabel htmlFor="number" value="Phone number" />
                     <TextInput
-                        id="phone_number"
+                        id="number"
                         className="mt-1 block w-full"
-                        value={data.phone_number}
-                        onChange={(e) => setData('phone_number', e.target.value)}
+                        value={data.number}
+                        onChange={(e) => setData('number', e.target.value)}
 
                     />
-                    {errors && errors.phone_number && <InputError message={errors.phone_number[0]} />}
+                    {errors && errors.number && <InputError message={errors.number[0]} />}
                 </div>
 
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                     <label htmlFor="image" className="text-sm font-medium text-gray-700">Image</label>
                     <TextInput
                         id="image"
@@ -90,7 +89,7 @@ console.log(courier)
                         autoComplete="image"
                         onChange={(e) => setData("image", e.target.files[0])}
                     />
-                </div>
+                </div> */}
 
                 <div>
                     <InputLabel htmlFor="address" value="Address" />

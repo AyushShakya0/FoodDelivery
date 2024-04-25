@@ -69,7 +69,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
 
 
-                <div>
+                {/* <div>
                     <InputLabel htmlFor="Image" value="Image" />
 
                     <TextInput
@@ -81,7 +81,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.image} />
-                </div>
+                </div> */}
 
 
                 <div>
