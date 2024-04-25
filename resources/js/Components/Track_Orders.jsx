@@ -13,10 +13,6 @@ const statusColors = {
 export default function TrackOrders({ checkout, order }) {
     const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Destination reached']; // Updated to 'Destination reached'
 
-    console.log('checkout status',checkout.status)
-    console.log('checkout',checkout)
-    console.log('order',order)
-
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full">

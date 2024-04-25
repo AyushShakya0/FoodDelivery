@@ -78,7 +78,7 @@ class CustomerController extends Controller
         $fav = Favorite::where('user_id', $user)->get();
 
         $menus = Menu::all();
-        $vendors = Vendor::where('verified','yes')->get();
+        $vendors = Vendor::where('verified', 'yes')->get();
 
         return Inertia::render('Customer/Restaurantss', [
             'order' => $cart,
@@ -208,17 +208,26 @@ class CustomerController extends Controller
     public function order_history()
     {
         $user = Auth::id();
-        $order = Order::where('user_id', $user)
-            ->where('status', 'checkedout')
-            ->get();
+
         $fav = Favorite::where('user_id', $user)->get();
         $checkout = Checkout::where('user_id', $user)
             ->whereIn('status', ['Destination reached'])
-            ->get();;
+            ->get();
+
+        $cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+
+        $order = Order::where('user_id', $user)
+            ->where('status', 'checkedout')
+            ->get();
+
+        // dd($checkout);
 
 
         return Inertia::render('Customer/Order_history', [
             'order' => $order,
+            'cart' => $cart,
             'fav' => $fav,
             'checkout' => $checkout,
 

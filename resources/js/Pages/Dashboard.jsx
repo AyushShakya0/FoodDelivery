@@ -112,7 +112,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
                 <Divider />
 
-                <section className="bg-gray-100 py-12 mt-10 mb-10">
+                <section className="bg-white py-12 mt-10 mb-10">
                     <div className="container mx-auto text-center">
                         <div className="mb-8">
                             <h2 className="text-red-600 text-2xl font-bold mb-4">What we serve</h2>
@@ -146,10 +146,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                     </div>
                 </section>
 
-                <Divider />
-
-
-                <section className="py-12 mt-10 mb-10">
+                <section className="py-12 mt-10 mb-10 bg-white mr-4 ml-4">
                     <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between">
                         <div className="w-full md:w-1/3 mb-4 md:mb-0">
                             <img src="/whyGoFood.png" alt="Why GoFood?" className="mx-auto mb-4 md:mb-0 w-72 h-auto" />

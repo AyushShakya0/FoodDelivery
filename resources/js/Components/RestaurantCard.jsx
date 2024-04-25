@@ -25,6 +25,13 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
         Inertia.visit(route("restaurant.details", { id: listing.id }));
     };
 
+    const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + '...';
+    };
+
 
     const submit = (e) => {
         e.preventDefault();
@@ -66,7 +73,7 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
                     </div>
                     <div className='p-4 textPart lg:flex w-full justify-between' style={{ flex: '1' }}>
                         <div className='space-y-1'>
-                            <p className='font-semibold text-lg'>{listing.name}</p>
+                            <p className='font-semibold text-lg'>{truncateText(listing.name, 16)}</p>
                             <p className='text-gray-500 text-sm'>{listing.address}</p>
                             <p className='text-gray-500 text-sm'>{listing.start_time}-{listing.end_time}</p>
                             {/* <p className='text-gray-500 text-sm'>{listing.rating}</p> */}

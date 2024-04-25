@@ -3,12 +3,10 @@ import { Head, Link } from '@inertiajs/react';
 import Track_Orders from '@/Components/Track_Orders';
 
 
-export default function Order_history({ auth, order, fav, checkout }) {
-
-    console.log('checkout', checkout)
+export default function Order_history({ auth, order, fav, checkout, cart }) {
 
     return (
-        <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
+        <AuthenticatedLayout user={auth.user} order={cart} fav={fav}>
             <Head title="Dashboard" />
 
             <div className='pb-8'>
@@ -16,11 +14,16 @@ export default function Order_history({ auth, order, fav, checkout }) {
                     Order History
                 </div>
                 <div>
-                    {checkout.map((listing) => (
-                        <div key={listing.id}>
-                            <Track_Orders checkout={listing} order={order} user={auth} />
-                        </div>
-                    ))}
+                    {checkout.map((listing) => {
+                        // Filter orders based on the order_ids in the current listing
+                        const ordersInCheckout = order.filter(orderItem => listing.order_id.includes(orderItem.id));
+
+                        return (
+                            <div key={listing.id}>
+                                <Track_Orders checkout={listing} order={ordersInCheckout} user={auth} />
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </AuthenticatedLayout>
