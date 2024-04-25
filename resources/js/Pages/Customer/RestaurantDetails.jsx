@@ -141,7 +141,7 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
                             <p className='text-gray-500 flex items-center gap-3'>
                                 <CalendarTodayIcon />
                                 <span>
-                                    {vendor.time}
+                                    {vendor.start_time}-{vendor.end_time}
                                 </span>
                             </p>
                         </div>

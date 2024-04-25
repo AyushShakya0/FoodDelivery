@@ -78,9 +78,7 @@ class CustomerController extends Controller
         $fav = Favorite::where('user_id', $user)->get();
 
         $menus = Menu::all();
-        $vendors = Vendor::all();
-
-
+        $vendors = Vendor::where('verified','yes')->get();
 
         return Inertia::render('Customer/Restaurantss', [
             'order' => $cart,
@@ -362,7 +360,7 @@ class CustomerController extends Controller
         ]);
 
         // Return a response, such as a success message or redirect
-        return response()->json(['message' => 'Product checked out successfully']);
+        return redirect()->route('checkout');
     }
 
     public function updatecart(Request $request, $id): RedirectResponse

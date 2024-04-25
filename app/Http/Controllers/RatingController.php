@@ -23,7 +23,6 @@ class RatingController extends Controller
     //
     public function restaurant_review($id)
     {
-
         $user = Auth::id();
         $ven = Vendor::findOrFail($id);
 
@@ -58,13 +57,14 @@ class RatingController extends Controller
             'order_exists' => $order_exists,
             'rating_exists' => $rating_exists,
             'rating_own' => $rating_own,
-
         ]);
     }
+    
     public function addreview(Request $request)
     {
         $user_id = Auth::id();
 
+        // dd($request->all());
         try {
             // Create Product
             Rating::create([
@@ -72,7 +72,9 @@ class RatingController extends Controller
                 'vendor_id' => $request->vendor,
                 'rating' => $request->rating,
                 'review' => $request->review,
+                'name' => $request->name,
             ]);
+
 
             // Get the total count and sum of ratings for the vendor
             $vendor_ratings = Rating::where('vendor_id', $request->vendor)->get(['rating']);

@@ -26,6 +26,7 @@ class Rating extends Model
         'courier_id',
         'rating',
         'review',
+        'name',
     ];
 
     protected $hidden = [

@@ -1,19 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import "./Dashboard.css"
-// import Cart from '@/Components/Cart/Cart';
-
 import MultiItemCarousel from '@/Components/MultiItemCarousel';
 import RestaurantCard from '@/Components/RestaurantCard';
 import Slider from 'react-slick';
-import Cart_offcanvas from './Customer/Cart_offcanvas';
 import { Grid, Divider } from '@mui/material';
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import burger from '../../../public/burger.jpg'
-
-
-
 
 export default function Dashboard({ auth, vendor, food, order, fav }) {
 
@@ -29,16 +22,15 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
 
     };
 
-
-const staticItems = [
-    { id: 1, name: "Burger", image: '/burger.jpg' },
-    { id: 2, name: "Pizza", image: "./pizza.jpg" },
-    { id: 3, name: "Momo", image: "momo.jpeg" },
-    { id: 4, name: "Sandwich", image: "sandwich.jpg" },
-    { id: 5, name: "Pasta", image: "pasta.jpg" },
-    { id: 6, name: "Pancake", image: "pancake.jpeg" },
-    { id: 7, name: "Cake", image: "cake.jpeg" },
-];
+    const staticItems = [
+        { id: 1, name: "Burger", image: '/burger.jpg' },
+        { id: 2, name: "Pizza", image: "./pizza.jpg" },
+        { id: 3, name: "Momo", image: "momo.jpeg" },
+        { id: 4, name: "Sandwich", image: "sandwich.jpg" },
+        { id: 5, name: "Pasta", image: "pasta.jpg" },
+        { id: 6, name: "Pancake", image: "pancake.jpeg" },
+        { id: 7, name: "Cake", image: "cake.jpeg" },
+    ];
 
     const displayRestaurants = vendor.slice(0, 4);
 
@@ -102,21 +94,18 @@ const staticItems = [
                 </section>
                 <section className="p-5 lg:p-20">
                     <div>
+                        <Link href={route('restaurants')} className="text-xl font-sm text-blue-500 pb-8">
+                            View all
+                        </Link>
                         <h1 className="text-xl font-semibold text-gray-500 pb-8">Restaurants</h1>
+                        {/* <h1 className="text-xl font-sm text-blue-500 pb-8">View all</h1> */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {displayRestaurants.map((listing) => (
                                 <div key={listing.id}>
                                     <RestaurantCard listing={listing} fav={fav} vendor={vendor} user={auth.user} />
                                 </div>
                             ))}
-                            <div className="flex justify-end items-center">
-
-                                <Link href={route('restaurants')} className="bg-white text-sm hover:bg-blue-300 text-black font-bold py-4 px-6 rounded-full flex items-center justify-center w-12 h-12 border border-blue-500">
-                                    More
-                                </Link>
-
-
-                            </div>
                         </div>
                     </div>
                 </section>

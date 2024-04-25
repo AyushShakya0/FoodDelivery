@@ -44,6 +44,24 @@ const CheckoutCard = ({ listing, vendor }) => {
         });
     };
 
+    const deleteProduct = (id) => {
+        if (confirm('Are you sure you want to delete this product?')) {
+            // Send a DELETE request to the appropriate endpoint
+            Inertia.delete(route('order.delete', { id: id }), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    // Reload the page after successful deletion
+                    Inertia.reload();
+                },
+                onError: (error) => {
+                    console.error('Error deleting product:', error);
+                    // Handle error, show error message to user, etc.
+                }
+            });
+
+        }
+    };
+
     return (
         <div>
             <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
@@ -54,37 +72,26 @@ const CheckoutCard = ({ listing, vendor }) => {
 
                     <div className="relative flex flex-1 flex-col justify-between">
                         <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                            <div className="pr-8 sm:pr-5">
-                                <p className="text-base font-semibold text-gray-900">{listing.name}</p>
-                                <p className="mx-0 mt-1 mb-0 text-sm text-gray-400">${data.price}</p>
-                            </div>
-
-                            <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                                <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"></p>
-
-                                <div className='p-2'>
-                                    <RemoveCircleIcon onClick={handleDecrement} />
-                                    <span className='p-2'>{count} </span>
-                                    <AddCircleIcon onClick={handleIncrement} />
+                            <div className="pr-8 sm:pr-5 flex justify-between items-center">
+                                <div>
+                                    <p className="text-base font-semibold text-gray-900">{listing.name}</p>
+                                    <p className="mx-0 mt-1 mb-0 text-sm text-gray-400">Rs. {data.price}</p>
+                                </div>
+                                <div className="flex items-center"> {/* Updated */}
+                                    <div className="flex items-center space-x-2"> {/* Updated */}
+                                        <RemoveCircleIcon onClick={handleDecrement} className="cursor-pointer" />
+                                        <span>{count}</span>
+                                        <AddCircleIcon onClick={handleIncrement} className="cursor-pointer" />
+                                    </div>
+                                    {/* Empty space to push the buttons to the right */}
+                                    <div className="flex-grow"></div> {/* Updated */}
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                            <PrimaryButton disabled={processing}> <DoneIcon /> Save</PrimaryButton>
-
-                            <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
-                            >
-                                <p className="text-sm text-gray-600">Saved.</p>
-                            </Transition>
-
-                            <div>
-                                <button type="submit" onClick={() => deleteProduct(listing.id)} className=" py-2 px-4 "><CloseIcon /></button>
+                            <div className="mt-4 flex items-center justify-end sm:mt-0 sm:items-start sm:justify-end"> {/* Updated */}
+                                <div className='p-2'>
+                                    <button type="submit" onClick={() => deleteProduct(listing.id)} className="py-2 px-4"><CloseIcon /></button>
+                                </div>
                             </div>
                         </div>
                     </div>

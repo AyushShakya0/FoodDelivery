@@ -363,8 +363,11 @@ class AdminController extends Controller
             ->get();
 
         $user = User::where('id', $userIds)->get();
-        $vendor = Vendor::where('id', $vendorIds)->get();
-        $courier = Vendor::where('id', $courierIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
+        $courier = Courier::where('id', $courierIds)->get();
 
         return Inertia::render('Admin/Edit_Order', [
             'orders' => $orders,

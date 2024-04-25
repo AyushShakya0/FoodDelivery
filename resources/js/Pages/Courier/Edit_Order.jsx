@@ -7,7 +7,7 @@ import UpdateOrderForm from './Partials/UpdateOrderForm';
 export default function Edit_Order({ auth, orders, checkout, user, vendor }) {
 
     console.log('user',user)
-    console.log('orders',orders)
+    console.log('vendor',vendor)
 
     return (
         <AuthenticatedLayout_Courier

@@ -84,7 +84,7 @@ const MenuCard = ({ listing }) => {
                         <img className="w-[7rem] h-[7rem] object-cover" src={`http://127.0.0.1:8000/storage/${listing.image}`} alt="food img" />
                         <div className="space-y-1 lg:space-y-5 lg:max-2xl">
                             <p className="font font-semibold text-xl">{listing.name}</p>
-                            <p>{listing.price * count}</p>
+                            <p>Rs. {listing.price * count}</p>
                             <p className="text-gray-400">{listing.description}</p>
                             {/* <p className="text-gray-400">{listing.vendor_id}</p> */}
                         </div>

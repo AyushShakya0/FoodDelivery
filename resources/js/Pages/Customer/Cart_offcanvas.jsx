@@ -95,7 +95,7 @@ export default function Cart_offcanvas({ open, onClose, order, user }) {
                                                                         <div>
                                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                                 <h3>{product.name}</h3>
-                                                                                <p className="ml-4">{product.price}</p>
+                                                                                <p className="ml-4">Rs. {product.price}</p>
                                                                             </div>
                                                                             <p className="mt-1 text-sm text-gray-500"></p>
                                                                         </div>

@@ -94,7 +94,11 @@ class CourierController extends Controller
             ->get();
 
         $user = User::where('id', $userIds)->get();
-        $vendor = Vendor::where('id', $vendorIds)->get();
+
+        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
+        // dd($vendor);
 
         return Inertia::render('Courier/Edit_Order', [
             'orders' => $orders,

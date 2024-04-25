@@ -40,34 +40,32 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
             </header>
 
 
-            {order.map((orders) => (
-                <div>
-                    <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
-                        <div className="shrink-0">
-                            <img className="h-24 w-24 max-w-full rounded-lg object-cover" src={`http://127.0.0.1:8000/storage/${orders.image}`} alt="food img" />
-                        </div>
-
-                        <div className="relative flex flex-1 flex-col justify-between">
-                            <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                                <div className="pr-8 sm:pr-5">
-                                    <p className="text-base font-semibold text-gray-900">{orders.name}</p>
-                                </div>
-
-                                <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                                    <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"> Qty- {orders.quantity}</p>
-                                    <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">${orders.price}</p>
-                                    {/* <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">Vendor-{orders.vendor_id}</p> */}
-                                    <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
-                                        {auth.user.id === orders.vendor_id ? auth.user.name : `Restaurant${orders.vendor_id}`}
-                                    </p>
-                                </div>
+            {order
+                .filter(orders => auth.user.id === orders.vendor_id) // Filter orders based on the condition
+                .map((orders) => (
+                    <div key={orders.id}> {/* Add a unique key */}
+                        <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
+                            <div className="shrink-0">
+                                <img className="h-24 w-24 max-w-full rounded-lg object-cover" src={`http://127.0.0.1:8000/storage/${orders.image}`} alt="food img" />
                             </div>
 
-                        </div>
-                    </li>
-                </div>
+                            <div className="relative flex flex-1 flex-col justify-between">
+                                <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
+                                    <div className="pr-8 sm:pr-5">
+                                        <p className="text-base font-semibold text-gray-900">{orders.name}</p>
+                                    </div>
 
-            ))}
+                                    <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
+                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"> Qty- {orders.quantity}</p>
+                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">${orders.price}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                ))
+            }
+
 
             {/* Customization Section */}
             {checkout.customization && (  // Checking if checkout.customization is not null or undefined

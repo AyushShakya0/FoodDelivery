@@ -12,15 +12,27 @@ import { Link } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+
 export default function RestaurantReview({ auth, vendor, order, fav, rating, rating_exists, order_exists, rating_own }) {
 
     const { id } = usePage().props; // Access route parameters
+
+    const [isAnonymous, setIsAnonymous] = useState(false);
+
 
     const { data, setData, post, processing, errors, reset } = useForm({
         vendor: vendor.id,
         rating: '',
         review: '',
+        name: auth.user ? auth.user.name : 'Anonymous',
     });
+
+    const handleAnonymousToggle = () => {
+        setIsAnonymous(!isAnonymous);
+        setData('name', isAnonymous ? (auth.user ? auth.user.name : 'Anonymous') : 'Anonymous');
+    };
 
     const isFavoritedByUser = fav.some(favorite => favorite.user_id === auth.user.id && favorite.vendor_id === vendor.id);
 
@@ -57,20 +69,6 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
             }
         });
     };
-
-    // const removeReview = (id) => {
-    //     Inertia.delete(route('review.delete', { id: id }), {
-    //         preserveScroll: true,
-    //         onSuccess: () => {
-    //             // Reload the page after successful deletion
-    //             Inertia.reload();
-    //         },
-    //         onError: (error) => {
-    //             console.error('Error deleting vendor:', error);
-    //             // Handle error, show error message to user, etc.
-    //         }
-    //     });
-    // };
 
     const removeReview = (id) => {
         if (confirm('Are you sure you want to remove this review?')) {
@@ -144,12 +142,12 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
                 <Divider />
                 <div className="flex gap-4 mt-4 mb-4">
                     <span>
-                        <Link href={route("restaurant.details", { id: vendor.id })} className="flex items-center">
+                        <Link href={route("restaurant.details", { id: vendor.id })} preserveScroll={true} className="flex items-center">
                             Menu
                         </Link>
                     </span>
                     <span>
-                        <Link href={route("restaurant.reviews", { id: vendor.id })} className="flex items-center">
+                        <Link href={route("restaurant.reviews", { id: vendor.id })} preserveScroll={true} className="flex items-center">
                             Reviews
                         </Link>
                     </span>
@@ -190,6 +188,21 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
                                     className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
                                 ></textarea>
                             </div>
+
+                            {/* Anonymous checkbox */}
+                            <div className="flex items-center">
+                                <input
+                                    id="anonymous"
+                                    type="checkbox"
+                                    checked={isAnonymous}
+                                    onChange={handleAnonymousToggle}
+                                    className="mr-2"
+                                />
+                                <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
+                                    Anonymous
+                                </label>
+                            </div>
+
                             {/* Submit button */}
                             <div>
                                 <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
@@ -199,31 +212,35 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
 
                     {rating_exists && (
                         rating_own.map((rating) => (
-                            <div class="mb-4">
-                                <div class="text-sm font-medium text-gray-700">Name: {rating.user_id}</div>
-                                <div class="text-sm font-medium text-gray-700">Rating: {rating.rating}</div>
-                                <div class="text-sm text-gray-700">Review: {rating.review}</div>
+                            <div className="mb-4 bg-white rounded p-4 m-2 mt-4 border-gray-800">
+                                <div className="text-xl font-medium text-gray-700">{rating.name}</div>
+                                <div className="text-sm font-medium text-gray-700">
+                                    {[...Array(5)].map((_, index) => (
+                                        index < rating.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                    ))}
+                                </div>
+                                <div className="text-md text-gray-700">{rating.review}</div>
                                 <div>
                                     <IconButton onClick={() => removeReview(rating.id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </div>
                             </div>
-
                         ))
                     )}
 
                 </div>
-                <div>
-                    Other Reviews
-                </div>
                 {/* Reviews display */}
                 <div class="lg:w-full lg:mt-4 lg:pr-4">
                     {rating.map((rating) => (
-                        <div class="mb-4">
-                            <div class="text-sm font-medium text-gray-700">Name: {rating.user_id}</div>
-                            <div class="text-sm font-medium text-gray-700">Rating: {rating.rating}</div>
-                            <div class="text-sm text-gray-700">Review: {rating.review}</div>
+                        <div class="mb-4  bg-white rounded p-4 m-2 mt-4 border-gray-800">
+                            <div className="text-xl font-medium text-gray-700">{rating.name}</div>
+                            <div className="text-sm font-medium text-gray-700">
+                                {[...Array(5)].map((_, index) => (
+                                    index < rating.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                ))}
+                            </div>
+                            <div className="text-md text-gray-700">{rating.review}</div>
                         </div>
                     ))}
                 </div>

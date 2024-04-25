@@ -45,8 +45,8 @@ Route::get('/dashboard', function () {
         ->get();
     $fav = Favorite::where('user_id', $user)->get();
 
-    $vendor = Vendor::where('verified','yes')->get();
-    $food = Menu::where('availability','available')->get();
+    $vendor = Vendor::where('verified', 'yes')->get();
+    $food = Menu::where('availability', 'available')->get();
 
     return Inertia::render('Dashboard', [
         'vendor' => $vendor,
@@ -106,11 +106,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/courier/reviews/{id}', [RatingController::class, 'courier_review'])->name('courier.reviews');
     Route::post('/addreviewcourier/{id}', [RatingController::class, 'addreview_courier'])->name('addreview.courier');
     Route::delete('/reviewcourier/{id}', [RatingController::class, 'review_delete_courier'])->name('review.delete.courier');
-
-
-
-
-
 });
 
 require __DIR__ . '/auth.php';
@@ -118,14 +113,14 @@ require __DIR__ . '/auth.php';
 
 //ADMIN
 Route::get('/admin/dashboard', function () {
-    $checkout=Checkout::all();
-    $order_ongoing=Checkout::whereNot('status','Destination reached')->get();
-    $courier=Courier::all();
+    $checkout = Checkout::all();
+    $order_ongoing = Checkout::whereNot('status', 'Destination reached')->get();
+    $courier = Courier::all();
     $pending_courier = Courier::whereNull('verified')->get();
     $pending_vendor = Vendor::whereNull('verified')->get();
-    $vendor=Vendor::all();
+    $vendor = Vendor::all();
 
-    $checkouts=Checkout::whereNot('status','Destination reached')->take(5)->get();
+    $checkouts = Checkout::whereNot('status', 'Destination reached')->take(5)->get();
 
     $orderIds = $checkouts->pluck('order_id')->flatten()->toArray();
     $orders = Order::where(function ($query) use ($orderIds) {
@@ -158,7 +153,6 @@ Route::get('/admin/dashboard', function () {
         'couriers' => $couriers,
         'checkouts' => $checkouts,
     ]);
-
 })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 Route::middleware('auth:admin')->group(function () {
@@ -199,7 +193,6 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/admin/finance', [AdminController::class, 'finance'])->name('admin_finance');
     Route::get('/admin/setting', [AdminController::class, 'setting'])->name('admin_setting');
-
 });
 
 require __DIR__ . '/adminauth.php';
@@ -232,7 +225,6 @@ Route::middleware('auth:courier')->group(function () {
 
     Route::get('/courier/delivery/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
     Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
-
 });
 
 require __DIR__ . '/courierauth.php';
@@ -240,18 +232,23 @@ require __DIR__ . '/courierauth.php';
 
 //VENDOR
 Route::get('/vendor/dashboard', function () {
-    $checkout = Checkout::all();
-    $checkout_completed = Checkout::where('status','Destination reached')->get();
-    $menu_completed = Menu::where('availability','available')->get();
-    $menu = Menu::all();
 
-    $vendor=Auth::id();
+    $vendor = Auth::id();
 
-    $checkouts = Checkout::
-    whereJsonContains('vendor_id', $vendor)
-    ->whereNot('status','Destination reached')
-    ->take(5)
-    ->get();
+    $checkout = Checkout::whereJsonContains('vendor_id', $vendor)
+        ->get();
+    $checkout_completed = Checkout::where('status', 'Destination reached')
+        ->whereJsonContains('vendor_id', $vendor)
+        ->get();
+    $menu_completed = Menu::where('availability', 'available')
+        ->where('vendor_id', $vendor)
+        ->get();
+    $menu = Menu::where('vendor_id',$vendor)->get();
+
+    $checkouts = Checkout::whereJsonContains('vendor_id', $vendor)
+        ->whereNot('status', 'Destination reached')
+        ->take(5)
+        ->get();
 
     $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
     $orders = Order::where(function ($query) use ($orderIds) {
@@ -317,7 +314,6 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
 
     Route::patch('/vendor/menu/{id}', [MenuController::class, 'toggleAvailability'])->name('toggle.availability');
     Route::delete('/vendor/menu/delete/{id}', [MenuController::class, 'delete_menuItem'])->name('menu.delete');
-
 });
 
 require __DIR__ . '/vendorauth.php';
