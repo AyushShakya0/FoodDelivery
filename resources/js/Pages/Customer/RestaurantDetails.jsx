@@ -13,6 +13,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from '@inertiajs/react';
 
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+
 
 const foodTypes = [
     { label: "All", value: "all", },
@@ -144,6 +147,9 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
                                     {vendor.start_time}-{vendor.end_time}
                                 </span>
                             </p>
+                            {[...Array(5)].map((_, index) => (
+                                index < vendor.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                            ))}
                         </div>
                     </div>
                 </section>

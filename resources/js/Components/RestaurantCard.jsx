@@ -6,6 +6,9 @@ import { Link, useForm, usePage } from '@inertiajs/inertia-react';
 import Button from '@mui/material/Button';
 import { Inertia } from "@inertiajs/inertia";
 
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+
 export default function RestaurantCard({ listing, fav, vendor, user }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         vendor: listing.vendor_id,
@@ -14,8 +17,8 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
     const isFavoritedByUser = fav.some(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id);
 
     const favoriteIds = fav
-    .filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id)
-    .map(favorite => favorite.id);
+        .filter(favorite => favorite.user_id === user.id && favorite.vendor_id === listing.id)
+        .map(favorite => favorite.id);
 
     const onClickHandler = (e) => {
         console.log(listing.id);
@@ -25,7 +28,7 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("addfavorite", { id: listing.id }),{
+        post(route("addfavorite", { id: listing.id }), {
             preserveScroll: true,
         });
         reset(); // Reset form after successful submission
@@ -50,7 +53,7 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
     return (
         <div>
             <div key={listing.id}>
-            {/* <div key={listing.id}  onClick={onClickHandler} > */}
+                {/* <div key={listing.id}  onClick={onClickHandler} > */}
                 <Card style={{ width: '18rem', height: '18rem', display: 'flex', flexDirection: 'column' }}>
                     <div className={`${true ? 'cursor-pointer' : 'cursor-not-allowed'} relative`} style={{ width: '100%', height: '10rem' }}>
                         <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={`http://127.0.0.1:8000/storage/${listing.image}`} alt="restaurant img" />
@@ -66,7 +69,10 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
                             <p className='font-semibold text-lg'>{listing.name}</p>
                             <p className='text-gray-500 text-sm'>{listing.address}</p>
                             <p className='text-gray-500 text-sm'>{listing.start_time}-{listing.end_time}</p>
-                            <p className='text-gray-500 text-sm'>{listing.rating}</p>
+                            {/* <p className='text-gray-500 text-sm'>{listing.rating}</p> */}
+                            {[...Array(5)].map((_, index) => (
+                                index < listing.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                            ))}
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                             {isFavoritedByUser ? (

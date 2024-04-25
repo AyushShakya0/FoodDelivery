@@ -133,9 +133,12 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
                             <p className='text-gray-500 flex items-center gap-3'>
                                 <CalendarTodayIcon />
                                 <span>
-                                    {vendor.time}
+                                    {vendor.start_time}-{vendor.end_time}
                                 </span>
                             </p>
+                            {[...Array(5)].map((_, index) => (
+                                index < vendor.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                            ))}
                         </div>
                     </div>
                 </section>
