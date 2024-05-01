@@ -20,6 +20,8 @@ export default function Authenticated({ user, header, children, food, order, fav
     const [showingNavigationDropdownn, setShowingNavigationDropdownn] = useState(false);
     const [cartOpenn, setCartOpenn] = useState(false);
 
+    const totalItems = order ? order.length : 0;
+
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <nav className="bg-gray-100 border-b border-gray-100 fixed w-full top-0 z-50">
@@ -52,11 +54,6 @@ export default function Authenticated({ user, header, children, food, order, fav
                                 <NavLink href={route('track.order')} active={route().current('track.order')}>
                                     Track Order
                                 </NavLink>
-
-
-                                {/* <NavLink href={route('myprofile')} active={route().current('myprofile')}>
-                                    My profile
-                                </NavLink> */}
                             </div>
                         </div>
 
@@ -65,14 +62,19 @@ export default function Authenticated({ user, header, children, food, order, fav
                                 <button onClick={() => setCartOpenn(true)}><FavoriteIcon className='text-red-600' /></button>
                                 <Favorites_offcanvas open={cartOpenn} fav={fav} onClose={() => setCartOpenn(false)} />
                             </div>
-                            <div className='pr-2'>
-                                <button onClick={() => setCartOpen(true)}><ShoppingCartIcon /></button>
+                            <div className='pr-2 relative'>
+                                <button onClick={() => setCartOpen(true)} className="relative">
+                                    <ShoppingCartIcon />
+                                    {totalItems}
+
+                                </button>
                                 <Cart_offcanvas open={cartOpen} order={order} user={user.id} onClose={() => setCartOpen(false)} />
                             </div>
-                            <div className='pr-2'>
+
+                            {/* <div className='pr-2'>
                                 <button onClick={() => setCartOpenn(true)}><NotificationsIcon /></button>
                                 <Favorites_offcanvas open={cartOpenn} fav={fav} user={user.id} onClose={() => setCartOpenn(false)} />
-                            </div>
+                            </div> */}
                             <div className="ms-3 relative  className='bg-gray-100'">
                                 <Dropdown>
                                     <Dropdown.Trigger>

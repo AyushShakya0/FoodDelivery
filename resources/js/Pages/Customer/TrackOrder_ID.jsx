@@ -1,9 +1,35 @@
 import { Chip } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { useState } from 'react';
+import PrimaryButton from '@/Components/PrimaryButton';
+import { useForm } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
+
 
 export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, order_cart, fav, className = '' }) {
+    // const [showConfirmation, setShowConfirmation] = useState(false);
 
-    console.log('ven', vendor)
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        status: checkout.status,
+    });
+
+    const confirmCancel = (id) => {
+        if (confirm('Are you sure you want to cancel the delivery?')) {
+            // Send a DELETE request to the appropriate endpoint
+            Inertia.delete(route('user.cancel_delivery', { id: id }), {
+                onSuccess: () => {
+                    // Reload the page after successful deletion
+                    Inertia.reload();
+                },
+                onError: (error) => {
+                    console.error('Error cancelling the delivery:', error);
+                    // Handle error, show error message to user, etc.
+                }
+            });
+        }
+    };
+
+
     return (
         <AuthenticatedLayout user={auth.user} order={order_cart} fav={fav}>
             <div className="fixed inset-0 flex justify-center items-center bg-gray-200"> {/* Fixed container covering entire viewport */}
@@ -52,14 +78,18 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                     {/* Auth and Courier Sections */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
                         <div className="bg-gray-100 p-4 rounded-md">
-                            <p className="font-semibold mb-2">Vendor</p>
-                            {vendor.map((vendor,) => (
-                                <div>
-                                    <p className="mb-1"><span className="font-semibold">Name:</span> {vendor.name}</p>
-                                    <p className="mb-1"><span className="font-semibold">Phone number:</span> {vendor.number}</p>
-                                    <p><span className="font-semibold">Address:</span> {vendor.address}, {vendor.city}</p>
-                                </div>
-                            ))}
+                            {Array.from(new Set(order.map(order => order.vendor_id))).map(vendorId => {
+                                const vendorInfo = vendor.find(v => v.id === vendorId);
+                                return (
+                                    <div key={vendorId} className='mb-2'>
+                                        <p className="font-semibold  text-2xl">{vendorInfo?.name || `Vendor-${vendorId}`} </p>
+                                        <p className="font-semibold">Phone Number: </p>
+                                        <p className="">{vendorInfo?.number || 'N/A'} </p>
+                                        <p className="font-semibold">Address:</p>
+                                        <p className="">{vendorInfo?.address || 'N/A'}, {vendorInfo?.city || 'N/A'}</p>
+                                    </div>
+                                );
+                            })}
 
                         </div>
 
@@ -76,6 +106,12 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                         </div>
                     </div>
 
+                    {checkout.status !== 'Destination reached' && (
+                        <div className="flex items-center gap-4 mt-6 space-y-6">
+                            <PrimaryButton onClick={() => confirmCancel(checkout.id)}>Cancel delivery</PrimaryButton>
+                        </div>
+
+                    )}
 
                 </section>
             </div>

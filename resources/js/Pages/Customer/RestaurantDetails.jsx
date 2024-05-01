@@ -20,8 +20,8 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 const foodTypes = [
     { label: "All", value: "all", },
     { label: "Main Course", value: "main_course", },
-    { label: "Appetizers", value: "appetizers", },
-    { label: "Desserts", value: "desserts", },
+    { label: "Appetizers", value: "appetizer", },
+    { label: "Desserts", value: "dessert", },
 
 ]
 
@@ -39,10 +39,10 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
         case 'main_course':
             filteredMenus = main_course;
             break;
-        case 'desserts':
+        case 'dessert':
             filteredMenus = desserts;
             break;
-        case 'appetizers':
+        case 'appetizer':
             filteredMenus = appetizers;
             break;
         default:

@@ -72,10 +72,9 @@ const CheckoutCard = ({ listing, vendor }) => {
 
                     <div className="relative flex flex-1 flex-col justify-between">
                         <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                            <div className="pr-8 sm:pr-5 flex justify-between items-center">
                                 <div>
                                     <p className="text-base font-semibold text-gray-900">{listing.name}</p>
-                                    <p className="mx-0 mt-1 mb-0 text-sm text-gray-400">Rs. {data.price}</p>
+                                    <p className="mx-0 mt-1 mb-0 text-sm text-gray-400">Rs. {listing.original_price}</p>
                                 </div>
                                 <div className="flex items-center"> {/* Updated */}
                                     <div className="flex items-center space-x-2"> {/* Updated */}
@@ -84,15 +83,14 @@ const CheckoutCard = ({ listing, vendor }) => {
                                         <AddCircleIcon onClick={handleIncrement} className="cursor-pointer" />
                                     </div>
                                     {/* Empty space to push the buttons to the right */}
-                                    <div className="flex-grow"></div> {/* Updated */}
-                                </div>
-                            </div>
+                                    <div className="flex-grow pl-6">Rs. {data.price}</div> {/* Updated */}
 
-                            <div className="mt-4 flex items-center justify-end sm:mt-0 sm:items-start sm:justify-end"> {/* Updated */}
-                                <div className='p-2'>
-                                    <button type="submit" onClick={() => deleteProduct(listing.id)} className="py-2 px-4"><CloseIcon /></button>
+                                    <div className='p-2'>
+                                        <button type="submit" onClick={() => deleteProduct(listing.id)} className="py-2 px-4"><CloseIcon /></button>
+                                    </div>
+
                                 </div>
-                            </div>
+
                         </div>
                     </div>
                 </li>

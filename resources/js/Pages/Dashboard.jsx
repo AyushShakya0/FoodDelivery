@@ -94,11 +94,13 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                 </section>
                 <section className="p-5 lg:p-20">
                     <div>
-                        <Link href={route('restaurants')} className="text-xl font-sm text-blue-500 pb-8">
-                            View all
-                        </Link>
-                        <h1 className="text-xl font-semibold text-gray-500 pb-8">Restaurants</h1>
-                        {/* <h1 className="text-xl font-sm text-blue-500 pb-8">View all</h1> */}
+                        <div className="flex items-center justify-between pb-8">
+                            <h1 className="text-xl font-semibold text-gray-500">Restaurants</h1>
+                            <Link href={route('restaurants')} className="text-sm font-sm text-blue-500">
+                                View all
+                            </Link>
+                        </div>
+
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {displayRestaurants.map((listing) => (

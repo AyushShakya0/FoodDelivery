@@ -106,6 +106,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/courier/reviews/{id}', [RatingController::class, 'courier_review'])->name('courier.reviews');
     Route::post('/addreviewcourier/{id}', [RatingController::class, 'addreview_courier'])->name('addreview.courier');
     Route::delete('/reviewcourier/{id}', [RatingController::class, 'review_delete_courier'])->name('review.delete.courier');
+
+    //cancel delivery
+    Route::delete('/cancelDelivery/{id}', [CustomerController::class, 'cancel_delivery'])->name('user.cancel_delivery');
+
 });
 
 require __DIR__ . '/auth.php';
@@ -225,6 +229,9 @@ Route::middleware('auth:courier')->group(function () {
 
     Route::get('/courier/delivery/history', [CourierController::class, 'my_order_history'])->name('courier_order_history');
     Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
+
+    Route::get('/courierreviews', [CourierController::class, 'courier_reviews'])->name('courier.view_reviews');
+
 });
 
 require __DIR__ . '/courierauth.php';
@@ -295,7 +302,7 @@ Route::middleware(['auth:vendor'])->prefix('vendor')->group(function () {
     Route::patch('/vendor/status_update/{id}', [VendorController::class, 'status_update'])->name('vendor.status');
 
     Route::get('/courier', [VendorController::class, 'courier'])->name('vendor.courier');
-    Route::get('/finance', [VendorController::class, 'finance'])->name('vendor.finance');
+    Route::get('/vendorreviews', [VendorController::class, 'vendor_reviews'])->name('vendor.view_reviews');
     Route::get('/setting', [VendorController::class, 'setting'])->name('vendor.setting');
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');

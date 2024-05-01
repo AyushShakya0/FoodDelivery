@@ -2,11 +2,13 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useForm } from '@inertiajs/react';
-import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Favorite } from '@mui/icons-material';
 import { Inertia } from "@inertiajs/inertia";
 import { Card, Chip, IconButton } from '@mui/material';
+
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 
 
@@ -90,7 +92,7 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                         {fav.map((product) => (
                                                             <li key={product.id} className="flex py-6" onClick={() => onClickHandler(product)}>
-                                                            {/* <li key={product.id} className="flex py-6" > */}
+                                                                {/* <li key={product.id} className="flex py-6" > */}
                                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                     <img
                                                                         src={`http://127.0.0.1:8000/storage/${product.image}`}
@@ -105,7 +107,11 @@ export default function Favorites_offcanvas({ open, onClose, fav, user }) {
                                                                             <h3>
                                                                                 {product.name}
                                                                             </h3>
-                                                                            <p className="ml-4">{product.rating}<StarIcon /></p>
+                                                                            <p className="ml-4 text-sm">
+                                                                                {[...Array(5)].map((_, index) => (
+                                                                                    index < product.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                                                                ))}
+                                                                            </p>
                                                                         </div>
                                                                         <p className="mt-1 text-sm text-gray-500"></p>
                                                                     </div>

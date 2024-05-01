@@ -17,6 +17,8 @@ export default function Cart_Display({ auth, menus, cart, vendors, fav }) {
     const total = subTotal + shipping;
 
 
+    console.log(cart)
+
     const [count, setCount] = useState(cart.quantity);
 
     const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm({
@@ -110,16 +112,16 @@ export default function Cart_Display({ auth, menus, cart, vendors, fav }) {
                                         <div className="mt-1 border-b py-2">
                                             <div className="flex items-center justify-between">
                                                 <p className="text-sm text-gray-400">Subtotal</p>
-                                                <p className="text-lg font-semibold text-gray-900">${subTotal}</p>
+                                                <p className="text-lg font-semibold text-gray-900">Rs. {subTotal}</p>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <p className="text-sm text-gray-400">Shipping</p>
-                                                <p className="text-lg font-semibold text-gray-900">${shipping}</p>
+                                                <p className="text-lg font-semibold text-gray-900">Rs. {shipping}</p>
                                             </div>
                                         </div>
                                         <div className="mt-6 flex items-center justify-between">
                                             <p className="text-sm font-medium text-gray-900">Total</p>
-                                            <p className="text-lg font-semibold text-gray-900">${total}</p>
+                                            <p className="text-lg font-semibold text-gray-900">Rs. {total}</p>
                                         </div>
                                     </div>
                                 </div>

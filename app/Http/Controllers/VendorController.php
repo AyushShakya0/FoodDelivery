@@ -9,6 +9,7 @@ use App\Models\Checkout;
 use App\Models\Courier;
 use App\Models\Menu;
 use App\Models\Order;
+use App\Models\Rating;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -90,8 +91,15 @@ class VendorController extends Controller
         return Inertia::render('Vendor/Setting_Vendor', []);
     }
 
-    public function finance()
+    public function vendor_reviews()
     {
-        return Inertia::render('Vendor/Finance_Vendor', []);
+        $user=Auth::id();
+
+        $rating = Rating::where('vendor_id', $user)
+        ->get();
+
+        return Inertia::render('Vendor/View_Reviews', [
+            'rating' => $rating,
+        ]);
     }
 }

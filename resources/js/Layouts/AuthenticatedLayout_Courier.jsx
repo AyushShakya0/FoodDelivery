@@ -53,6 +53,11 @@ export default function Authenticated({ user, header, children }) {
                                         Your delivery History
                                     </NavLink>
                                 </div>
+                                <div>
+                                    <NavLink href={route('courier.view_reviews')} active={route().current('courier.view_reviews')} className="block py-2 px-4 text-sm text-gray-700">
+                                        Reviews
+                                    </NavLink>
+                                </div>
                             </div>
 
                         </div>

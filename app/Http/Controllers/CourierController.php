@@ -9,6 +9,7 @@ use App\Models\Checkout;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Courier;
+use App\Models\Rating;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException; // Import ValidationException
 use Inertia\Inertia;
@@ -196,6 +197,19 @@ class CourierController extends Controller
             'checkout' => $checkout,
             'user' => $user,
             'vendor' => $vendor,
+        ]);
+    }
+
+
+    public function courier_reviews()
+    {
+        $user=Auth::id();
+
+        $rating = Rating::where('courier_id', $user)
+        ->get();
+
+        return Inertia::render('Courier/View_Reviews', [
+            'rating' => $rating,
         ]);
     }
 }

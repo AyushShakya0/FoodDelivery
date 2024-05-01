@@ -46,13 +46,13 @@ class CustomerController extends Controller
 
         $appetizers = Menu::where('vendor_id', $ven->id)
             ->where('availability', 'available')
-            ->where('category', 'appetizers')
+            ->where('category', 'appetizer')
             ->get();
 
 
         $desserts = Menu::where('vendor_id', $ven->id)
             ->where('availability', 'available')
-            ->where('category', 'desserts')
+            ->where('category', 'dessert')
             ->get();
 
 
@@ -369,7 +369,7 @@ class CustomerController extends Controller
         ]);
 
         // Return a response, such as a success message or redirect
-        return redirect()->route('checkout');
+        return redirect()->route('track.order');
     }
 
     public function updatecart(Request $request, $id): RedirectResponse
@@ -490,6 +490,25 @@ class CustomerController extends Controller
 
         // Redirect back with success message
         return redirect()->back()->with('success', 'Fav deleted successfully!');
+    }
+
+
+    public function cancel_delivery($id)
+    {
+        // Find the trainer by ID
+        $fav = Checkout::find($id);
+
+        // dd($fav);
+
+        if (!$fav) {
+            // Trainer not found, you may want to handle this case differently (e.g., show error message)
+            return redirect()->back()->with('error', 'Order not found!');
+        }
+
+        // Delete the trainer
+        $fav->delete();
+
+        return redirect()->route('dashboard');
     }
 
 
