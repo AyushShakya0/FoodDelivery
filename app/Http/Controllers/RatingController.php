@@ -59,7 +59,7 @@ class RatingController extends Controller
             'rating_own' => $rating_own,
         ]);
     }
-    
+
     public function addreview(Request $request)
     {
         $user_id = Auth::id();
@@ -163,17 +163,21 @@ class RatingController extends Controller
     {
         $user_id = Auth::id();
 
+        // dd($request->all());
+
         try {
             // Create Product
             Rating::create([
                 'user_id' => $user_id,
-                'vendor_id' => $request->vendor,
+                'courier_id' => $request->courier,
                 'rating' => $request->rating,
                 'review' => $request->review,
+                'name' => $request->name,
+                'checkout_id' => $request->checkout,
             ]);
 
             // Get the total count and sum of ratings for the vendor
-            $vendor_ratings = Rating::where('vendor_id', $request->vendor)->get(['rating']);
+            $vendor_ratings = Rating::where('courier', $request->courier)->get(['rating']);
             $total_ratings = $vendor_ratings->count();
             $sum_ratings = $vendor_ratings->sum('rating');
 
@@ -181,12 +185,13 @@ class RatingController extends Controller
             $average_rating = is_null($total_ratings) ? $request->rating : round($sum_ratings / $total_ratings);
 
             // Update the vendor's rating
-            Vendor::where('id', $request->vendor)->update([
+            Courier::where('id', $request->courier)->update([
                 'rating' => $average_rating
             ]);
 
+
             // Redirect back to the index page or any other appropriate page
-            return Inertia::location(route('restaurant.reviews'));
+            return redirect()->back();
         } catch (\Exception $e) {
             // Handle exception
             // Log the exception if necessary

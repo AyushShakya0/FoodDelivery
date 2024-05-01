@@ -11,10 +11,12 @@ import { IconButton } from '@mui/material';
 
 
 
-export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, order_cart, fav, className = '' }) {
+export default function TrackOrder_ID_history({ order, checkout, courier, vendor, auth, order_cart, fav, rating_exists, rating_get, className = '' }) {
 
     const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm({
         name: auth.user ? auth.user.name : 'Anonymous',
+        courier: courier.id,
+        checkout: checkout.id,
     });
 
     const confirmCancel = (id) => {
@@ -29,6 +31,9 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
             });
         }
     };
+
+    console.log(rating_exists)
+    console.log(rating_get )
 
     const [isAnonymous, setIsAnonymous] = useState(false);
     const handleAnonymousToggle = () => {
@@ -136,6 +141,86 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                                     <p className="font-semibold">Pending</p>
                                 )}
                             </div>
+
+                            {/* Review Form */}
+                            {/* Review Form */}
+
+                            {/* Render Ratings if they exist */}
+                            {checkout.status === 'Destination reached' && rating_exists ? (
+                                <div>
+
+                                    {rating_get.map((rating) => (
+                                        <div class="mb-4  bg-white rounded p-4 m-2 mt-4 border-gray-800">
+                                            {rating.name === 'Anonymous' ? (
+                                                <div className="text-xl font-medium text-gray-700">Reviewed as anonymous</div>
+                                            ) : null}                                            <div className="text-sm font-medium text-gray-700">
+                                                {[...Array(5)].map((_, index) => (
+                                                    index < rating.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                                ))}
+                                            </div>
+                                            <div className="text-md text-gray-700">{rating.review}</div>
+                                            <div>
+                                                <IconButton onClick={() => removeReview(rating.id)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-4 mt-6 space-y-6 mb-6">
+                                    <div className="w-1/2"> {/* This div will cover 50% of the page width */}
+                                        <div className='text-lg font-bold'>
+                                            Rate your Delivery Person
+                                        </div>
+                                        <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4">
+                                            <div className="flex flex-col">
+                                                <label htmlFor="rating" className="text-sm font-medium text-gray-700">Rating</label>
+                                                <input
+                                                    id="rating"
+                                                    name="rating"
+                                                    type="number"
+                                                    value={data.rating}
+                                                    autoComplete="rating"
+                                                    onChange={(e) => setData("rating", Math.min(Math.max(parseInt(e.target.value), 1), 5))}
+                                                    min="1"
+                                                    max="5"
+                                                    required
+                                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <label htmlFor="review" className="text-sm font-medium text-gray-700">Review</label>
+                                                <textarea
+                                                    id="review"
+                                                    name="review"
+                                                    value={data.review}
+                                                    autoComplete="review"
+                                                    onChange={(e) => setData("review", e.target.value)}
+                                                    required
+                                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                                                ></textarea>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <input
+                                                    id="anonymous"
+                                                    type="checkbox"
+                                                    checked={isAnonymous}
+                                                    onChange={handleAnonymousToggle}
+                                                    className="mr-2"
+                                                />
+                                                <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
+                                                    Anonymous
+                                                </label>
+                                            </div>
+                                            <div className='mb-4'>
+                                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            )}
 
                         </div>
 

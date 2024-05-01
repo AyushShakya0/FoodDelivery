@@ -42,10 +42,18 @@ export default function TrackOrders({ checkout, order }) {
                                 <button>and more...</button>
                             </div>
                         )}
+                        {/* Conditionally render link based on checkout status */}
+                        {checkout.status !== 'Destination reached' ? (
+                            <div className="flex justify-center mt-4">
+                                <a href={route("track.order_id", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
+                            </div>
+                        ) : (
+                            // Render another link if checkout status is 'Destination reached'
+                            <div className="flex justify-center mt-4">
+                                <a href={route("track.order_id.history", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
+                            </div>
+                        )}
 
-                        <div className="flex justify-center mt-4">
-                            <a href={route("track.order_id", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
-                        </div>
                     </Card>
                 </div>
             </div>

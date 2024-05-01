@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Vendor;
 use App\Models\Menu;
 use App\Models\Favorite;
+use App\Models\Rating;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -560,6 +561,48 @@ class CustomerController extends Controller
             'order_cart' => $order_cart,
             'vendor' => $vendor,
             'courier' => $courier,
+        ]);
+    }
+
+    public function trackorder_id_history($id): Response
+    {
+        $user = Auth::id();
+        $fav = Favorite::where('user_id', $user)->get();
+
+        $order_cart = Order::where('user_id', $user)
+            ->where('status', null)
+            ->get();
+
+        $checkout = Checkout::findOrFail($id);
+        $order = $checkout->order_id ? Order::whereIn('id', $checkout->order_id)->get() : [];
+        $vendor = $checkout->vendor_id ? Vendor::whereIn('id', $checkout->vendor_id)->get() : [];
+        $courier = $checkout->courier_id ? Courier::findOrFail($checkout->courier_id) : null;
+
+
+        // dd($checkout->id);
+        // Check if rating exists only when courier_id is not null
+        $rating_exists = Rating::where('user_id', $user)
+            ->where('checkout_id', $checkout->id)
+            ->exists();
+
+        // Fetch ratings only when courier_id is not null
+        $rating_get =Rating::where('user_id', $user)
+            ->where('checkout_id', $checkout->id)
+            ->get(); // Return an empty collection if courier_id is null
+
+
+        // dd($rating_get);
+
+
+        return Inertia::render('Customer/TrackOrder_ID_history', [
+            'order' => $order,
+            'fav' => $fav,
+            'checkout' => $checkout,
+            'order_cart' => $order_cart,
+            'vendor' => $vendor,
+            'courier' => $courier,
+            'rating_exists' => $rating_exists,
+            'rating_get' => $rating_get,
         ]);
     }
 }

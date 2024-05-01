@@ -91,6 +91,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/trackorder', [CustomerController::class, 'trackorder'])->name('track.order');
     Route::get('/trackorder/{id}', [CustomerController::class, 'trackorder_id'])->name('track.order_id');
+    //history one
+    Route::get('/trackorder_history/{id}', [CustomerController::class, 'trackorder_id_history'])->name('track.order_id.history');
 
 
     Route::get('/restaurants', [CustomerController::class, 'restaurants'])->name('restaurants');

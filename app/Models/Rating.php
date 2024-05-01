@@ -27,6 +27,7 @@ class Rating extends Model
         'rating',
         'review',
         'name',
+        'checkout_id',
     ];
 
     protected $hidden = [
