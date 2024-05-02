@@ -376,7 +376,7 @@ class CustomerController extends Controller
     public function updatecart(Request $request, $id): RedirectResponse
     {
 
-        dd($request);
+        dd($request->all());
 
         // Fetch the cart based on the id
         $cart = Order::findOrFail($id);
@@ -397,6 +397,67 @@ class CustomerController extends Controller
         // Redirect back to the checkout page
         return redirect()->route('checkout');
     }
+
+    public function addquantity(Request $request, $id): RedirectResponse
+    {
+
+        // dd($id);
+
+        // Fetch the cart based on the id
+        $cart = Order::findOrFail($id);
+
+        // dd($cart->original_price);
+
+        // Fill the cart model with the form data
+        // $cart->fill($request->all());
+        $price=$cart->original_price;
+        $quantity=$request->quantity+1;
+        $total_price=$price*$quantity;
+
+        // dd($quantity);
+
+        $cart->update([
+            'quantity' => $quantity,
+            'price' => $total_price,
+        ]);
+
+        // Save the changes to the database
+        $cart->save();
+
+        // Redirect back to the checkout page
+        return redirect()->route('checkout');
+    }
+
+    public function subtractquantity(Request $request, $id): RedirectResponse
+    {
+
+        // dd($id);
+
+        // Fetch the cart based on the id
+        $cart = Order::findOrFail($id);
+
+        // dd($cart->original_price);
+
+        // Fill the cart model with the form data
+        // $cart->fill($request->all());
+        $price=$cart->original_price;
+        $quantity=$request->quantity-1;
+        $total_price=$price*$quantity;
+
+        // dd($quantity);
+
+        $cart->update([
+            'quantity' => $quantity,
+            'price' => $total_price,
+        ]);
+
+        // Save the changes to the database
+        $cart->save();
+
+        // Redirect back to the checkout page
+        return redirect()->route('checkout');
+    }
+
 
 
     public function removecartitem($id)

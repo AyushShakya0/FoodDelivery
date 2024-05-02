@@ -121,7 +121,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                         </div>
                                     </div>
                                 </div>
-                                {/*
+
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                     <div className="bg-white shadow">
                                         <div className="px-4 py-6 sm:px-8 sm:py-10">
@@ -135,7 +135,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                             </div>
                                         </div>
                                     </div>
-                                </div> */}
+                                </div>
 
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                     <div className="bg-white shadow">

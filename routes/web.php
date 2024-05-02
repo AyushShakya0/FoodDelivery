@@ -74,6 +74,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/addtocart/{menu_id}', [CustomerController::class, 'addtocart'])->name('addtocart');
     Route::patch('/checkout/{id}', [CustomerController::class, 'updatecart'])->name('updatecart');
+    Route::patch('/checkout/addquantity/{id}', [CustomerController::class, 'addquantity'])->name('addquantity');
+    Route::patch('/checkout/subtractquantity/{id}', [CustomerController::class, 'subtractquantity'])->name('subtractquantity');
 
     Route::post('/addfavorite/{id}', [CustomerController::class, 'addfavorite'])->name('addfavorite');
 

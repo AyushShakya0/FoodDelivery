@@ -41,8 +41,6 @@ export default function UpdateMenuForm({ auth, menu }) {
     }
 
     return (
-
-
             <div className="max-w-md mx-auto">
                 <form onSubmit={submit} encType="multipart/form-data" className="space-y-4">
                     <div className="flex flex-col">
