@@ -7,11 +7,12 @@ const statusColors = {
     prepping: 'hsl(195, 100%, 50%)',
     ready: 'hsl(165, 100%, 50%)',
     delivering: 'hsl(135, 100%, 50%)',
-    'destination reached': 'hsl(105, 100%, 50%)' // Updated key to 'destination reached'
+    'destination reached': 'hsl(105, 100%, 50%)', // Updated key to 'destination reached'
+    'delivered': 'hsl(105, 100%, 50%)', // Updated key to 'destination reached'
 };
 
 export default function TrackOrders({ checkout, order }) {
-    const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Destination reached']; // Updated to 'Destination reached'
+    const statuses = ['Ordered', 'Prepping', 'Ready', 'Delivering', 'Destination reached','Delivered']; // Updated to 'Destination reached'
 
     return (
         <div className="flex justify-center mt-10">
@@ -43,7 +44,7 @@ export default function TrackOrders({ checkout, order }) {
                             </div>
                         )}
                         {/* Conditionally render link based on checkout status */}
-                        {checkout.status !== 'Destination reached' ? (
+                        {checkout.status !== 'Delivered' ? (
                             <div className="flex justify-center mt-4">
                                 <a href={route("track.order_id", checkout.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Details</a>
                             </div>

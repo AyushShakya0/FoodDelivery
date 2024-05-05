@@ -44,9 +44,9 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
     };
 
     const statusOptions = [
-        'Ordered',
         'Delivering',
-        'Destination reached'
+        'Destination reached',
+        'Delivered',
     ];
 
     // Grouping orders by vendor
@@ -144,7 +144,7 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
             </div>
 
             {/* Update Order Form */}
-            {checkout.status !== 'Destination reached' && (
+            {checkout.status !== 'Delivered' && (
                 <form onSubmit={submit} className="mt-6 space-y-6">
                     <div>
                         <InputLabel htmlFor="status" value="Status" />
@@ -172,7 +172,7 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
                 </form>
             )}
 
-            {checkout.status !== 'Destination reached' && (
+            {checkout.status !== 'Delivered' && (
                 <form onSubmit={cancel} className="mt-6 space-y-6">
                     <div className="flex items-center gap-4">
                         <PrimaryButton disabled={processing}>Cancel delivery</PrimaryButton>

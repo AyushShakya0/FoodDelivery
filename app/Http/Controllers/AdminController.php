@@ -21,7 +21,7 @@ class AdminController extends Controller
 
     public function order(): Response
     {
-        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+        $checkout = Checkout::whereNotIn('status', ['Delivered'])
             ->get();
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
@@ -51,7 +51,7 @@ class AdminController extends Controller
 
     public function order_history(): Response
     {
-        $checkout = Checkout::whereIn('status', ['Destination reached'])
+        $checkout = Checkout::whereIn('status', ['Delivered'])
             ->get();
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();

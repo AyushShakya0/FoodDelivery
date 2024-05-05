@@ -25,7 +25,7 @@ class VendorController extends Controller
         $vendor = Auth::id();
 
         $checkout = Checkout::whereJsonContains('vendor_id', $vendor)
-            ->where('status', 'Destination reached')
+            ->where('status', 'Delivered')
             ->get();
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();

@@ -21,7 +21,7 @@ class OrderController extends Controller
 
         $checkout = Checkout::
         whereJsonContains('vendor_id', $vendor)
-        ->whereNot('status','Destination reached')
+        ->whereNot('status','Delivered')
         ->get();
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();

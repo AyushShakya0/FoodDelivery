@@ -32,6 +32,8 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
         }
     };
 
+
+
     const shipping = vendor.length * 60;
     const total_price = checkout.total_price;
     const subtotal = total_price - shipping;
@@ -152,7 +154,7 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
                     </div>
                 </div>
 
-                {checkout.status === 'Destination reached' && rating_exists ? (
+                {checkout.status === 'Delivered' && rating_exists ? (
                     <div>
                         {rating_get.map((rating) => (
                             <div key={rating.id} className="mb-4  bg-white rounded p-4 m-2 mt-4 border-gray-800">
@@ -227,7 +229,7 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
                 )}
 
                 {/* Cancel Delivery Button */}
-                {checkout.status !== 'Destination reached' && (
+                {checkout.status !== 'Delivered' && (
                     <div className="flex items-center gap-4 mt-6 space-y-6">
                         <PrimaryButton onClick={() => confirmCancel(checkout.id)}>Cancel delivery</PrimaryButton>
                     </div>

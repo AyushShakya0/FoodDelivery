@@ -212,7 +212,7 @@ class CustomerController extends Controller
 
         $fav = Favorite::where('user_id', $user)->get();
         $checkout = Checkout::where('user_id', $user)
-            ->whereIn('status', ['Destination reached'])
+            ->whereIn('status', ['Delivered'])
             ->get();
 
         $cart = Order::where('user_id', $user)
@@ -583,7 +583,7 @@ class CustomerController extends Controller
             ->get();
         $fav = Favorite::where('user_id', $users)->get();
         $checkout = Checkout::where('user_id', $users)
-            ->whereNotIn('status', ['Destination reached'])
+            ->whereNotIn('status', ['Delivered'])
             ->get();;
 
         $order = Order::where('user_id', $users)
@@ -667,7 +667,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    
+
 
 
 

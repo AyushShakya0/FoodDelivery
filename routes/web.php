@@ -115,8 +115,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cancelDelivery/{id}', [CustomerController::class, 'cancel_delivery'])->name('user.cancel_delivery');
 
     Route::get('/payment/khalti/{id}', [CustomerController::class, 'payment'])->name('payment');
-
-
 });
 
 require __DIR__ . '/auth.php';
@@ -125,13 +123,13 @@ require __DIR__ . '/auth.php';
 //ADMIN
 Route::get('/admin/dashboard', function () {
     $checkout = Checkout::all();
-    $order_ongoing = Checkout::whereNot('status', 'Destination reached')->get();
+    $order_ongoing = Checkout::whereNot('status', 'Delivered')->get();
     $courier = Courier::all();
     $pending_courier = Courier::whereNull('verified')->get();
     $pending_vendor = Vendor::whereNull('verified')->get();
     $vendor = Vendor::all();
 
-    $checkouts = Checkout::whereNot('status', 'Destination reached')->take(5)->get();
+    $checkouts = Checkout::whereNot('status', 'Delivered')->take(5)->get();
 
     $orderIds = $checkouts->pluck('order_id')->flatten()->toArray();
     $orders = Order::where(function ($query) use ($orderIds) {
@@ -216,7 +214,51 @@ require __DIR__ . '/adminauth.php';
 
 //COURIER
 Route::get('/courier/dashboard', function () {
-    return Inertia::render('Courier/Dashboard');
+    $checkout = Checkout::whereNotIn('status', ['Delivered'])
+        ->where('courier_id', null)
+        ->take(5)
+        ->get();
+
+    $courierId = Auth::id();
+
+    $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
+    $orders = Order::where(function ($query) use ($orderIds) {
+        foreach ($orderIds as $orderId) {
+            $query->orWhereJsonContains('id', $orderId);
+        }
+    })->get();
+
+    $occupied = Checkout::where('courier_id', $courierId)
+    ->whereNot('status', 'Delivered')->get();
+
+    $userIds = $checkout->pluck('user_id')->flatten()->toArray();
+    $user = User::whereIn('id', $userIds)->get();
+
+    $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+    $vendor = Vendor::whereIn('id', $vendorIds)->get();
+
+    $checkout_total = Checkout::whereIn('status', ['Delivered'])
+    ->where('courier_id', $courierId)
+    ->get();
+
+    $current_delivery = Checkout::whereNotIn('status', ['Delivered'])
+    ->where('courier_id', $courierId)
+    ->get();
+
+    $pending_delivery = Checkout::whereNotIn('status', ['Delivered'])
+    ->where('courier_id', null)
+    ->get();
+
+    return Inertia::render('Courier/Dashboard', [
+        'orders' => $orders,
+        'checkout' => $checkout,
+        'user' => $user,
+        'vendor' => $vendor,
+        'occupied' => $occupied,
+        'checkout_total' => $checkout_total,
+        'pending_delivery' => $pending_delivery,
+        'current_delivery' => $current_delivery,
+    ]);
 })->middleware(['auth:courier', 'verified'])->name('courier.dashboard');
 
 Route::middleware('auth:courier')->group(function () {
@@ -238,7 +280,6 @@ Route::middleware('auth:courier')->group(function () {
     Route::get('/courier/delivery/history/{id}', [CourierController::class, 'courier_orders_history'])->name('courier.orders.history');
 
     Route::get('/courierreviews', [CourierController::class, 'courier_reviews'])->name('courier.view_reviews');
-
 });
 
 require __DIR__ . '/courierauth.php';
@@ -251,16 +292,16 @@ Route::get('/vendor/dashboard', function () {
 
     $checkout = Checkout::whereJsonContains('vendor_id', $vendor)
         ->get();
-    $checkout_completed = Checkout::where('status', 'Destination reached')
+    $checkout_completed = Checkout::where('status', 'Delivered')
         ->whereJsonContains('vendor_id', $vendor)
         ->get();
     $menu_completed = Menu::where('availability', 'available')
         ->where('vendor_id', $vendor)
         ->get();
-    $menu = Menu::where('vendor_id',$vendor)->get();
+    $menu = Menu::where('vendor_id', $vendor)->get();
 
     $checkouts = Checkout::whereJsonContains('vendor_id', $vendor)
-        ->whereNot('status', 'Destination reached')
+        ->whereNot('status', 'Delivered')
         ->take(5)
         ->get();
 

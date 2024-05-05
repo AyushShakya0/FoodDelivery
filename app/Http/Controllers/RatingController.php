@@ -38,7 +38,7 @@ class RatingController extends Controller
 
         $order_exists = Checkout::whereJsonContains('vendor_id', $ven->id)
             ->where('user_id', $user)
-            ->where('status', 'Destination reached')
+            ->where('status', 'Delivered')
             ->exists();
 
         $rating_exists = Rating::where('user_id', $user)
@@ -137,7 +137,7 @@ class RatingController extends Controller
 
         $order_exists = Checkout::whereJsonContains('vendor_id', $ven->id)
             ->where('user_id', $user)
-            ->where('status', 'Destination reached')
+            ->where('status', 'Delivered ')
             ->exists();
 
         $rating_exists = Rating::where('user_id', $user)

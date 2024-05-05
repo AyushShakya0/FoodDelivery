@@ -22,13 +22,13 @@ class CourierController extends Controller
     //
     public function order(): Response
     {
-        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+        $checkout = Checkout::whereNotIn('status', ['Delivered'])
             ->where('courier_id', null)
             ->get();
 
         $courierId = Auth::id();
         $occupied = Checkout::where('courier_id', $courierId)
-            ->whereNot('status', 'Destination reached')->get();
+            ->whereNot('status', 'Delivered')->get();
 
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
@@ -57,7 +57,7 @@ class CourierController extends Controller
     {
         $courier = Auth::id();
 
-        $checkout = Checkout::whereNotIn('status', ['Destination reached'])
+        $checkout = Checkout::whereNotIn('status', ['Delivered'])
             ->where('courier_id', $courier)
             ->get();
 
@@ -143,7 +143,7 @@ class CourierController extends Controller
     {
         $courier = Auth::id();
 
-        $checkout = Checkout::whereIn('status', ['Destination reached'])
+        $checkout = Checkout::whereIn('status', ['Delivered'])
             ->where('courier_id', $courier)
             ->get();
 
@@ -173,7 +173,7 @@ class CourierController extends Controller
 
     public function courier_orders_history($checkoutId): Response
     {
-        $checkout = Checkout::whereIn('status', ['Destination reached'])
+        $checkout = Checkout::whereIn('status', ['Delivered'])
             ->where('courier_id', $checkoutId)
             ->get();
 
