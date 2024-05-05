@@ -666,4 +666,10 @@ class CustomerController extends Controller
             'rating_get' => $rating_get,
         ]);
     }
+
+    
+
+
+
+
 }

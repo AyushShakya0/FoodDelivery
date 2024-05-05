@@ -114,6 +114,9 @@ Route::middleware('auth')->group(function () {
     //cancel delivery
     Route::delete('/cancelDelivery/{id}', [CustomerController::class, 'cancel_delivery'])->name('user.cancel_delivery');
 
+    Route::get('/payment/khalti/{id}', [CustomerController::class, 'payment'])->name('payment');
+
+
 });
 
 require __DIR__ . '/auth.php';

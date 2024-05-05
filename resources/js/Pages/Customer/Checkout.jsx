@@ -6,8 +6,7 @@ import { useRef, useState } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 import CheckoutCard from '@/Components/CheckoutCard';
 import TextInput from '@/Components/TextInput';
-
-
+import axios from 'axios';
 
 export default function Checkout({ auth, cart, vendors, user, fav }) {
     const userMenuIds = cart.map(cartItem => cartItem.id);
@@ -15,7 +14,7 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
 
     // Calculate the total price of the items in the cart array
     const totalPrice = cart.reduce((total, cartItem) => total + parseInt(cartItem.price), 0);
-    const shipping = 12 * vendor_idss.length;
+    const shipping = 60 * vendor_idss.length;
     const total = totalPrice + shipping;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -33,6 +32,50 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
         setData({ ...data, price: total }); // Update total before submission
         post(route("checkout_store"), { ...data }); // Pass data to the backend
         reset(); // Reset form after successful submission
+    };
+
+
+    const base_url = 'http://localhost:8000/checkout'; // Define your base URL
+    const Key = 'Key 52b222e00d044f29b81490ff963e8b6b'; // Define your Khalti key
+    const orderData = {}; // Define your orderData object
+
+    const initiatePayment = async () => {
+        const payload = {
+            "return_url": `${base_url}payment-success`,
+            "website_url": 'http://localhost:3000/',
+            "amount": total,
+            "purchase_order_id": "Order01",
+            "purchase_order_name": "Kuro",
+            "merchant_username": 'Ayush',
+            "customer_info": {
+                name: auth?.user.name ?? '',
+                email: auth?.user.email ?? '',
+                phone: auth?.user.number ?? '',
+            },
+        };
+
+        try {
+            const { data } = await axios.post(
+                'https://a.khalti.com/api/v2/epayment/initiate/',
+                payload,
+                {
+                    headers: {
+                        "authorization": Key,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (data?.payment_url) {
+                const paymentUrl = data.payment_url;
+                console.log('Navigating to payment URL:', paymentUrl);
+                window.location.href = paymentUrl;
+            }
+
+            console.log('data', data);
+        } catch (err) {
+            console.log('Error', err);
+        }
     };
 
     return (
@@ -132,6 +175,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                                 <Link href={route('profile.edit')} className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                                     Change Payment Method
                                                 </Link>
+                                                <button onClick={initiatePayment}>Initiate Payment</button>
+
                                             </div>
                                         </div>
                                     </div>

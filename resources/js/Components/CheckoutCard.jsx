@@ -11,7 +11,10 @@ import { Inertia } from "@inertiajs/inertia";
 const CheckoutCard = ({ listing, vendor }) => {
     const [count, setCount] = useState(listing.quantity);
 
-    console.log(listing)
+    const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm({
+        quantity: listing.quantity,
+        price: listing.original_price * listing.quantity,
+    });
 
     useEffect(() => {
         setData({
@@ -42,28 +45,10 @@ const CheckoutCard = ({ listing, vendor }) => {
         }
     };
 
-    const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm({
-        quantity: listing.quantity,
-        price: listing.original_price * listing.quantity,
-    });
-
-    const submit = (e) => {
-        //e.preventDefault(); // Prevent default form submission behavior
-        console.log("Form submitted");
-
-        // Submit the form asynchronously using Inertia
-        // patch(route('updatecart', listing.id), {
-        //     quantity: count,
-        //     price: listing.original_price * count,
-        //     preserveScroll: true,
-        //     data: data
-        // });
-    };
-
-    const deleteProduct = (id) => {
+    const deleteProduct = () => {
         if (confirm('Are you sure you want to delete this product?')) {
             // Send a DELETE request to the appropriate endpoint
-            Inertia.delete(route('order.delete', { id: id }), {
+            Inertia.delete(route('order.delete', { id: listing.id }), {
                 preserveScroll: true,
                 onSuccess: () => {
                     // Reload the page after successful deletion
@@ -80,8 +65,6 @@ const CheckoutCard = ({ listing, vendor }) => {
 
     return (
         <div>
-            {/* <form onSubmit={submit} encType="multipart/form-data" className="space-y-4"> */}
-                {/* <div className='space-y-4' onClick={submit} > */}
                 <div className='space-y-4' >
                 <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
                     <div className="shrink-0">
@@ -103,23 +86,14 @@ const CheckoutCard = ({ listing, vendor }) => {
                                 {/* Empty space to push the buttons to the right */}
                                 <div className="flex-grow pl-6">Rs. {data.price}</div> {/* Updated */}
 
-
-
-                                {/* <div>
-                                    <button  onClick={() => submit(listing.id)} className="hover-text-red text-blue font-bold py-2 px-4 pr-3 rounded"><DoneIcon /></button>
-                                </div> */}
-
-
                                 <div className='p-2'>
-                                    <button onClick={() => deleteProduct(listing.id)} className="py-2 px-4"><CloseIcon /></button>
+                                    <div onClick={deleteProduct} className="py-2 px-4"><CloseIcon /></div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </li>
                 </div>
-            {/* </form> */}
         </div>
     );
 };

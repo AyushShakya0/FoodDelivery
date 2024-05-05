@@ -2,8 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import "./Dashboard.css"
 import MultiItemCarousel from '@/Components/MultiItemCarousel';
-import RestaurantCard from '@/Components/RestaurantCard';
 import Slider from 'react-slick';
+import RestaurantCard from '@/Components/RestaurantCard';
 import { Grid, Divider } from '@mui/material';
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';

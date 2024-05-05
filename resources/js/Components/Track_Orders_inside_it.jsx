@@ -24,7 +24,7 @@ const TrackOrdersInsideIt = ({ order }) => {
                         <div>
                             <p className="text-lg font-semibold text-gray-900">{truncateText(order.name, 15)}</p>
                             <p className="text-gray-400 text-sm">Qty: {order.quantity}</p>
-                            <p className="text-gray-400 text-sm">${order.price}</p>
+                            <p className="text-gray-400 text-sm">Rs. {order.price}</p>
                         </div>
                     </div>
                 </div>

@@ -32,8 +32,9 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
         }
     };
 
-    console.log(rating_exists)
-    console.log(rating_get )
+    const shipping = vendor.length * 60;
+    const total_price = checkout.total_price;
+    const subtotal = total_price - shipping;
 
     const [isAnonymous, setIsAnonymous] = useState(false);
     const handleAnonymousToggle = () => {
@@ -69,170 +70,170 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
 
     return (
         <AuthenticatedLayout user={auth.user} order={order_cart} fav={fav}>
-            <div className="fixed inset-0 flex justify-center items-center bg-gray-200">
-                <section className="w-full h-90vh bg-white shadow-md rounded-md p-8 overflow-auto mt-20 mb-4 ml-4 mr-4">
-                    <header className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
-                        <div className="flex justify-end mt-8">
-                            <Chip label={checkout.status} color="success" size="large" />
-                        </div>
-                    </header>
+            <section className="w-full h-full bg-white shadow-md rounded-md p-8 m-4 overflow-hidden">
+                <header className="mb-4">
+                    <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
+                    <div className="flex justify-end mt-8">
+                        <Chip label={checkout.status} color="success" size="large" />
+                    </div>
+                </header>
 
-                    <div className="overflow-auto" style={{ maxHeight: 'calc(90vh - 4rem)', marginTop: '2rem', marginBottom: '2rem' }}>
-                        <div className="grid grid-cols-5 gap-6">
-                            {/* Order Information */}
-                            {order.map((orders, index) => (
-                                <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
-                                    <div className="p-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="w-24 h-24 flex-shrink-0 overflow-hidden">
-                                                <img
-                                                    className="w-full h-full object-cover rounded-lg"
-                                                    src={`http://127.0.0.1:8000/storage/${orders.image}`}
-                                                    alt="food img"
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className="text-lg font-semibold text-gray-900">{orders.name}</p>
-                                                <p className="text-gray-400 text-sm">Qty: {orders.quantity}</p>
-                                                <p className="text-gray-400 text-sm">${orders.price}</p>
-                                            </div>
-                                        </div>
+                <div className="grid grid-cols-5 gap-6">
+                    {/* Order Information */}
+                    {order.map((orders, index) => (
+                        <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
+                            <div className="p-4">
+                                <div className="flex items-center space-x-4">
+                                    <div className="w-24 h-24 flex-shrink-0 overflow-hidden">
+                                        <img
+                                            className="w-full h-full object-cover rounded-lg"
+                                            src={`http://127.0.0.1:8000/storage/${orders.image}`}
+                                            alt="food img"
+                                        />
+                                    </div>
+                                    <div>
+                                        <p className="text-lg font-semibold text-gray-900">{orders.name}</p>
+                                        <p className="text-gray-400 text-sm">Qty: {orders.quantity}</p>
+                                        <p className="text-gray-400 text-sm">Rs. {orders.price}</p>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
+                    ))}
+                </div>
 
-                        {/* Customization Section */}
-                        {checkout.customization && (
-                            <div className="bg-gray-100 p-4 mt-8 rounded-md">
-                                <p className="font-semibold mb-2">Customization:</p>
-                                <p>{checkout.customization}</p>
-                            </div>
-                        )}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                    {/* Billing Details */}
+                    <div className="bg-gray-100 p-4 rounded-md pb-6">
+                        <p className="font-semibold mb-2">Billing Details:</p>
+                        <p>Subtotal: Rs. {subtotal}</p>
+                        <p>Shipping: Rs. {shipping}</p>
+                        <p>Total: Rs. {total_price}</p>
+                    </div>
 
-                        {/* Auth and Courier Sections */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                            {/* Vendor Info */}
-                            <div className="bg-gray-100 p-4 rounded-md">
-                                {Array.from(new Set(order.map(order => order.vendor_id))).map(vendorId => {
-                                    const vendorInfo = vendor.find(v => v.id === vendorId);
-                                    return (
-                                        <div key={vendorId} className='mb-2'>
-                                            <p className="font-semibold  text-2xl">{vendorInfo?.name || `Vendor-${vendorId}`} </p>
-                                            <p className="font-semibold">Phone Number: </p>
-                                            <p className="">{vendorInfo?.number || 'N/A'} </p>
-                                            <p className="font-semibold">Address:</p>
-                                            <p className="">{vendorInfo?.address || 'N/A'}, {vendorInfo?.city || 'N/A'}</p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Courier Info */}
-                            <div className="bg-gray-100 p-4 rounded-md">
-                                <p className="font-semibold mb-2">Courier</p>
-                                {courier ? (
-                                    <>
-                                        <p className="mb-1"><span className="font-semibold">Name:</span> {courier.name}</p>
-                                        <p><span className="font-semibold">Phone Number:</span> {courier.number}</p>
-                                    </>
-                                ) : (
-                                    <p className="font-semibold">Pending</p>
-                                )}
-                            </div>
-
-                            {/* Review Form */}
-                            {/* Review Form */}
-
-                            {/* Render Ratings if they exist */}
-                            {checkout.status === 'Destination reached' && rating_exists ? (
-                                <div>
-
-                                    {rating_get.map((rating) => (
-                                        <div class="mb-4  bg-white rounded p-4 m-2 mt-4 border-gray-800">
-                                            {rating.name === 'Anonymous' ? (
-                                                <div className="text-xl font-medium text-gray-700">Reviewed as anonymous</div>
-                                            ) : null}                                            <div className="text-sm font-medium text-gray-700">
-                                                {[...Array(5)].map((_, index) => (
-                                                    index < rating.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
-                                                ))}
-                                            </div>
-                                            <div className="text-md text-gray-700">{rating.review}</div>
-                                            <div>
-                                                <IconButton onClick={() => removeReview(rating.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </div>
-                                        </div>
-                                    ))}
-
-                                </div>
-                            ) : (
-                                <div className="flex items-center gap-4 mt-6 space-y-6 mb-6">
-                                    <div className="w-1/2"> {/* This div will cover 50% of the page width */}
-                                        <div className='text-lg font-bold'>
-                                            Rate your Delivery Person
-                                        </div>
-                                        <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4">
-                                            <div className="flex flex-col">
-                                                <label htmlFor="rating" className="text-sm font-medium text-gray-700">Rating</label>
-                                                <input
-                                                    id="rating"
-                                                    name="rating"
-                                                    type="number"
-                                                    value={data.rating}
-                                                    autoComplete="rating"
-                                                    onChange={(e) => setData("rating", Math.min(Math.max(parseInt(e.target.value), 1), 5))}
-                                                    min="1"
-                                                    max="5"
-                                                    required
-                                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <label htmlFor="review" className="text-sm font-medium text-gray-700">Review</label>
-                                                <textarea
-                                                    id="review"
-                                                    name="review"
-                                                    value={data.review}
-                                                    autoComplete="review"
-                                                    onChange={(e) => setData("review", e.target.value)}
-                                                    required
-                                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                                                ></textarea>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <input
-                                                    id="anonymous"
-                                                    type="checkbox"
-                                                    checked={isAnonymous}
-                                                    onChange={handleAnonymousToggle}
-                                                    className="mr-2"
-                                                />
-                                                <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
-                                                    Anonymous
-                                                </label>
-                                            </div>
-                                            <div className='mb-4'>
-                                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            )}
-
+                    {/* Customization Section */}
+                    {checkout.customization && (
+                        <div className="bg-gray-100 p-4 rounded-md md:col-span-2">
+                            <p className="font-semibold mb-2">Customization:</p>
+                            <p>{checkout.customization}</p>
                         </div>
+                    )}
+                </div>
 
-                        {/* Cancel Delivery Button */}
-                        {checkout.status !== 'Destination reached' && (
-                            <div className="flex items-center gap-4 mt-6 space-y-6">
-                                <PrimaryButton onClick={() => confirmCancel(checkout.id)}>Cancel delivery</PrimaryButton>
-                            </div>
+                {/* Auth and Courier Sections */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    {/* Vendor Info */}
+                    <div className="bg-gray-100 p-4 rounded-md">
+                        {Array.from(new Set(order.map(order => order.vendor_id))).map(vendorId => {
+                            const vendorInfo = vendor.find(v => v.id === vendorId);
+                            return (
+                                <div key={vendorId} className='mb-2'>
+                                    <p className="font-semibold  text-2xl">{vendorInfo?.name || `Vendor-${vendorId}`} </p>
+                                    <p className="font-semibold">Phone Number: </p>
+                                    <p className="">{vendorInfo?.number || 'N/A'} </p>
+                                    <p className="font-semibold">Address:</p>
+                                    <p className="">{vendorInfo?.address || 'N/A'}, {vendorInfo?.city || 'N/A'}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Courier Info */}
+                    <div className="bg-gray-100 p-4 rounded-md">
+                        <p className="font-semibold mb-2">Courier</p>
+                        {courier ? (
+                            <>
+                                <p className="mb-1"><span className="font-semibold">Name:</span> {courier.name}</p>
+                                <p><span className="font-semibold">Phone Number:</span> {courier.number}</p>
+                            </>
+                        ) : (
+                            <p className="font-semibold">Pending</p>
                         )}
                     </div>
-                </section>
-            </div>
+                </div>
+
+                {checkout.status === 'Destination reached' && rating_exists ? (
+                    <div>
+                        {rating_get.map((rating) => (
+                            <div key={rating.id} className="mb-4  bg-white rounded p-4 m-2 mt-4 border-gray-800">
+                                {rating.name === 'Anonymous' ? (
+                                    <div className="text-xl font-medium text-gray-700">Reviewed as anonymous</div>
+                                ) : null}                                            <div className="text-sm font-medium text-gray-700">
+                                    {[...Array(5)].map((_, index) => (
+                                        index < rating.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                    ))}
+                                </div>
+                                <div className="text-md text-gray-700">{rating.review}</div>
+                                <div>
+                                    <IconButton onClick={() => removeReview(rating.id)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-4 mt-6 space-y-6 mb-6">
+                        <div className="w-1/2">
+                            <div className='text-lg font-bold'>
+                                Rate your Delivery Person
+                            </div>
+                            <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4">
+                                <div className="flex flex-col">
+                                    <label htmlFor="rating" className="text-sm font-medium text-gray-700">Rating</label>
+                                    <input
+                                        id="rating"
+                                        name="rating"
+                                        type="number"
+                                        value={data.rating}
+                                        autoComplete="rating"
+                                        onChange={(e) => setData("rating", Math.min(Math.max(parseInt(e.target.value), 1), 5))}
+                                        min="1"
+                                        max="5"
+                                        required
+                                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                                    />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="review" className="text-sm font-medium text-gray-700">Review</label>
+                                    <textarea
+                                        id="review"
+                                        name="review"
+                                        value={data.review}
+                                        autoComplete="review"
+                                        onChange={(e) => setData("review", e.target.value)}
+                                        required
+                                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                                    ></textarea>
+                                </div>
+                                <div className="flex items-center">
+                                    <input
+                                        id="anonymous"
+                                        type="checkbox"
+                                        checked={isAnonymous}
+                                        onChange={handleAnonymousToggle}
+                                        className="mr-2"
+                                    />
+                                    <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
+                                        Anonymous
+                                    </label>
+                                </div>
+                                <div className='mb-4'>
+                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Cancel Delivery Button */}
+                {checkout.status !== 'Destination reached' && (
+                    <div className="flex items-center gap-4 mt-6 space-y-6">
+                        <PrimaryButton onClick={() => confirmCancel(checkout.id)}>Cancel delivery</PrimaryButton>
+                    </div>
+                )}
+            </section>
+
         </AuthenticatedLayout>
     );
 }
