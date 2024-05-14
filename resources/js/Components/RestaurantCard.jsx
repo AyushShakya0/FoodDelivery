@@ -73,7 +73,7 @@ export default function RestaurantCard({ listing, fav, vendor, user }) {
                     </div>
                     <div className='p-4 textPart lg:flex w-full justify-between' style={{ flex: '1' }}>
                         <div className='space-y-1'>
-                            <p className='font-semibold text-lg'>{truncateText(listing.name, 16)}</p>
+                            <p className='font-semibold text-lg'>{truncateText(listing.name, 14)}</p>
                             <p className='text-gray-500 text-sm'>{listing.address}</p>
                             <p className='text-gray-500 text-sm'>{listing.start_time}-{listing.end_time}</p>
                             {/* <p className='text-gray-500 text-sm'>{listing.rating}</p> */}

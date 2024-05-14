@@ -7,6 +7,7 @@ use App\Http\Controllers\CourierProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\VendorController;
@@ -66,7 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/myorders', [CustomerController::class, 'myorders'])->name('myorders');
     Route::get('/favorites', [CustomerController::class, 'favorites'])->name('favorites');
     Route::get('/address', [CustomerController::class, 'address'])->name('address');
-    Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
     Route::get('/notification', [CustomerController::class, 'notification'])->name('notification');
 
     Route::get('/mycart', [CustomerController::class, 'cart'])->name('cart');
@@ -115,6 +115,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cancelDelivery/{id}', [CustomerController::class, 'cancel_delivery'])->name('user.cancel_delivery');
 
     Route::get('/payment/khalti/{id}', [CustomerController::class, 'payment'])->name('payment');
+
+    Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
+
+    Route::post('/khalti/payment/verify', [PaymentController::class, 'verifyPayment'])->name('khalti.verifyPayment');
+
+    Route::post('/khalti/payment/store', [PaymentController::class, 'storePayment'])->name('khalti.storePayment');
 });
 
 require __DIR__ . '/auth.php';
@@ -229,7 +235,7 @@ Route::get('/courier/dashboard', function () {
     })->get();
 
     $occupied = Checkout::where('courier_id', $courierId)
-    ->whereNot('status', 'Delivered')->get();
+        ->whereNot('status', 'Delivered')->get();
 
     $userIds = $checkout->pluck('user_id')->flatten()->toArray();
     $user = User::whereIn('id', $userIds)->get();
@@ -238,16 +244,16 @@ Route::get('/courier/dashboard', function () {
     $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
     $checkout_total = Checkout::whereIn('status', ['Delivered'])
-    ->where('courier_id', $courierId)
-    ->get();
+        ->where('courier_id', $courierId)
+        ->get();
 
     $current_delivery = Checkout::whereNotIn('status', ['Delivered'])
-    ->where('courier_id', $courierId)
-    ->get();
+        ->where('courier_id', $courierId)
+        ->get();
 
     $pending_delivery = Checkout::whereNotIn('status', ['Delivered'])
-    ->where('courier_id', null)
-    ->get();
+        ->where('courier_id', null)
+        ->get();
 
     return Inertia::render('Courier/Dashboard', [
         'orders' => $orders,

@@ -17,6 +17,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         state: user.state || '',
         city: user.city || '',
         pincode: user.pincode || '',
+        longitude: user.longitude || '',
+        latitude: user.latitude || '',
 
         address1: user.address1 || '',
         state1: user.state1 || '',
@@ -173,6 +175,32 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.pincode} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="longitude" value="longitude" />
+                    <TextInput
+                        id="longitude"
+                        className="mt-1 block w-full"
+                        value={data.longitude}
+                        // onChange={(e) => setData({ ...data, longitude: e.target.value })}
+                        onChange={(e) => setData('longitude', e.target.value)}
+
+                    />
+                    {errors && errors.longitude && <InputError message={errors.longitude[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="latitude" value="latitude" />
+                    <TextInput
+                        id="latitude"
+                        className="mt-1 block w-full"
+                        value={data.latitude}
+                        // onChange={(e) => setData({ ...data, latitude: e.target.value })}
+                        onChange={(e) => setData('latitude', e.target.value)}
+
+                    />
+                    {errors && errors.latitude && <InputError message={errors.latitude[0]} />}
                 </div>
 
                 </div>

@@ -33,6 +33,8 @@ class Vendor extends Authenticatable
         'status',
         'verified',
         'rating',
+        'longitude',
+        'latitude',
 
     ];
 

@@ -217,6 +217,8 @@ class AdminController extends Controller
         $vendor = Vendor::findOrFail($vendorid);
 
         // dd($request->all());
+
+        // dd($request->all());
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -227,10 +229,17 @@ class AdminController extends Controller
             'address' => ['required', 'string', 'max:255'],
             'start_time' => 'required|string',
             'end_time' => 'required|string',
+            'longitude' => 'required|string',
+            'latitude' => 'required|string',
         ]);
 
         // Update the vendor with the validated data
         $vendor->update($validatedData);
+
+        // $vendor->update([
+        //     'latitude'=> $request->longitude,
+        //     'longitude'=> $request->longitude
+        // ]);
 
         return redirect()->route('admin_vendor')->with('success', 'Vendor updated successfully.');
     }

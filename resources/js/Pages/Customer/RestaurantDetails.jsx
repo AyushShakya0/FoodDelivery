@@ -1,7 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import MultiItemCarousel from '@/Components/MultiItemCarousel';
-import RestaurantCard from '@/Components/RestaurantCard';
 import { Grid, Divider, Typography, FormControl, RadioGroup, Radio, FormControlLabel } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -16,6 +15,10 @@ import { Link } from '@inertiajs/react';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 
+import Map_restaurant from '@/Components/Map_restaurant';
+
+
+
 
 const foodTypes = [
     { label: "All", value: "all", },
@@ -28,9 +31,16 @@ const foodTypes = [
 
 export default function RestaurantDetails({ auth, vendor, menus, order, fav, desserts, main_course, appetizers }) {
     const [foodType, setFoodType] = useState('all'); // Initialize state for selected food type
+    const [showMap, setShowMap] = useState(false); // State variable for showing map
+
 
     const handleFilter = (e) => {
         setFoodType(e.target.value); // Update selected food type when radio button changes
+    };
+
+
+    const toggleMap = () => {
+        setShowMap(!showMap); // Toggle showMap state
     };
 
     // Filter menus based on selected food type
@@ -48,12 +58,6 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
         default:
             filteredMenus = menus;
     }
-
-
-    console.log('desserts', desserts)
-    console.log('main_course', main_course)
-    console.log('appetizers', appetizers)
-
 
     const paymentSubmit = {
 
@@ -105,7 +109,19 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
             <div className='px5 lg:px-20 '>
                 <section>
                     <div className='mt-6'>
-                        <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                        {/* Conditionally render image or map based on showMap state */}
+                        {showMap ? (
+                            <Map_restaurant vendor={vendor} />
+                        ) : (
+                            <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                        )}
+                    </div>
+
+                    {/* Button to toggle between image and map */}
+                    <div className='mt-3'>
+                        <button onClick={toggleMap} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            {showMap ? "Show Image" : "Show Map"}
+                        </button>
                     </div>
 
                     <div className='pt-3 pb-5'>
@@ -170,9 +186,11 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
 
                 <Divider />
 
+
                 <section className='pt-[2 rem ] lg:flex relative'>
                     <div className='space-y-10 lg:w-[20%] filter p-5 shadow-md'>
                         <div className='box space-y-5 lg:sticky top-28'>
+
                             <div className=''>
                                 <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                                     Food Category

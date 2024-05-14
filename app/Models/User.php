@@ -26,6 +26,10 @@ class User extends Authenticatable
         'state',
         'city',
         'pincode',
+        'longitude',
+        'latitude',
+
+        
         'address1',
         'state1',
         'city1',

@@ -20,9 +20,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
         image: user.image,
         description: user.description,
-        address: user.address,
         number: user.number,
+        address: user.address,
         city: user.city,
+        longitude: user.longitude,
+        latitude: user.latitude,
         cuisine: user.cuisine,
         start_time: user.start_time,
         end_time: user.end_time,
@@ -31,9 +33,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     // Function to handle form submission
     const submit = (e) => {
         e.preventDefault();
-        patch(route('vendor.profile.update')),{
-            start_time:data.start_time,
-            end_time:data.end_time,
+        patch(route('vendor.profile.update')), {
+            start_time: data.start_time,
+            end_time: data.end_time,
         };
     };
 
@@ -108,7 +110,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <TextInput
                         type="time"
                         value={data.start_time}
-                        onChange={(e) =>setData("start_time", e.target.value)}
+                        onChange={(e) => setData("start_time", e.target.value)}
 
                         required
                     />
@@ -120,10 +122,24 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <TextInput
                         type="time"
                         value={data.end_time}
-                        onChange={(e) =>setData("end_time", e.target.value)}
+                        onChange={(e) => setData("end_time", e.target.value)}
                         required
                     />
                     <InputError className="mt-2" message={errors.end_time} />
+                </div>
+
+
+
+                {/* Number */}
+                <div>
+                    <InputLabel htmlFor="number" value="Number" />
+                    <TextInput
+                        id="number"
+                        className="mt-1 block w-full"
+                        value={data.number}
+                        onChange={(e) => setData('number', e.target.value)}
+                    />
+                    <InputError className="mt-2" message={errors.number} />
                 </div>
 
                 {/* Address */}
@@ -139,18 +155,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.address} />
                 </div>
 
-                {/* Number */}
-                <div>
-                    <InputLabel htmlFor="number" value="Number" />
-                    <TextInput
-                        id="number"
-                        className="mt-1 block w-full"
-                        value={data.number}
-                        onChange={(e) => setData('number', e.target.value)}
-                    />
-                    <InputError className="mt-2" message={errors.number} />
-                </div>
-
                 {/* City */}
                 <div>
                     <InputLabel htmlFor="city" value="City" />
@@ -162,6 +166,33 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         autoComplete="city"
                     />
                     <InputError className="mt-2" message={errors.city} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="longitude" value="longitude" />
+                    <TextInput
+                        id="longitude"
+                        className="mt-1 block w-full"
+                        value={data.longitude}
+                        // onChange={(e) => setData({ ...data, longitude: e.target.value })}
+                        onChange={(e) => setData('longitude', e.target.value)}
+
+                    />
+                    {errors && errors.longitude && <InputError message={errors.longitude[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="latitude" value="latitude" />
+                    <TextInput
+                        id="latitude"
+                        className="mt-1 block w-full"
+                        value={data.latitude}
+                        // onChange={(e) => setData({ ...data, latitude: e.target.value })}
+                        onChange={(e) => setData('latitude', e.target.value)}
+
+                    />
+                    {errors && errors.latitude && <InputError message={errors.latitude[0]} />}
                 </div>
 
                 {/* Conditional rendering based on email verification */}

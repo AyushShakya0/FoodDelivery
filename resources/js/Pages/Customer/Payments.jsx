@@ -1,41 +1,58 @@
+import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-// import "./Dashboard.css"
-import MultiItemCarousel from '@/Components/MultiItemCarousel';
-import RestaurantCard from '@/Components/RestaurantCard';
-import Profile from '@/Components/Profile/Profile';
-import { ProfileNavigation } from '@/Components/Profile/ProfileNavigation';
-import { useState } from 'react';
+import { Head } from '@inertiajs/react';
+import axios from 'axios'; // Import axios for making HTTP requests
 
+export default function Payments({ auth, order, fav }) {
+    const handleKhaltiPayment = async () => {
+        const payload = {
+          "return_url": `http://127.0.0.1/payment-success`,
+          "website_url": 'http://127.0.0.1:8000/payments',
+          amount: 200,
+          // "amount": orderData?.,
+          "purchase_order_id": `GoFood`,
+          "purchase_order_name": `GoFood`,
+          "merchant_username":'goFood',
+          "customer_info": {
+            name: 'Resh',
+            email: 'reshambhattarai05@gmail.com',
+            phone: '9860130046',
+          },
+        };
+        try {
+          const { data } = await axios.post(
+            'https://a.khalti.com/api/v2/epayment/initiate/',
+            payload,
+            {
+              headers: {
+                "authorization": `Key 52b222e00d044f29b81490ff963e8b6b`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          if (data?.payment_url) {
+            const paymentUrl = data.payment_url;
+            console.log('Navigating to payment URL:', paymentUrl);
 
+            window.location.href = paymentUrl;
+          }
 
-export default function Cart_Display({ auth, vendor, food,order }) {
-
-    const [openSideBar, setOpenSideBar] = useState(false);
+          console.log('data', data);
+        } catch (err) {
+          console.log('Error', err);
+        }
+      };
 
     return (
-
-
-        <div>
-            <Head title="Payments" />
-
-            <div className='lg:flex'>
-                <div className='sticky background-red-500' style={{ position: 'relative', width: '100%' }}>
-                    {/* <div className='sticky h-[80vh] lg:w-{20%} background-red-500'> */}
-                    <ProfileNavigation open={openSideBar} />
-
-
-                </div>
-                <div className='h-auto ' style={{ position: 'absolute', right: '0', width: '80%', }}>
-                    {/* <div className='lg:w-[80%]   text-red-500 ' style={{ position: 'absolute', right: '0', width: '80%', backgroundColor: 'yellow' }}> */}
-                    {/* <p className='text-gray-700'>hello</p> */}
-                    <div className='text-red-300'>payments</div>
-
+        <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
+            <Head title="Restaurants" />
+            <div>
+                <div className="text-blue-600 text-2xl">
+                    <button id="payment-button" onClick={handleKhaltiPayment}>
+                        Pay with Khalti
+                    </button>
                 </div>
             </div>
-        </div>
-
-
-
+        </AuthenticatedLayout>
     );
 }

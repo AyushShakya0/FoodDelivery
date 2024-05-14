@@ -47,9 +47,9 @@ export default function Authenticated({ user, header, children, food, order, fav
                                     Restaurants
                                 </NavLink>
 
-                                {/* <NavLink href={route('cart')} active={route().current('cart')}>
-                                    My Cart
-                                </NavLink> */}
+                                <NavLink href={route('payments')} active={route().current('payments')}>
+                                payments
+                                </NavLink>
 
                                 <NavLink href={route('track.order')} active={route().current('track.order')}>
                                     Track Order

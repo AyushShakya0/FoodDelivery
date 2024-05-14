@@ -19,6 +19,8 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
         start_time: vendor.start_time || '',
         end_time: vendor.end_time || '',
         image: vendor.image || '',
+        longitude: vendor.longitude || '',
+        latitude: vendor.latitude || '',
     });
 
 
@@ -34,6 +36,8 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
             start_time: vendor.start_time || '',
             end_time: vendor.end_time || '',
             image: vendor.image || '',
+            longitude: vendor.longitude || '',
+            latitude: vendor.latitude || '',
             preserveScroll: true,
             data: data
         });
@@ -123,13 +127,57 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
                     {errors && errors.city && <InputError message={errors.city[0]} />}
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="longitude" value="longitude" />
+                    <TextInput
+                        id="longitude"
+                        className="mt-1 block w-full"
+                        value={data.longitude}
+                        // onChange={(e) => setData({ ...data, longitude: e.target.value })}
+                        onChange={(e) => setData('longitude', e.target.value)}
+
+                    />
+                    {errors && errors.longitude && <InputError message={errors.longitude[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="latitude" value="latitude" />
+                    <TextInput
+                        id="latitude"
+                        className="mt-1 block w-full"
+                        value={data.latitude}
+                        // onChange={(e) => setData({ ...data, latitude: e.target.value })}
+                        onChange={(e) => setData('latitude', e.target.value)}
+
+                    />
+                    {errors && errors.latitude && <InputError message={errors.latitude[0]} />}
+                </div>
+
+                {/* <TextInput
+                    id="longitude"
+                    name="longitude"
+                    label="Longitude"
+                    value={data.longitude}
+                    autoComplete="longitude"
+                    onChange={(e) =>
+                        setData("longitude", e.target.value)
+                    }
+                />
+
+                <InputError
+                    message={errors.longitude}
+                    className="mt-2"
+                /> */}
+
+
+
                 {/* Time */}
                 <div>
                     <InputLabel htmlFor="start_time" value="start_time" />
                     <TextInput
                         type="time"
                         value={data.start_time}
-                        onChange={(e) =>setData("start_time", e.target.value)}
+                        onChange={(e) => setData("start_time", e.target.value)}
                     />
                     <InputError className="mt-2" message={errors.start_time} />
                 </div>
@@ -139,7 +187,7 @@ export default function UpdateVendorForm({ vendor, className = '' }) {
                     <TextInput
                         type="time"
                         value={data.end_time}
-                        onChange={(e) =>setData("end_time", e.target.value)}
+                        onChange={(e) => setData("end_time", e.target.value)}
                     />
                     <InputError className="mt-2" message={errors.end_time} />
                 </div>
