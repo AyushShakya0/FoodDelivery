@@ -9,6 +9,9 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 
+import Map from '@/Components/Map';
+
+
 
 
 export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, order_cart, fav, className = '' }) {
@@ -71,6 +74,8 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
             <section className="w-full h-full bg-white shadow-md rounded-md p-8 overflow-hidden m-4">
                 <header className="mb-4">
                     <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
+
+                    <Map user={auth.user} vendor={vendor[0]} />
                     <div className="flex justify-end mt-8">
                         <Chip label={checkout.status} color="success" size="large" />
                     </div>

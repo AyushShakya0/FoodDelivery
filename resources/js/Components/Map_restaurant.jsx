@@ -24,9 +24,6 @@ const MapViewContainer = ({vendor }) => {
         },
     ];
 
-    console.log(vendor.longitude);
-    console.log(vendor.latitude);
-
     return (
         <MapContainer
             center={[vendor.latitude, vendor.longitude]}

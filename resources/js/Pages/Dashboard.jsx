@@ -8,8 +8,6 @@ import { Grid, Divider } from '@mui/material';
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 
-import Map from '@/Components/Map';
-
 
 export default function Dashboard({ auth, vendor, food, order, fav }) {
 
@@ -24,8 +22,6 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
         arrows: false
 
     };
-
-    // console.log(auth.user.longitude)
 
     const staticItems = [
         { id: 1, name: "Burger", image: '/burger.jpg' },
@@ -153,7 +149,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                     </div>
                 </section>
 
-                
+
 
                 <section className="py-12 mt-10 mb-10 bg-white mr-4 ml-4">
                     <div className="container mx-auto flex flex-wrap items-center justify-center md:justify-between">
