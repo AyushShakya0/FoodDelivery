@@ -88,6 +88,22 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
         }
     };
 
+    const StarRating = ({ rating, setRating }) => {
+        const handleStarClick = (index) => {
+            setRating(index + 1); // Set rating based on clicked star index
+        };
+
+        return (
+            <div className="flex items-center">
+                {[...Array(5)].map((_, index) => (
+                    <IconButton key={index} onClick={() => handleStarClick(index)}>
+                        {index < rating ? <StarIcon className="text-yellow-600" /> : <StarBorderIcon className="text-yellow-600" />}
+                    </IconButton>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <AuthenticatedLayout user={auth.user} order={order} fav={fav}>
             <Head title="Restaurant Details" />
@@ -161,56 +177,51 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
                 {/* Review form */}
                 <div class="lg:w-full mb-8 lg:mb-0 lg:pr-4">
                     {order_exists && !rating_exists && (
-                        <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4">
-                            {/* Rating input */}
-                            <div className="flex flex-col">
-                                <label htmlFor="rating" className="text-sm font-medium text-gray-700">Rating</label>
-                                <input
-                                    id="rating"
-                                    name="rating"
-                                    type="number"
-                                    value={data.rating}
-                                    autoComplete="rating"
-                                    onChange={(e) => setData("rating", Math.min(Math.max(parseInt(e.target.value), 1), 5))}
-                                    min="1"
-                                    max="5"
-                                    required
-                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                                />
-                            </div>
-                            {/* Review text area */}
-                            <div className="flex flex-col">
-                                <label htmlFor="review" className="text-sm font-medium text-gray-700">Review</label>
-                                <textarea
-                                    id="review"
-                                    name="review"
-                                    value={data.review}
-                                    autoComplete="review"
-                                    onChange={(e) => setData("review", e.target.value)}
-                                    required
-                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                                ></textarea>
-                            </div>
-
-                            {/* Anonymous checkbox */}
+                        <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4 mt-4">
+                        {/* Rating input */}
+                        <div className="flex flex-col">
                             <div className="flex items-center">
-                                <input
-                                    id="anonymous"
-                                    type="checkbox"
-                                    checked={isAnonymous}
-                                    onChange={handleAnonymousToggle}
-                                    className="mr-2"
-                                />
-                                <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
-                                    Anonymous
-                                </label>
+                                <StarRating rating={data.rating} setRating={(value) => setData("rating", value)} required />
+                                {errors.rating && <span className="text-red-500 ml-1">*</span>} {/* Show asterisk if rating is required and not provided */}
                             </div>
+                        </div>
 
-                            {/* Submit button */}
-                            <div>
-                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                            </div>
-                        </form>
+                        {/* Review text area */}
+                        <div className="flex flex-col">
+                            <textarea
+                                id="review"
+                                name="review"
+                                value={data.review}
+                                autoComplete="review"
+                                onChange={(e) => setData("review", e.target.value)}
+                                required
+                                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                            ></textarea>
+                            {errors.review && <span className="text-red-500 text-sm">{errors.review}</span>} {/* Show error message if review is required and not provided */}
+                        </div>
+
+                        {/* Anonymous checkbox */}
+                        <div className="flex items-center">
+                            <input
+                                id="anonymous"
+                                type="checkbox"
+                                checked={isAnonymous}
+                                onChange={handleAnonymousToggle}
+                                className="mr-2 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
+                                Anonymous
+                            </label>
+                        </div>
+
+                        {/* Submit button */}
+                        <div>
+                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+
                     )}
 
                     {rating_exists && (

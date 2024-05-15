@@ -70,6 +70,22 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
         }
     };
 
+    const StarRating = ({ rating, setRating }) => {
+        const handleStarClick = (index) => {
+            setRating(index + 1); // Set rating based on clicked star index
+        };
+
+        return (
+            <div className="flex items-center">
+                {[...Array(5)].map((_, index) => (
+                    <IconButton key={index} onClick={() => handleStarClick(index)}>
+                        {index < rating ? <StarIcon className="text-yellow-600" /> : <StarBorderIcon className="text-yellow-600" />}
+                    </IconButton>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <AuthenticatedLayout user={auth.user} order={order_cart} fav={fav}>
             <section className="w-full h-full bg-white shadow-md rounded-md p-8 m-4 overflow-hidden">
@@ -182,20 +198,12 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
                             </div>
                             <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4">
                                 <div className="flex flex-col">
-                                    <label htmlFor="rating" className="text-sm font-medium text-gray-700">Rating</label>
-                                    <input
-                                        id="rating"
-                                        name="rating"
-                                        type="number"
-                                        value={data.rating}
-                                        autoComplete="rating"
-                                        onChange={(e) => setData("rating", Math.min(Math.max(parseInt(e.target.value), 1), 5))}
-                                        min="1"
-                                        max="5"
-                                        required
-                                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                                    />
+                                    <div className="flex items-center">
+                                        <StarRating rating={data.rating} setRating={(value) => setData("rating", value)} required />
+                                        {errors.rating && <span className="text-red-500 ml-1">*</span>} {/* Show asterisk if rating is required and not provided */}
+                                    </div>
                                 </div>
+
                                 <div className="flex flex-col">
                                     <label htmlFor="review" className="text-sm font-medium text-gray-700">Review</label>
                                     <textarea
