@@ -33,6 +33,8 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
         }
     };
 
+    console.log(vendor)
+
     const shipping = vendor.length * 60;
     const total_price = checkout.total_price;
     const subtotal = total_price - shipping;
@@ -75,7 +77,14 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                 <header className="mb-4">
                     <h2 className="text-2xl font-semibold text-gray-900">Order Information</h2>
 
-                    <Map user={auth.user} vendor={vendor[0]} />
+
+
+                    {/* Map for 2 or more vendors still left to do */}
+                    <Map user={auth.user} vendor={vendor}  />
+
+
+
+
                     <div className="flex justify-end mt-8">
                         <Chip label={checkout.status} color="success" size="large" />
                     </div>

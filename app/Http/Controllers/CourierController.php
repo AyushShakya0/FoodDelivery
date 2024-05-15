@@ -96,7 +96,7 @@ class CourierController extends Controller
 
         $user = User::where('id', $userIds)->get();
 
-        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        // $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
         $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
         // dd($vendor);

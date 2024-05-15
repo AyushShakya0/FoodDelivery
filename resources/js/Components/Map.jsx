@@ -4,6 +4,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 const MapViewContainer = ({ user, vendor }) => {
+
+    console.log(user,'uss')
+    console.log(vendor,'vss')
     // Custom blue icon for user
     const blueIcon = new L.Icon({
         iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
@@ -24,24 +27,6 @@ const MapViewContainer = ({ user, vendor }) => {
         shadowSize: [41, 41]
     });
 
-    // Set static location data
-    const locations = [
-        {
-            id: 1,
-            name: "My Location",
-            latitude: user.latitude,
-            longitude: user.longitude,
-            icon: blueIcon // Use blue icon for user
-        },
-        {
-            id: 2,
-            name: vendor.name,
-            latitude: vendor.latitude,
-            longitude: vendor.longitude,
-            icon: greenIcon // Use green icon for vendor
-        }
-    ];
-
     return (
         <MapContainer
             center={[user.latitude, user.longitude]}
@@ -52,15 +37,23 @@ const MapViewContainer = ({ user, vendor }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {locations.map((location) => (
+            {vendor.map((location) => (
                 <Marker
                     key={location.id}
                     position={[location.latitude, location.longitude]}
-                    icon={location.icon} // Use custom icon based on location
+                    icon={greenIcon} // Use custom icon based on location
                 >
                     <Popup>{location.name}</Popup>
                 </Marker>
             ))}
+
+            <Marker
+                key={user.id}
+                position={[user.latitude, user.longitude]}
+                icon={blueIcon} // Use custom icon based on location
+            >
+                <Popup>{user.name}</Popup>
+            </Marker>
         </MapContainer>
     );
 };

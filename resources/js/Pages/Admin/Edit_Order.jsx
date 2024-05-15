@@ -3,7 +3,6 @@ import AuthenticatedLayout_Admin from '@/Layouts/AuthenticatedLayout_Admin';
 import { Head } from '@inertiajs/react';
 import UpdateOrderForm from './Partials/UpdateOrderForm';
 
-
 export default function Edit({ auth, orders, checkout, user, courier, vendor }) {
     // Assuming filteredUserArray will have only one user object
     const userObject = user.length > 0 ? user[0] : null;

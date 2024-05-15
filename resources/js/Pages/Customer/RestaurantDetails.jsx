@@ -118,6 +118,7 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
                     </div>
 
                     {/* Button to toggle between image and map */}
+                    {/* need to change the button */}
                     <div className='mt-3'>
                         <button onClick={toggleMap} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             {showMap ? "Show Image" : "Show Map"}

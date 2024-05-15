@@ -373,7 +373,7 @@ class AdminController extends Controller
 
         $user = User::where('id', $userIds)->get();
 
-        $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
+        // $vendorIds = $checkout->pluck('vendor_id')->flatten()->toArray();
         $vendor = Vendor::whereIn('id', $vendorIds)->get();
 
         $courier = Courier::where('id', $courierIds)->get();

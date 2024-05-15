@@ -9,6 +9,9 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
+import Map from '@/Components/Map';
+
+
 export default function UpdateOrderForm({ auth, order, checkout, user, vendor, courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -23,6 +26,9 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
         'Reached'
     ];
 
+    // console.log(user)
+    // console.log(vendor)
+
     // Grouping orders by vendor
     const groupedOrders = order.reduce((acc, curr) => {
         const vendorName = vendor.find(v => v.id === curr.vendor_id)?.name || `Vendor-${curr.vendor_id}`;
@@ -36,6 +42,9 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
             <header>
                 <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
             </header>
+
+            <Map user={user} vendor={vendor} />
+
 
 
             {Object.entries(groupedOrders).map(([vendorName, orders]) => (
