@@ -202,10 +202,7 @@ export default function Dashboard({ auth, vendor, food, order, fav }) {
                             <p className='text-gray-500'>Kathmandu: 5970477, 4544177, 4540979, 9802034008</p>
                             <p className='text-gray-500'>Pokhara: 9802859990, 9802853330</p>
                         </div>
-                        <div className="footer__section mb-4">
-                            <h4 className="text-lg font-semibold mb-2">DOWNLOAD APP</h4>
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Download Now</button>
-                        </div>
+
                         <div className="footer__section mb-4">
                             <h4 className="text-lg font-semibold mb-2">CONNECT WITH US</h4>
                             <ul className='text-gray-500'>

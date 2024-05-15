@@ -15,11 +15,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 
+import Map_restaurant from '@/Components/Map_restaurant';
+
+
 export default function RestaurantReview({ auth, vendor, order, fav, rating, rating_exists, order_exists, rating_own }) {
 
     const { id } = usePage().props; // Access route parameters
 
     const [isAnonymous, setIsAnonymous] = useState(false);
+
+    const [showMap, setShowMap] = useState(false); // State variable for showing map
+
+    const toggleMap = () => {
+        setShowMap(!showMap); // Toggle showMap state
+    };
+
 
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -109,9 +119,27 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
             <Head title="Restaurant Details" />
             <div className='px5 lg:px-20 '>
                 <section>
-                    <div className='mt-6'>
-                        <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                    <div className="relative">
+                        <div className='mt-6'>
+                            {/* Conditionally render image or map based on showMap state */}
+                            {showMap ? (
+                                <Map_restaurant vendor={vendor} user={auth.user} />
+                            ) : (
+                                <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                            )}
+                        </div>
+
+                        {/* Button to toggle between image and map */}
+                        {/* Button positioned at bottom right */}
+                        <div className="absolute bottom-4 right-4">
+                            <button onClick={toggleMap} className="bg-green-300 hover:bg-blue-300 text-black font-bold py-2 px-4 rounded">
+                                {showMap ? "Show Image" : "Show Map"}
+                            </button>
+                        </div>
                     </div>
+
+
+
 
                     <div className='pt-3 pb-5'>
                         <div className="flex justify-between items-center">
@@ -178,49 +206,49 @@ export default function RestaurantReview({ auth, vendor, order, fav, rating, rat
                 <div class="lg:w-full mb-8 lg:mb-0 lg:pr-4">
                     {order_exists && !rating_exists && (
                         <form onSubmit={review_submit} encType="multipart/form-data" className="space-y-4 mt-4">
-                        {/* Rating input */}
-                        <div className="flex flex-col">
-                            <div className="flex items-center">
-                                <StarRating rating={data.rating} setRating={(value) => setData("rating", value)} required />
-                                {errors.rating && <span className="text-red-500 ml-1">*</span>} {/* Show asterisk if rating is required and not provided */}
+                            {/* Rating input */}
+                            <div className="flex flex-col">
+                                <div className="flex items-center">
+                                    <StarRating rating={data.rating} setRating={(value) => setData("rating", value)} required />
+                                    {errors.rating && <span className="text-red-500 ml-1">*</span>} {/* Show asterisk if rating is required and not provided */}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Review text area */}
-                        <div className="flex flex-col">
-                            <textarea
-                                id="review"
-                                name="review"
-                                value={data.review}
-                                autoComplete="review"
-                                onChange={(e) => setData("review", e.target.value)}
-                                required
-                                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                            ></textarea>
-                            {errors.review && <span className="text-red-500 text-sm">{errors.review}</span>} {/* Show error message if review is required and not provided */}
-                        </div>
+                            {/* Review text area */}
+                            <div className="flex flex-col">
+                                <textarea
+                                    id="review"
+                                    name="review"
+                                    value={data.review}
+                                    autoComplete="review"
+                                    onChange={(e) => setData("review", e.target.value)}
+                                    required
+                                    className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                                ></textarea>
+                                {errors.review && <span className="text-red-500 text-sm">{errors.review}</span>} {/* Show error message if review is required and not provided */}
+                            </div>
 
-                        {/* Anonymous checkbox */}
-                        <div className="flex items-center">
-                            <input
-                                id="anonymous"
-                                type="checkbox"
-                                checked={isAnonymous}
-                                onChange={handleAnonymousToggle}
-                                className="mr-2 border-gray-300 rounded focus:ring-blue-500"
-                            />
-                            <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
-                                Anonymous
-                            </label>
-                        </div>
+                            {/* Anonymous checkbox */}
+                            <div className="flex items-center">
+                                <input
+                                    id="anonymous"
+                                    type="checkbox"
+                                    checked={isAnonymous}
+                                    onChange={handleAnonymousToggle}
+                                    className="mr-2 border-gray-300 rounded focus:ring-blue-500"
+                                />
+                                <label htmlFor="anonymous" className="text-sm font-medium text-gray-700">
+                                    Anonymous
+                                </label>
+                            </div>
 
-                        {/* Submit button */}
-                        <div>
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
+                            {/* Submit button */}
+                            <div>
+                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
 
                     )}
 

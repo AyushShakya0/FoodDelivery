@@ -108,22 +108,25 @@ export default function RestaurantDetails({ auth, vendor, menus, order, fav, des
 
             <div className='px5 lg:px-20 '>
                 <section>
-                    <div className='mt-6'>
-                        {/* Conditionally render image or map based on showMap state */}
-                        {showMap ? (
-                            <Map_restaurant vendor={vendor} />
-                        ) : (
-                            <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
-                        )}
+                    <div className="relative">
+                        <div className='mt-6'>
+                            {/* Conditionally render image or map based on showMap state */}
+                            {showMap ? (
+                                <Map_restaurant vendor={vendor} user={auth.user} />
+                            ) : (
+                                <img className="w-full h-[60vh] object-cover" src={`http://127.0.0.1:8000/storage/${vendor.image}`} alt="Restaurant image" />
+                            )}
+                        </div>
+
+                        {/* Button to toggle between image and map */}
+                        {/* Button positioned at bottom right */}
+                        <div className="absolute bottom-4 right-4">
+                            <button onClick={toggleMap} className="bg-green-300 hover:bg-blue-300 text-black font-bold py-2 px-4 rounded">
+                                {showMap ? "Show Image" : "Show Map"}
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Button to toggle between image and map */}
-                    {/* need to change the button */}
-                    <div className='mt-3'>
-                        <button onClick={toggleMap} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            {showMap ? "Show Image" : "Show Map"}
-                        </button>
-                    </div>
 
                     <div className='pt-3 pb-5'>
                         <div className="flex justify-between items-center">
