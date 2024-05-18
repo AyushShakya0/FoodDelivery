@@ -85,21 +85,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
-
-                {/* <div>
-                    <InputLabel htmlFor="Image" value="Image" />
-
-                    <TextInput
-                        id="image"
-                        name="image"
-                        type="file"
-                        onChange={(e) => setData("image", e.target.files[0])}
-                    // required
-                    />
-
-                    <InputError className="mt-2" message={errors.image} />
-                </div> */}
-
                 <div>
                     <InputLabel htmlFor="Number" value="Number" />
 
@@ -115,7 +100,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.number} />
                 </div>
                 <div>
-                    Address 1
 
 
                 <div>

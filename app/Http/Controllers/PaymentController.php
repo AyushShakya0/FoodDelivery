@@ -2,43 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkout;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-    public function verifyPayment(Request $request)
+    public function verify(Request $request)
     {
-        $token = $request->token;
+        $response = Http::withHeaders([
+            'Authorization' => 'Key ' . env('KHALTI_SECRET_KEY'),
+        ])->post('https://khalti.com/api/v2/payment/verify/', [
+            'token' => $request->token,
+            'amount' => $request->amount,
+        ]);
+        if ($response->successful()) {
 
-        $args = http_build_query(array(
-            'token' => $token,
-            'amount'  => 1000
-        ));
+            // Ensure user is authenticated
+        $user_id = Auth::id();
 
-        $url = "https://khalti.com/api/v2/payment/verify/";
+        // dd($request->all());
 
-        # Make the call using API.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $args);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $secret_key = config('app.khalti_secret_key');
+        // Add the item to the cart
+        $cartItem = new Checkout();
+        $cartItem->user_id = $user_id;
+        // $cartItem->vendor_id = $request->vendor_id;
+        $cartItem->order_id = $request->order_id;
+        $cartItem->vendor_id = $request->vendor_id;
+        $cartItem->address = $request->address;
+        $cartItem->total_price = $request->price;
+        $cartItem->customization = $request->customization;
+        $cartItem->status = "Ordered";
 
-        $headers = ["Authorization: Key $secret_key"];
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $cartItem->save();
 
-        // Response
-        $response = curl_exec($ch);
-        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        return $response;
-    }
+        $orderIds = $request->order_id;
 
-    public function storePayment(Request $request)
-    {
-        // $response = $request->response;
-        // store the data to database here
-        return response()->noContent();
-    }
+        Order::whereIn('id', $orderIds)->update([
+            'status' => 'checkedout'
+        ]);
+
+        // Return a response, such as a success message or redirect
+        Log::info('successful');
+        return redirect()->route('track.order');
+
+        } else {
+            // Include more detailed error handling as needed
+            return response()->with(['success' => false, 'message' => 'Payment failed!', 'details' => $response->json()], 422);
+        }
+}
 }

@@ -118,9 +118,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
 
-    Route::post('/khalti/payment/verify', [PaymentController::class, 'verifyPayment'])->name('khalti.verifyPayment');
-
-    Route::post('/khalti/payment/store', [PaymentController::class, 'storePayment'])->name('khalti.storePayment');
+    Route::post('/api/payment/verify', [PaymentController::class, 'verify'])->name('payment.verify');
 });
 
 require __DIR__ . '/auth.php';

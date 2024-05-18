@@ -7,6 +7,10 @@ import { useForm } from '@inertiajs/inertia-react';
 import CheckoutCard from '@/Components/CheckoutCard';
 import TextInput from '@/Components/TextInput';
 import axios from 'axios';
+import config from '@/Components/KhaltiConfig';
+import KhaltiCheckout from 'khalti-checkout-web';
+import { Button } from 'react-bootstrap';
+import { Inertia } from "@inertiajs/inertia";
 
 export default function Checkout({ auth, cart, vendors, user, fav }) {
     const userMenuIds = cart.map(cartItem => cartItem.id);
@@ -34,49 +38,36 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
         reset(); // Reset form after successful submission
     };
 
+    const [paymentMethod, setPaymentMethod] = useState('khalti'); // Default to 'khalti'
 
-    const base_url = 'http://localhost:8000/checkout'; // Define your base URL
-    const Key = 'Key 52b222e00d044f29b81490ff963e8b6b'; // Define your Khalti key
-    const orderData = {}; // Define your orderData object
-
-    const initiatePayment = async () => {
-        const payload = {
-            "return_url": `${base_url}payment-success`,
-            "website_url": 'http://localhost:3000/',
-            "amount": total,
-            "purchase_order_id": "Order01",
-            "purchase_order_name": "Kuro",
-            "merchant_username": 'Ayush',
-            "customer_info": {
-                name: auth?.user.name ?? '',
-                email: auth?.user.email ?? '',
-                phone: auth?.user.number ?? '',
-            },
-        };
-
-        try {
-            const { data } = await axios.post(
-                'https://a.khalti.com/api/v2/epayment/initiate/',
-                payload,
-                {
-                    headers: {
-                        "authorization": Key,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-
-            if (data?.payment_url) {
-                const paymentUrl = data.payment_url;
-                console.log('Navigating to payment URL:', paymentUrl);
-                window.location.href = paymentUrl;
-            }
-
-            console.log('data', data);
-        } catch (err) {
-            console.log('Error', err);
-        }
+    const handlePaymentMethodChange = (method) => {
+        setPaymentMethod(method);
     };
+
+    const khaltiConfig = {
+        ...config,
+        eventHandler: {
+            ...config.eventHandler,
+            onSuccess: (payload) => {
+                console.log("Payment successful", payload);
+                Inertia.post("/api/payment/verify", {
+                    token: payload.token,
+                    amount: payload.amount,
+                    user_id: user.id,
+                    order_id: userMenuIds,
+                    vendor_id: vendor_idss,
+                    price: total,
+                    customization: " ",
+                    address: user.address,
+                    status: 'Ordered',
+                });
+            },
+            onError: (error) => {
+                console.log("Error during payment", error);
+            },
+        },
+    };
+    let checkout = new KhaltiCheckout(khaltiConfig);
 
     return (
         <AuthenticatedLayout user={auth.user} order={cart} fav={fav}>
@@ -85,8 +76,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
             <div className=' bg-gray-100'>
                 <form onSubmit={submit} encType="multipart/form-data">
                     <div className="h-screen bg-gray-100 py-6 sm:py-16 lg:py-8">
-                        <div class="flex items-center justify-center mt-1">
-                            <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
+                        <div className="flex items-center justify-center mt-1">
+                            <h1 className="text-2xl font-semibold text-gray-900">Your Cart</h1>
                         </div>
                         <div className="mx-auto px-4 sm:px-6 lg:px-8 flex">
                             <section className="flex-1">
@@ -102,11 +93,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                                             <CheckoutCard key={listing.id} listing={listing} vendor={vendors} />
                                                         ))
                                                     )}
-
-
                                                 </ul>
                                             </div>
-
                                         </div>
                                         <div className="mx-auto mt-8 max-w-2xl md:mt-4">
                                             <div className="bg-white shadow">
@@ -156,7 +144,6 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                             <p className="mt-2 text-sm text-gray-600">{user.address}, {user.city}, {user.pincode}</p>
 
                                             <div className="mt-6 flex justify-between">
-                                                {/* <button type="button" className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Change Address</button> */}
                                                 <Link href={route('profile.edit')} className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 item-center">
                                                     Change Address
                                                 </Link>
@@ -166,36 +153,70 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                 </div>
 
                                 <div className="mx-auto mt-8 max-w-2xl md:mt-4">
-                                    <div className="bg-white shadow">
-                                        <div className="px-4 py-6 sm:px-8 sm:py-10">
-                                            <h2 className="text-2xl font-semibold text-gray-900">Payment Method</h2>
-                                            <p className="mt-2 text-sm text-gray-600">Credit Card ending in ****1234</p>
+                                    <div className="mb-4 flex justify-center space-x-4">
+                                        <button
+                                            type="button"
+                                            className={`py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${paymentMethod === 'cod' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
+                                            onClick={() => handlePaymentMethodChange('cod')}
+                                        >
+                                            Cash on Delivery
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={`py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${paymentMethod === 'khalti' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
+                                            onClick={() => handlePaymentMethodChange('khalti')}
+                                        >
+                                            Khalti
+                                        </button>
+                                    </div>
 
-                                            <div className="mt-6 flex justify-center">
-                                                <Link href={route('profile.edit')} className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                                    Change Payment Method
-                                                </Link>
-                                                <button onClick={initiatePayment}>Initiate Payment</button>
-
+                                    {paymentMethod === 'cod' && (
+                                        <div className="bg-white shadow">
+                                            <div className="px-4 py-6 sm:px-8 sm:py-10">
+                                                <div>
+                                                    <button
+                                                        type="submit"
+                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
+                                                        disabled={cart.length === 0}
+                                                    >
+                                                        Place Order
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    )}
 
-                                <div className="mx-auto mt-8 max-w-2xl md:mt-4">
-                                    <div className="bg-white shadow">
-                                        <div className="px-4 py-6 sm:px-8 sm:py-10">
-                                            <div>
-                                                <button type="submit" className="flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Place Order</button>
+                                    {paymentMethod === 'khalti' && (
+
+                                        <div className="bg-white shadow">
+                                            <div className="px-4 py-6 sm:px-8 sm:py-10">
+                                                <div>
+                                                    <button
+                                                        type="button"
+                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
+                                                        onClick={(e) => {
+                                                            if (cart.length === 0) {
+                                                                e.preventDefault();
+                                                            } else {
+                                                                e.preventDefault();
+                                                                checkout.show({ amount: 100 * 100 });
+                                                            }
+                                                        }}
+                                                        disabled={cart.length === 0}
+                                                    >
+                                                        Place Order
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+
+
+                                    )}
                                 </div>
                             </section>
                         </div>
                     </div>
                 </form>
-
             </div>
         </AuthenticatedLayout>
     );
