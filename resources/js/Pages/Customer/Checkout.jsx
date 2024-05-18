@@ -187,7 +187,6 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                     )}
 
                                     {paymentMethod === 'khalti' && (
-
                                         <div className="bg-white shadow">
                                             <div className="px-4 py-6 sm:px-8 sm:py-10">
                                                 <div>
@@ -209,8 +208,6 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     )}
                                 </div>
                             </section>

@@ -5,7 +5,7 @@ import { Inertia } from "@inertiajs/inertia";
 
 let config = {
     // replace this key with yours
-    publicKey: "test_public_key_ac9fa02798af42758975954e73365de0",
+    publicKey: "test_public_key_142192f1ed894bb58abbcff99d24eebc",
     productIdentity: "1234567890",
     productName: "GoFood",
     productUrl: "http://127.0.0.1:8000/",
