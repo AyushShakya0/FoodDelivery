@@ -80,11 +80,11 @@ export default function Authenticated({ user, header, children }) {
                                         Order History
                                     </NavLink>
                                 </div>
-                                <div>
+                                {/* <div>
                                     <NavLink href={route('admin_finance')} active={route().current('admin_finance')} className="block py-2 px-4 text-sm text-gray-700">
                                         Order & Transaction
                                     </NavLink>
-                                </div>
+                                </div> */}
 
 
                             </div>

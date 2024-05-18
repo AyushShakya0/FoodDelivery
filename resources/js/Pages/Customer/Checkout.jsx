@@ -69,6 +69,9 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
     };
     let checkout = new KhaltiCheckout(khaltiConfig);
 
+
+    console.log(user.address)
+
     return (
         <AuthenticatedLayout user={auth.user} order={cart} fav={fav}>
             <Head title="Checkout" />
@@ -176,8 +179,8 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                                 <div>
                                                     <button
                                                         type="submit"
-                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
-                                                        disabled={cart.length === 0}
+                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 || user.address===null  || user.address=== '' ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
+                                                        disabled={cart.length === 0 || user.address===null  || user.address=== ''}
                                                     >
                                                         Place Order
                                                     </button>
@@ -192,16 +195,16 @@ export default function Checkout({ auth, cart, vendors, user, fav }) {
                                                 <div>
                                                     <button
                                                         type="button"
-                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
+                                                        className={`flex-1 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${cart.length === 0 || user.address===null  || user.address=== '' ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900 text-white'}`}
                                                         onClick={(e) => {
-                                                            if (cart.length === 0) {
+                                                            if (cart.length === 0 || user.address===null || user.address=== '') {
                                                                 e.preventDefault();
                                                             } else {
                                                                 e.preventDefault();
                                                                 checkout.show({ amount: 100 * 100 });
                                                             }
                                                         }}
-                                                        disabled={cart.length === 0}
+                                                        disabled={cart.length === 0 || user.address===null || user.address=== ''}
                                                     >
                                                         Place Order
                                                     </button>
