@@ -36,6 +36,7 @@ class PaymentController extends Controller
             $cartItem->total_price = $request->price;
             $cartItem->customization = $request->customization;
             $cartItem->status = "Ordered";
+            $cartItem->payment = "Khalti";
 
             $cartItem->save();
 

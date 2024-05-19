@@ -77,6 +77,16 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
                 </div>
             )}
 
+            {/* <div className="bg-gray-100 p-4 rounded-md mt-4">
+                <div className="mb-4">
+                    <p className="font-semibold mb-2">Billing Details:</p>
+                    <p>Subtotal: Rs. {subtotal}</p>
+                    <p>Shipping: Rs. {shipping}</p>
+                    <p>Total: Rs. {total_price}</p>
+                    <p>Payment Method: {checkout.payment}</p>
+                </div>
+            </div> */}
+
             <div className="bg-gray-100 p-4 mt-4 rounded-md flex flex-wrap">
                 {/* User Section */}
                 <div className="w-full md:w-1/2 mb-4 md:pr-2">

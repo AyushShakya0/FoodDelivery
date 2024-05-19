@@ -30,6 +30,7 @@ class Checkout extends Model
         'address',
         'total_price',
         'status',
+        'payment',
 
     ];
 

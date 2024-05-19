@@ -33,7 +33,7 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
         }
     };
 
-    console.log(vendor)
+    console.log(checkout)
 
     const shipping = vendor.length * 60;
     const total_price = checkout.total_price;
@@ -122,6 +122,8 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
                             <p>Subtotal: Rs. {subtotal}</p>
                             <p>Shipping: Rs. {shipping}</p>
                             <p>Total: Rs. {total_price}</p>
+                            <p>Payment Method: {checkout.payment}</p>
+
                         </div>
 
                         {/* Customization Section */}

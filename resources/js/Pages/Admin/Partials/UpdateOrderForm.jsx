@@ -29,6 +29,10 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
     // console.log(user)
     // console.log(vendor)
 
+    const shipping = vendor.length * 60;
+    const total_price = checkout.total_price;
+    const subtotal = total_price - shipping;
+
     // Grouping orders by vendor
     const groupedOrders = order.reduce((acc, curr) => {
         const vendorName = vendor.find(v => v.id === curr.vendor_id)?.name || `Vendor-${curr.vendor_id}`;
@@ -85,6 +89,18 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
                     </div>
                 </div>
             )}
+
+
+
+            <div className="bg-gray-100 p-4 rounded-md mt-4">
+                <div className="mb-4">
+                    <p className="font-semibold mb-2">Billing Details:</p>
+                    <p>Subtotal: Rs. {subtotal}</p>
+                    <p>Shipping: Rs. {shipping}</p>
+                    <p>Total: Rs. {total_price}</p>
+                    <p>Payment Method: {checkout.payment}</p>
+                </div>
+            </div>
 
             <div className="bg-gray-100 p-4 mt-4 rounded-md flex flex-wrap">
                 {/* User Section */}

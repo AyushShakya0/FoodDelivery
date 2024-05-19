@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->decimal('longitude',10,7)->after('address')->nullable();
-            $table->decimal('latitude',10,7)->after('longitude')->nullable();
+        Schema::table('checkouts', function (Blueprint $table) {
+            $table->string('payment')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('checkouts', function (Blueprint $table) {
             $table->dropColumn('longitude');
-            $table->dropColumn('latitude');
         });
     }
 };

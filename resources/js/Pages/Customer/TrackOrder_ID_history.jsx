@@ -127,6 +127,7 @@ export default function TrackOrder_ID_history({ order, checkout, courier, vendor
                         <p>Subtotal: Rs. {subtotal}</p>
                         <p>Shipping: Rs. {shipping}</p>
                         <p>Total: Rs. {total_price}</p>
+                        <p>Payment Method: {checkout.payment}</p>
                     </div>
 
                     {/* Customization Section */}

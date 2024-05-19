@@ -360,6 +360,7 @@ class CustomerController extends Controller
         $cartItem->total_price = $request->price;
         $cartItem->customization = $request->customization;
         $cartItem->status = "Ordered";
+        $cartItem->payment = "Cash in Delivery";
 
         $cartItem->save();
 

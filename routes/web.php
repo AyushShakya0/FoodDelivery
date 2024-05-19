@@ -117,7 +117,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/khalti/{id}', [CustomerController::class, 'payment'])->name('payment');
 
     Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
-cuso
+
     Route::post('/api/payment/verify', [PaymentController::class, 'verify'])->name('payment.verify');
 });
 
