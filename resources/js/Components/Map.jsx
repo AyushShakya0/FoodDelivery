@@ -3,10 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-const MapViewContainer = ({ user, vendor }) => {
+const MapViewContainer = ({ user, vendor, courier }) => {
 
-    console.log(user,'uss')
-    console.log(vendor,'vss')
     // Custom blue icon for user
     const blueIcon = new L.Icon({
         iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
@@ -20,6 +18,16 @@ const MapViewContainer = ({ user, vendor }) => {
     // Custom green icon for vendor
     const greenIcon = new L.Icon({
         iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    // Custom yellow icon for vendor
+    const yellowIcon = new L.Icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png",
         shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -54,6 +62,16 @@ const MapViewContainer = ({ user, vendor }) => {
             >
                 <Popup>{user.name}</Popup>
             </Marker>
+
+            {courier && (
+                <Marker
+                    key={courier.id}
+                    position={[courier.latitude, courier.longitude]}
+                    icon={yellowIcon} // Use custom icon based on location
+                >
+                    <Popup>{courier.name}</Popup>
+                </Marker>
+            )}
         </MapContainer>
     );
 };

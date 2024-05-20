@@ -9,6 +9,9 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Chip, IconButton } from '@mui/material';
 
+import Map_restaurant from '@/Components/Map_restaurant';
+
+
 export default function UpdateOrderForm({ auth, order, checkout, user, courier, className = '' }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -33,11 +36,17 @@ export default function UpdateOrderForm({ auth, order, checkout, user, courier, 
         'Reached'
     ];
 
+    console.log(user)
+    console.log(auth)
+    console.log(courier)
+
     return (
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
             </header>
+
+            <Map_restaurant user={user} vendor={auth.user} courier={courier} />
 
 
             {order

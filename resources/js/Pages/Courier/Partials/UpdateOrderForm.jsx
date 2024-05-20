@@ -13,7 +13,7 @@ import { Chip, IconButton } from '@mui/material';
 import Map from '@/Components/Map';
 
 
-export default function UpdateOrderForm({ order, checkout, user, vendor, className = '' }) {
+export default function UpdateOrderForm({auth,  order, checkout, user, vendor, className = '' }) {
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -32,6 +32,8 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
         e.preventDefault();
         setShowConfirmation(true); // Show confirmation dialog
     };
+
+    console.log(auth)
 
     const confirmCancel = () => {
         // Handle cancellation confirmation
@@ -52,8 +54,6 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
         'Delivered',
     ];
 
-    console.log(user, "userrrr")
-
     const shipping = vendor.length * 60;
     const total_price = checkout.total_price;
     const subtotal = total_price - shipping;
@@ -72,7 +72,7 @@ export default function UpdateOrderForm({ order, checkout, user, vendor, classNa
                 <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
             </header>
 
-            <Map user={user[0]} vendor={vendor} />
+            <Map user={user[0]} vendor={vendor} courier={auth.user} />
 
 
             {Object.entries(groupedOrders).map(([vendorName, orders]) => (

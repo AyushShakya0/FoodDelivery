@@ -29,6 +29,8 @@ class Courier extends Authenticatable
         'image',
         'verified',
         'rating',
+        'longitude',
+        'latitude',
 
     ];
 

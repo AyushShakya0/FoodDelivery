@@ -21,7 +21,7 @@ export default function Edit_Order({ auth, orders, checkout, user, vendor }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <UpdateOrderForm order={orders} checkout={checkout} user={user} courier={auth} vendor={vendor} className="max-w-xl"></UpdateOrderForm>
+                            <UpdateOrderForm order={orders} checkout={checkout} user={user} auth={auth} vendor={vendor} className="max-w-xl"></UpdateOrderForm>
                         </div>
                     </div>
                 </div>

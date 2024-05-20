@@ -80,7 +80,7 @@ export default function TrackOrder_ID({ order, checkout, courier, vendor, auth, 
 
 
                     {/* Map for 2 or more vendors still left to do */}
-                    <Map user={auth.user} vendor={vendor}  />
+                    <Map user={auth.user} vendor={vendor} courier={courier} />
 
 
 

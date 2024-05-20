@@ -47,7 +47,7 @@ export default function UpdateOrderForm({ auth, order, checkout, user, vendor, c
                 <h2 className="text-lg font-medium text-gray-900">Order Information</h2>
             </header>
 
-            <Map user={user} vendor={vendor} />
+            <Map user={user} vendor={vendor} courier={courier} />
 
 
 
