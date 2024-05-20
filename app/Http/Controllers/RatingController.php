@@ -177,7 +177,7 @@ class RatingController extends Controller
             ]);
 
             // Get the total count and sum of ratings for the vendor
-            $vendor_ratings = Rating::where('courier', $request->courier)->get(['rating']);
+            $vendor_ratings = Rating::where('courier_id', $request->courier)->get(['rating']);
             $total_ratings = $vendor_ratings->count();
             $sum_ratings = $vendor_ratings->sum('rating');
 

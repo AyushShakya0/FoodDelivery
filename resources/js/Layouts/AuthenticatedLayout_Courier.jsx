@@ -5,6 +5,8 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -16,8 +18,8 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex flex-col justify-between h-screen">
                         <div>
                             <div className="flex items-center mt-8 mb-8">
-                            <Link href={route('courier.dashboard')} className="flex items-center">
-                                <img
+                                <Link href={route('courier.dashboard')} className="flex items-center">
+                                    <img
                                         src="/logo.png"
                                         alt="GoFood Logo"
                                         className="h-4 w-auto text-gray-800" // Adjusted classes
@@ -29,6 +31,11 @@ export default function Authenticated({ user, header, children }) {
                                 <div className="ml-2">
                                     <div className="font-medium text-base text-gray-800">{user.name}</div>
                                     <div className="font-medium text-sm text-gray-500">{user.email}</div>
+                                    <div className="font-medium text-sm text-gray-500">
+                                        {[...Array(5)].map((_, index) => (
+                                            index < user.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
