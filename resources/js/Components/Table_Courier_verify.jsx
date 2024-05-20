@@ -5,6 +5,8 @@ import { Inertia } from '@inertiajs/inertia';
 import DoneIcon from '@mui/icons-material/Done';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import PrimaryButton from './PrimaryButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 export default function Table_Courier_verify({ couriers, primary, action }) {
@@ -84,20 +86,25 @@ export default function Table_Courier_verify({ couriers, primary, action }) {
                             <td className="px-6 py-4">{courier.address}</td>
                             <td className="px-6 py-4">
 
-                                <form onSubmit={(e) => submit(e, courier.id)} className="">
-                                    {/* Button for submitting */}
-                                    <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
-                                        <PrimaryButton disabled={processing}><DoneIcon /></PrimaryButton>
-                                    </div>
-                                </form>
+                                <div className="button-container" style={{ display: "flex", alignItems: "center" }}>
+                                    <form onSubmit={(e) => submit(e, courier.id)} className="">
+                                        {/* Button for submitting */}
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
+                                            <PrimaryButton disabled={processing}>
+                                                <DoneIcon />
+                                            </PrimaryButton>
+                                        </div>
+                                    </form>
+
+                                    <button
+                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                        onClick={() => deleteCourier(courier.id)}
+                                    >
+                                        <DeleteIcon />
+                                    </button>
+                                </div>
 
 
-                                <button
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                                    onClick={() => deleteCourier(courier.id)}
-                                >
-                                    <DangerousIcon />
-                                </button>
                             </td>
                         </tr>
                     ))}

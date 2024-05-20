@@ -2,6 +2,11 @@ import React from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 
 export default function Table_Courier({ couriers, primary, action }) {
@@ -37,7 +42,7 @@ export default function Table_Courier({ couriers, primary, action }) {
                         <th scope="col" className="px-6 py-3">Email</th>
                         <th scope="col" className="px-6 py-3">Phone Number</th>
                         <th scope="col" className="px-6 py-3">Address</th>
-                        <th scope="col" className="px-6 py-3">City</th>
+                        <th scope="col" className="px-6 py-3">Ratings</th>
                         <th scope="col" className="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -51,19 +56,23 @@ export default function Table_Courier({ couriers, primary, action }) {
                             <td className="px-6 py-4">{courier.name}</td>
                             <td className="px-6 py-4">{courier.email}</td>
                             <td className="px-6 py-4">{courier.number}</td>
-                            <td className="px-6 py-4">{courier.address}</td>
-                            <td className="px-6 py-4">{courier.city}</td>
+                            <td className="px-6 py-4">{courier.address}, {courier.city}</td>
+                            <td className="px-6 py-4">
+                            {[...Array(5)].map((_, index) => (
+                                index < courier.rating ? <StarIcon key={index} className='text-yellow-600' /> : <StarBorderIcon key={index} className='text-yellow-600' />
+                            ))}
+                            </td>
                             <td className="px-6 py-4">
 
-                                <a href={route(action, courier.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">edit</a>
+                                <a href={route(action, courier.id)} className="font-medium text-blue-200 dark:text-blue-400 hover:underline ml-2"><EditIcon/></a>
                                 {/* could be this part not sending the id */}
 
 
                                 <button
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                    className="font-medium text-red-200 dark:text-red-500 hover:underline ml-2"
                                     onClick={() => deleteCourier(courier.id)}
                                 >
-                                    Delete
+                                    <DeleteIcon/>
                                 </button>
                             </td>
                         </tr>

@@ -15,6 +15,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         address: user.address,
         number: user.number,
         city: user.city,
+        longitude: user.longitude,
+        latitude: user.latitude,
     });
 
     console.log(data)
@@ -126,6 +128,33 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.city} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="longitude" value="longitude" />
+                    <TextInput
+                        id="longitude"
+                        className="mt-1 block w-full"
+                        value={data.longitude}
+                        // onChange={(e) => setData({ ...data, longitude: e.target.value })}
+                        onChange={(e) => setData('longitude', e.target.value)}
+
+                    />
+                    {errors && errors.longitude && <InputError message={errors.longitude[0]} />}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="latitude" value="latitude" />
+                    <TextInput
+                        id="latitude"
+                        className="mt-1 block w-full"
+                        value={data.latitude}
+                        // onChange={(e) => setData({ ...data, latitude: e.target.value })}
+                        onChange={(e) => setData('latitude', e.target.value)}
+
+                    />
+                    {errors && errors.latitude && <InputError message={errors.latitude[0]} />}
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

@@ -19,7 +19,7 @@ export default function Index({ auth, vendors }) {
     return (
         <AuthenticatedLayout_Admin
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Vendor Admin verify</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Verify Vendors</h2>}
         >
             <Head title="Vendor Admin" />
 

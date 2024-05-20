@@ -5,6 +5,8 @@ import { Inertia } from '@inertiajs/inertia';
 import DoneIcon from '@mui/icons-material/Done';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import PrimaryButton from './PrimaryButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 export default function Table_Vendor_verify({ vendors, primary, action }) {
@@ -83,19 +85,23 @@ export default function Table_Vendor_verify({ vendors, primary, action }) {
                             <td className="px-6 py-4">{vendor.address}</td>
                             <td className="px-6 py-4">
 
-                                <form onSubmit={(e) => submit(e, vendor.id)} className="">
-                                    {/* Button for submitting */}
-                                    <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
-                                        <PrimaryButton disabled={processing}><DoneIcon /></PrimaryButton>
-                                    </div>
-                                </form>
+                                <div className="button-container" style={{ display: "flex", alignItems: "center" }}>
+                                    <form onSubmit={(e) => submit(e, vendor.id)} className="">
+                                        {/* Button for submitting */}
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
+                                            <PrimaryButton disabled={processing}>
+                                                <DoneIcon />
+                                            </PrimaryButton>
+                                        </div>
+                                    </form>
 
-                                <button
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                                    onClick={() => deleteVendor(vendor.id)}
-                                >
-                                    <DangerousIcon />
-                                </button>
+                                    <button
+                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                        onClick={() => deleteVendor(vendor.id)}
+                                    >
+                                        <DeleteIcon />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     ))}
