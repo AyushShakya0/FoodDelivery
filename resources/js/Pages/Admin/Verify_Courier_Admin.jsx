@@ -3,6 +3,8 @@ import Table_Courier_verify from '@/Components/Table_Courier_verify';
 import AuthenticatedLayout_Admin from '@/Layouts/AuthenticatedLayout_Admin';
 import { Head } from '@inertiajs/react';
 import { InertiaLink } from '@inertiajs/inertia-react';
+import Pagination from '@/Components/Pagination';
+
 
 const columns = [
     'Name',
@@ -25,7 +27,11 @@ export default function Index({ auth, couriers }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <Table_Courier_verify couriers={couriers} columns={columns} primary="Courier Number" action="courier.edit"></Table_Courier_verify>
+                            <Table_Courier_verify couriers={couriers.data} columns={columns} primary="Courier Number" action="courier.edit"></Table_Courier_verify>
+                            <Pagination
+                                meta={couriers}
+                                pageSize={2}
+                            />
                         </div>
                     </div>
                 </div>

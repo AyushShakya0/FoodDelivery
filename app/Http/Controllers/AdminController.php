@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function order(): Response
     {
         $checkout = Checkout::whereNotIn('status', ['Delivered'])
-            ->get();
+            ->paginate(15);
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
         $orders = Order::where(function ($query) use ($orderIds) {
@@ -52,7 +52,7 @@ class AdminController extends Controller
     public function order_history(): Response
     {
         $checkout = Checkout::whereIn('status', ['Delivered'])
-            ->get();
+            ->paginate(10);
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
         $orders = Order::where(function ($query) use ($orderIds) {
@@ -82,7 +82,7 @@ class AdminController extends Controller
 
     public function vendor()
     {
-        $vendors = Vendor::where('verified', 'yes')->get();
+        $vendors = Vendor::where('verified', 'yes')->paginate(10);
 
         return Inertia::render('Admin/Vendor_Admin', [
             'vendors' => $vendors,
@@ -92,7 +92,7 @@ class AdminController extends Controller
 
     public function vendor_verify_display()
     {
-        $vendors = Vendor::where('verified', null)->get();
+        $vendors = Vendor::where('verified', null)->paginate(10);
 
         return Inertia::render('Admin/Verify_Vendor_Admin', [
             'vendors' => $vendors,
@@ -101,7 +101,7 @@ class AdminController extends Controller
 
     public function courier_verify_display()
     {
-        $couriers = Courier::where('verified', null)->get();
+        $couriers = Courier::where('verified', null)->paginate(10);
 
         return Inertia::render('Admin/Verify_Courier_Admin', [
             'couriers' => $couriers,
@@ -328,7 +328,7 @@ class AdminController extends Controller
 
     public function courier()
     {
-        $couriers = Courier::where('verified', 'yes')->get();
+        $couriers = Courier::where('verified', 'yes')->paginate(10);
 
         return Inertia::render('Admin/Courier_Admin', [
             'couriers' => $couriers,
