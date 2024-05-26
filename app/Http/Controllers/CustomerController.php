@@ -79,7 +79,7 @@ class CustomerController extends Controller
         $fav = Favorite::where('user_id', $user)->get();
 
         $menus = Menu::all();
-        $vendors = Vendor::where('verified', 'yes')->get();
+        $vendors = Vendor::where('verified', 'yes')->paginate(12);
 
         return Inertia::render('Customer/Restaurantss', [
             'order' => $cart,
@@ -213,7 +213,7 @@ class CustomerController extends Controller
         $fav = Favorite::where('user_id', $user)->get();
         $checkout = Checkout::where('user_id', $user)
             ->whereIn('status', ['Delivered'])
-            ->get();
+            ->paginate(5);
 
         $cart = Order::where('user_id', $user)
             ->where('status', null)
@@ -583,15 +583,19 @@ class CustomerController extends Controller
             ->where('status', null)
             ->get();
         $fav = Favorite::where('user_id', $users)->get();
+
+
         $checkout = Checkout::where('user_id', $users)
             ->whereNotIn('status', ['Delivered'])
-            ->get();;
+            ->paginate(5);
 
         $order = Order::where('user_id', $users)
             ->where('status', 'checkedout')
             ->get();
 
         $user = Auth::user();
+
+        // dd($checkout);
 
         return Inertia::render('Customer/TrackOrder', [
             'order' => $order,

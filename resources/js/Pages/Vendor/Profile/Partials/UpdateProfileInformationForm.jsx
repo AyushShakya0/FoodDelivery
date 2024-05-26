@@ -30,6 +30,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         end_time: user.end_time,
     });
 
+
+    console.log(user.image)
+
     // Function to handle form submission
     const submit = (e) => {
         e.preventDefault();
@@ -85,10 +88,12 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="image"
                         name="image"
                         type="file"
+                        autoComplete="image"
                         onChange={(e) => setData("image", e.target.files[0])}
                     />
-                    <InputError className="mt-2" message={errors.image} />
+                    {errors.image && <InputError className="mt-2" message={errors.image} />}
                 </div>
+
 
                 {/* Description */}
                 <div>

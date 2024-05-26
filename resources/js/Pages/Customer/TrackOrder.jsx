@@ -2,8 +2,11 @@ import RestaurantCard from '@/Components/RestaurantCard';
 import Track_Orders from '@/Components/Track_Orders';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
 
 export default function TrackOrder({ auth, order, fav, checkout, order_cart }) {
+
+    console.log(checkout)
 
     return (
         <AuthenticatedLayout user={auth} order={order_cart} fav={fav}>
@@ -15,8 +18,7 @@ export default function TrackOrder({ auth, order, fav, checkout, order_cart }) {
 
             <div className='pb-8'>
                 <div>
-                    {checkout.map((listing) => {
-                        // Filter orders based on the order_ids in the current listing
+                    {checkout.data.map((listing) => {
                         const ordersInCheckout = order.filter(orderItem => listing.order_id.includes(orderItem.id));
 
                         return (
@@ -25,6 +27,10 @@ export default function TrackOrder({ auth, order, fav, checkout, order_cart }) {
                             </div>
                         );
                     })}
+                    <Pagination
+                        meta={checkout}
+                        pageSize={2}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

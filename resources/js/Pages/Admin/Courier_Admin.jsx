@@ -16,7 +16,7 @@ export default function Index({ auth, couriers}) {
     return (
         <AuthenticatedLayout_Admin
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">couriers Admin</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Couriers</h2>}
         >
             <Head title="couriers Admin" />
 

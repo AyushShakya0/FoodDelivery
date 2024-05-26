@@ -35,6 +35,8 @@ class VendorProfileController extends Controller
     {
 
         // dd($request->all());
+        // $images='C5Ewaxpp3dafRCoUIGuiDH1bC2ixgyHT.jpg';
+
         try {
             $vendor = Auth::guard('vendor')->user();
 
@@ -50,7 +52,9 @@ class VendorProfileController extends Controller
             // Check if image is being uploaded
             if ($request->hasFile('image')) {
                 // Generate a unique image name
-                $imageName = Str::random(32) . '.' . $request->image->getClientOriginalExtension();
+                $imageName = Str::random(32) . '.' . $request->images->getClientOriginalExtension();
+
+                // dd($request->all());
 
                 // Store the image in the storage disk
                 Storage::disk('public')->put($imageName, file_get_contents($request->image));

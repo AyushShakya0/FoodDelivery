@@ -5,6 +5,8 @@ import RestaurantCard from '@/Components/RestaurantCard';
 import Slider from 'react-slick';
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
+import Pagination from '@/Components/Pagination';
+
 
 export default function Restaurants({ auth, vendor, menus, order, fav }) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -49,11 +51,15 @@ export default function Restaurants({ auth, vendor, menus, order, fav }) {
                 <h1 className='text-2xl font-semibold text-gray-900 mb-6'>Restaurants</h1>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                    {vendor.map((listing) => (
+                    {vendor.data.map((listing) => (
                         <div key={listing.id}>
                             <RestaurantCard listing={listing} fav={fav} vendor={vendor} user={auth.user} />
                         </div>
                     ))}
+                    <Pagination
+                        meta={vendor}
+                        pageSize={2}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>
