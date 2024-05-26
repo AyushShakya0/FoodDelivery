@@ -18,7 +18,7 @@ class MenuController extends Controller
     public function index(): Response
     {
         $vendor = Auth::user();
-        $menus = Menu::where('vendor_id', $vendor->id)->get();
+        $menus = Menu::where('vendor_id', $vendor->id)->paginate(10);
 
         return Inertia::render('Vendor/Menu_Display', [
             'menu' => $menus,

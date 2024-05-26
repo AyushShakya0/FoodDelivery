@@ -22,7 +22,7 @@ class OrderController extends Controller
         $checkout = Checkout::
         whereJsonContains('vendor_id', $vendor)
         ->whereNot('status','Delivered')
-        ->get();
+        ->paginate(10);
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
         $orders = Order::where(function ($query) use ($orderIds) {
