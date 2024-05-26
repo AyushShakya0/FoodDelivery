@@ -1,6 +1,8 @@
 import TableOrder_Courier_History from '@/Components/TableOrder_Courier_History';
 import AuthenticatedLayout_Courier from '@/Layouts/AuthenticatedLayout_Courier';
 import { Head } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
+
 
 
 const columns=[
@@ -22,7 +24,11 @@ export default function All({ auth, orders, checkout, user, vendor}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <TableOrder_Courier_History orders={orders} columns={columns} checkout={checkout} user={user} vendor={vendor} primary="Order Number" action="courier.orders.edit"></TableOrder_Courier_History>
+                            <TableOrder_Courier_History orders={orders} columns={columns} checkout={checkout.data} user={user} vendor={vendor} primary="Order Number" action="courier.orders.edit"></TableOrder_Courier_History>
+                            <Pagination
+                                meta={checkout}
+                                pageSize={2}
+                            />
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 import TableOrder_Courier from '@/Components/TableOrder_Courier';
 import AuthenticatedLayout_Courier from '@/Layouts/AuthenticatedLayout_Courier';
 import { Head } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
+
 
 
 const columns = [
@@ -28,16 +30,21 @@ export default function All({ auth, orders, checkout, user, vendor, occupied }) 
                                     auth={auth}
                                     orders={orders}
                                     columns={columns}
-                                    checkout={checkout}
+                                    checkout={checkout.data}
                                     user={user}
                                     vendor={vendor}
                                     occupied={occupied}
                                     primary="Order Number"
                                     action="courier.orders.edit"
                                 />
+
                             ) : (
                                 <p className="text-red-600">You are not verified.</p>
                             )}
+                            <Pagination
+                                meta={checkout}
+                                pageSize={2}
+                            />
                         </div>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ class CourierController extends Controller
     {
         $checkout = Checkout::whereNotIn('status', ['Delivered'])
             ->where('courier_id', null)
-            ->get();
+            ->paginate(10);
 
         $courierId = Auth::id();
         $occupied = Checkout::where('courier_id', $courierId)
@@ -145,7 +145,7 @@ class CourierController extends Controller
 
         $checkout = Checkout::whereIn('status', ['Delivered'])
             ->where('courier_id', $courier)
-            ->get();
+            ->paginate(10);
 
 
         $orderIds = $checkout->pluck('order_id')->flatten()->toArray();
